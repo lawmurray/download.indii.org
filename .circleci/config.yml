@@ -401,7 +401,7 @@ commands:
               else
                 VERSION=0.0.0
               fi
-              VERSION_SAFE=`echo $VERSION | sed -E 's/\./_/g'\`
+              VERSION_SAFE=`echo $VERSION | sed -E 's/\./_/g'`
 
               for file in birch.yml configure.ac Makefile.am Makefile *.spec *.rb PKGBUILD; do
                 if [[ -e $file ]]; then
