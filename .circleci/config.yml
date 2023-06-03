@@ -489,15 +489,15 @@ commands:
     description: Document Birch package
     parameters:
       dir:
-        description: Directory containing the package
+        description: Directory containing the package, without Birch/ prefix
         type: string
     steps:
       - version:
           dir: << parameters.dir >>
       - run:
-          name: Document << parameters.dir >>
+          name: Document Birch/<< parameters.dir >>
           command: |
-              cd << parameters.dir >>
+              cd Birch/<< parameters.dir >>
               birch docs
               mkdir -p $HOME/docs/docs/<< parameters.dir >>
               cp -r docs/* $HOME/docs/docs/<< parameters.dir >>/.
@@ -939,16 +939,16 @@ jobs:
           command: |
               mkdir -p $HOME/docs/docs
       - docs_birch:
-          dir: Birch/libraries/Standard
+          dir: libraries/Standard
       - docs_birch:
-          dir: Birch/libraries/Cairo
+          dir: libraries/Cairo
       - docs_birch:
-          dir: Birch/libraries/SQLite
+          dir: libraries/SQLite
       - run:
           name: Finalize docs
           command: |
-              cp mkdocs.yml $HOME/docs/.
-              cp README.md $HOME/docs/docs/index.md
+              cp Birch/mkdocs.yml $HOME/docs/.
+              cp Birch/README.md $HOME/docs/docs/index.md
       - persist_to_workspace:
           root: ..
           paths:
