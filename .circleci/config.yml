@@ -1073,7 +1073,8 @@ workflows:
 
       - docs
 
-      - deploy:
+      - hold:
+          type: approval
           requires:
             - test_repo-buster
             - test_repo-bullseye
@@ -1088,3 +1089,7 @@ workflows:
             - test_repo-mageia-8
             - test_repo-mac
             - docs
+
+      - deploy:
+          requires:
+            - hold
