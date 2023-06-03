@@ -9,18 +9,6 @@ executors:
       CODENAME: default
     working_directory: /home/circleci/default
 
-  mac:
-    macos:
-      xcode: 14.2.0
-    resource_class: medium
-    environment:
-      CODENAME: mac
-      OMP_NUM_THREADS: 4
-      CXXFLAGS: -O1 -flto -Wall
-      MAKEFLAGS: -j8
-      BIRCH_FLAGS: --unit=dir --jobs=4 --enable-verbose --disable-optimize --disable-static --disable-single
-    working_directory: /Users/distiller/mac
-
   buster:
     docker:
       - image: debian:buster
@@ -108,6 +96,14 @@ executors:
     environment:
       CODENAME: mageia/8
     working_directory: /root/mageia-8
+
+  mac:
+    macos:
+      xcode: 14.2.0
+    resource_class: medium
+    environment:
+      CODENAME: mac
+    working_directory: /Users/distiller/mac
 
 commands:
 
@@ -331,12 +327,6 @@ commands:
       - run:
           name: Environment variables
           command: |
-              if [[ "$CIRCLE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-                echo "export VERSION=\`echo \$CIRCLE_TAG | sed -E 's/^v//'\`" >> $BASH_ENV
-              else
-                echo "export VERSION=0.0.0" >> $BASH_ENV
-              fi
-              echo "export VERSION_SAFE=\`echo \$VERSION | sed -E 's/\./_/g'\`" >> $BASH_ENV
               echo "export PATH=\$CIRCLE_WORKING_DIRECTORY/bin:/usr/local/cuda/bin:\$PATH" >> $BASH_ENV
               echo "export CPLUS_INCLUDE_PATH=\$CIRCLE_WORKING_DIRECTORY/include:/usr/local/cuda/include:\$CPLUS_INCLUDE_PATH" >> $BASH_ENV
               echo "export LD_LIBRARY_PATH=\$CIRCLE_WORKING_DIRECTORY/lib64:\$CIRCLE_WORKING_DIRECTORY/lib:/usr/local/cuda/lib64/stubs:/usr/local/cuda/lib/stubs:\$LD_LIBRARY_PATH" >> $BASH_ENV
@@ -372,6 +362,15 @@ commands:
               circleci step halt
             fi
 
+  checkout:
+    steps:
+      - run:
+          name: Checkout Birch
+          command: |
+              git clone --depth 1 https://github.com/lawmurray/Birch.git &&
+              cd Birch &&
+              git checkout `git describe --tags --abbrev=0`
+
   version:
     parameters:
       dir:
@@ -382,6 +381,14 @@ commands:
           name: Update version number
           command: |
               cd << parameters.dir >>
+              TAG=`git describe --tags --abbrev=0`
+              if [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+                VERSION=`echo $TAG | sed -E 's/^v//'`
+              else
+                VERSION=0.0.0
+              fi
+              VERSION_SAFE=`echo $VERSION | sed -E 's/\./_/g'\`
+
               for file in birch.yml configure.ac Makefile.am Makefile *.spec *.rb PKGBUILD; do
                 if [[ -e $file ]]; then
                   cat $file | sed -E "s/0\.0\.0/$VERSION/g" | sed -E "s/0_0_0/$VERSION_SAFE/g" > $file.sponge
@@ -513,6 +520,12 @@ commands:
                 export JOBS=8
               fi
               cd << parameters.dir >>
+              TAG=`git describe --tags --abbrev=0`
+              if [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+                VERSION=`echo $TAG | sed -E 's/^v//'`
+              else
+                VERSION=0.0.0
+              fi
               TARNAME=`ls *-$VERSION.tar.gz | grep -Eo '^[a-z\-]+[a-z]'`
               mv $TARNAME-$VERSION.tar.gz ${TARNAME}_$VERSION.orig.tar.gz
               tar xzf ${TARNAME}_$VERSION.orig.tar.gz
@@ -547,6 +560,12 @@ commands:
                 export JOBS=8
               fi
               cd << parameters.dir >>
+              TAG=`git describe --tags --abbrev=0`
+              if [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+                VERSION=`echo $TAG | sed -E 's/^v//'`
+              else
+                VERSION=0.0.0
+              fi
               TARNAME=`ls *-$VERSION.tar.gz | grep -Eo '^[a-z\-]+[a-z]'`
               mkdir -p $HOME/rpmbuild/SOURCES
               mv $TARNAME-$VERSION.tar.gz $HOME/rpmbuild/SOURCES/.
@@ -575,6 +594,12 @@ commands:
           name: Homebrew package for << parameters.dir >>
           command: |
               cd << parameters.dir >>
+              TAG=`git describe --tags --abbrev=0`
+              if [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+                VERSION=`echo $TAG | sed -E 's/^v//'`
+              else
+                VERSION=0.0.0
+              fi
               TARNAME=`ls *-$VERSION.tar.gz | grep -Eo '^[a-z\-]+[a-z]'`
               SHA256=($(sha256sum $TARNAME-$VERSION.tar.gz))
               cat $TARNAME.rb | sed -E "s/sha256 \"[0-9a-f]+\"/sha256 \"$SHA256\"/g" > $TARNAME.rb.sponge
@@ -620,7 +645,7 @@ commands:
       - run:
           name: Deploy << parameters.repo >>
           command: |
-              if [[ -n "$GITHUB_USERNAME" && -n "$GITHUB_PASSWORD" && -n "$VERSION" ]]; then
+              if [[ -n "$GITHUB_USERNAME" && -n "$GITHUB_PASSWORD" ]]; then
                 mkdir $CIRCLE_WORKING_DIRECTORY/<< parameters.repo >>
                 cd $CIRCLE_WORKING_DIRECTORY/brew || cd $HOME/brew  # may be run by mac or linux executor
                 cp *.rb *.tar.gz $CIRCLE_WORKING_DIRECTORY/<< parameters.repo >>/.
@@ -979,11 +1004,6 @@ workflows:
       # Linux repositories host binary packages, which are built first (slow)
       # then tested (fast)
       - deb:
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
           matrix:
             parameters:
               os:
@@ -994,11 +1014,6 @@ workflows:
                 - kinetic
 
       - rpm:
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
           matrix:
             parameters:
               os:
@@ -1010,11 +1025,6 @@ workflows:
                 - mageia-8
 
       - stage_repo:
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
           requires:
             - deb-buster
             - deb-bullseye
@@ -1029,11 +1039,6 @@ workflows:
             - rpm-mageia-8
 
       - test_repo:
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
           matrix:
             parameters:
               os:
@@ -1054,21 +1059,11 @@ workflows:
       # Mac Homebrew repositories host source packages, which are staged first
       # (fast) then tested (slow, build required)
       - brew:
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
           matrix:
             parameters:
               os:
                 - mac
       - test_repo:
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
           matrix:
             parameters:
               os:
@@ -1076,19 +1071,9 @@ workflows:
           requires:
             - brew-mac
 
-      - docs:
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
+      - docs
 
       - deploy:
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
           requires:
             - test_repo-buster
             - test_repo-bullseye
