@@ -3,7 +3,7 @@ site_description: Software repository for Doxide and Birch, with packages for ma
 theme:
   name: material
   icon:
-    logo: material/package-down
+    logo: material/download
   features:
     - navigation.indexes
   palette:
@@ -33,3 +33,4 @@ markdown_extensions:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
 
+plugins: []  # disable search
