@@ -663,50 +663,21 @@ jobs:
       - environment
       - checkout
       - build_cpp:
-          dir: numbirch
+          dir: Birch/numbirch
       - build_cpp:
-          dir: membirch
+          dir: Birch/membirch
       - build_cpp:
-          dir: birch
+          dir: Birch/birch
       - build_birch:
-          dir: libraries/Standard
+          dir: Birch/libraries/Standard
       - build_birch:
-          dir: libraries/Cairo
+          dir: Birch/libraries/Cairo
       - build_birch:
-          dir: libraries/SQLite
+          dir: Birch/libraries/SQLite
       - persist_to_workspace:
           root: ..
           paths:
             - << parameters.os >>
-      - end_if_pull_request
-
-  test:
-    parameters: 
-      os:
-        type: string
-    executor: << parameters.os >>
-    steps:
-      - environment
-      - attach_workspace:
-          at: ..
-      - build_birch:
-          dir: tests/Test
-      - end_if_pull_request
-
-  example:
-    parameters: 
-      os:
-        type: string
-      dir:
-        description: Directory containing the package
-        type: string
-    executor: << parameters.os >>
-    steps:
-      - environment
-      - attach_workspace:
-          at: ..
-      - build_birch:
-          dir: << parameters.dir >>
       - end_if_pull_request
 
   deb:
@@ -721,20 +692,20 @@ jobs:
       - install_cuda_prereq
 
       - build_cpp:
-          dir: birch  # needed for source_birch
+          dir: Birch/birch  # needed for source_birch
 
       - source_cpp:
-          dir: numbirch
+          dir: Birch/numbirch
       - source_cpp:
-          dir: membirch
+          dir: Birch/membirch
       - source_cpp:
-          dir: birch
+          dir: Birch/birch
       - source_birch:
-          dir: libraries/Standard
+          dir: Birch/libraries/Standard
       - source_birch:
-          dir: libraries/Cairo
+          dir: Birch/libraries/Cairo
       - source_birch:
-          dir: libraries/SQLite
+          dir: Birch/libraries/SQLite
 
       - run:
           name: Initialize repository
@@ -742,17 +713,17 @@ jobs:
               mkdir -p $HOME/deb/$CODENAME/conf
               printf "Codename: $CODENAME\nSuite: stable\nComponents: main\nArchitectures: source amd64\nSignWith: default\n" > $HOME/deb/$CODENAME/conf/distributions
       - package_deb:
-          dir: numbirch
+          dir: Birch/numbirch
       - package_deb:
-          dir: membirch
+          dir: Birch/membirch
       - package_deb:
-          dir: birch
+          dir: Birch/birch
       - package_deb:
-          dir: libraries/Standard
+          dir: Birch/libraries/Standard
       - package_deb:
-          dir: libraries/Cairo
+          dir: Birch/libraries/Cairo
       - package_deb:
-          dir: libraries/SQLite
+          dir: Birch/libraries/SQLite
       - run:
           name: Remove unnecessary files
           command: |
@@ -774,20 +745,20 @@ jobs:
       - install_cuda_prereq
 
       - build_cpp:
-          dir: birch  # needed for source_birch
+          dir: Birch/birch  # needed for source_birch
 
       - source_cpp:
-          dir: numbirch
+          dir: Birch/numbirch
       - source_cpp:
-          dir: membirch
+          dir: Birch/membirch
       - source_cpp:
-          dir: birch
+          dir: Birch/birch
       - source_birch:
-          dir: libraries/Standard
+          dir: Birch/libraries/Standard
       - source_birch:
-          dir: libraries/Cairo
+          dir: Birch/libraries/Cairo
       - source_birch:
-          dir: libraries/SQLite
+          dir: Birch/libraries/SQLite
 
       - run:
           name: Initialize repository
@@ -797,17 +768,17 @@ jobs:
               rpm --import public.key
               rm public.key
       - package_rpm:
-          dir: numbirch
+          dir: Birch/numbirch
       - package_rpm:
-          dir: membirch
+          dir: Birch/membirch
       - package_rpm:
-          dir: birch
+          dir: Birch/birch
       - package_rpm:
-          dir: libraries/Standard
+          dir: Birch/libraries/Standard
       - package_rpm:
-          dir: libraries/Cairo
+          dir: Birch/libraries/Cairo
       - package_rpm:
-          dir: libraries/SQLite
+          dir: Birch/libraries/SQLite
       - run:
           name: Finalize repository
           command: |
@@ -831,37 +802,37 @@ jobs:
       - checkout
 
       - build_cpp:
-          dir: birch  # needed for source_birch
+          dir: Birch/birch  # needed for source_birch
 
       - source_cpp:
-          dir: numbirch
+          dir: Birch/numbirch
       - source_cpp:
-          dir: membirch
+          dir: Birch/membirch
       - source_cpp:
-          dir: birch
+          dir: Birch/birch
       - source_birch:
-          dir: libraries/Standard
+          dir: Birch/libraries/Standard
       - source_birch:
-          dir: libraries/Cairo
+          dir: Birch/libraries/Cairo
       - source_birch:
-          dir: libraries/SQLite
+          dir: Birch/libraries/SQLite
 
       - run:
           name: Initialize repository
           command: |
               mkdir -p brew
       - package_brew:
-          dir: numbirch
+          dir: Birch/numbirch
       - package_brew:
-          dir: membirch
+          dir: Birch/membirch
       - package_brew:
-          dir: birch
+          dir: Birch/birch
       - package_brew:
-          dir: libraries/Standard
+          dir: Birch/libraries/Standard
       - package_brew:
-          dir: libraries/Cairo
+          dir: Birch/libraries/Cairo
       - package_brew:
-          dir: libraries/SQLite
+          dir: Birch/libraries/SQLite
 
       - deploy_brew:
           repo: homebrew-stage
@@ -933,18 +904,18 @@ jobs:
       - checkout
 
       - build_cpp:
-          dir: birch  # needed for birch docs
+          dir: Birch/birch  # needed for birch docs
 
       - run:
           name: Initialize docs
           command: |
               mkdir -p $HOME/docs/docs
       - docs_birch:
-          dir: libraries/Standard
+          dir: Birch/libraries/Standard
       - docs_birch:
-          dir: libraries/Cairo
+          dir: Birch/libraries/Cairo
       - docs_birch:
-          dir: libraries/SQLite
+          dir: Birch/libraries/SQLite
       - run:
           name: Finalize docs
           command: |
