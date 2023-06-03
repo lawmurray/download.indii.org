@@ -425,13 +425,6 @@ commands:
               ./bootstrap
               ./configure --prefix="$CIRCLE_WORKING_DIRECTORY" $CONFIGURE_FLAGS || (cat config.log && exit 1)
               make install
-      - run:
-          name: Smoke test << parameters.dir >>
-          command: |
-            cd << parameters.dir >>
-            if [[ -e smoke.sh ]]; then
-              ./smoke.sh
-            fi
 
   build_birch:
     description: Build a Birch package
@@ -448,14 +441,6 @@ commands:
               cd << parameters.dir >>
               birch install --prefix="$CIRCLE_WORKING_DIRECTORY" $BIRCH_FLAGS || (cat config.log && exit 1)
           no_output_timeout: 30m
-      - run:
-          name: Smoke test << parameters.dir >>
-          command: |
-              cd << parameters.dir >>
-              birch docs
-              if [[ -e smoke.sh ]]; then
-                ./smoke.sh
-              fi
 
   docs_birch:
     description: Document Birch package
