@@ -566,7 +566,7 @@ commands:
                 VERSION=0.0.0
               fi
               TARNAME=`ls *-$VERSION.tar.gz | grep -Eo '^[a-z\-]+[a-z]'`
-              mkdir -p $HOME/rpmbuild/SOURCES
+              mkdir -p $HOME/rpmbuild/SOURCES $HOME/rpmbuild/BUILD
               mv $TARNAME-$VERSION.tar.gz $HOME/rpmbuild/SOURCES/.
               rpmbuild --define='_topdir $HOME/rpmbuild' --define="_smp_mflags -j$JOBS" --define="debug_package %{nil}" -ba $TARNAME.spec
       - run:
