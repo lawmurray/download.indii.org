@@ -493,7 +493,7 @@ commands:
         type: string
     steps:
       - version:
-          dir: << parameters.dir >>
+          dir: Birch/<< parameters.dir >>
       - run:
           name: Document Birch/<< parameters.dir >>
           command: |
