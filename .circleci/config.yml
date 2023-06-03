@@ -112,7 +112,50 @@ commands:
       - run:
           name: Install dependencies
           command: |
-              if [[ "$CODENAME" =~ "mac" ]]; then
+              if [ "$CODENAME" = "default" ]; then
+                sudo apt update
+                DEBIAN_FRONTEND=noninteractive sudo apt install -y --no-install-recommends \
+                  git \
+                  ssh \
+                  gpg \
+                  gpg-agent \
+                  tar \
+                  gzip \
+                  xz-utils \
+                  curl \
+                  time \
+                  ca-certificates \
+                  binutils \
+                  elfutils \
+                  make \
+                  autoconf \
+                  automake \
+                  libtool \
+                  flex \
+                  bison \
+                  g++ \
+                  gdb \
+                  lcov \
+                  libjemalloc-dev \
+                  libeigen3-dev \
+                  libyaml-dev \
+                  libboost-math-dev \
+                  libsqlite3-dev \
+                  libcairo2-dev \
+                  doxygen \
+                  build-essential \
+                  apt-utils \
+                  dpkg \
+                  dpkg-dev \
+                  devscripts \
+                  debhelper \
+                  fakeroot \
+                  lintian \
+                  reprepro \
+                  python3 \
+                  python3-pip
+                sudo rm -rf /var/lib/apt/lists/*
+              elif [[ "$CODENAME" =~ "mac" ]]; then
                 HOMEBREW_NO_AUTO_UPDATE=1 brew remove --force --ignore-dependencies node node@14 tcl-tk  # avoids these being unnecessarily updated as dependents later
                 HOMEBREW_NO_AUTO_UPDATE=1 brew install \
                     git \
