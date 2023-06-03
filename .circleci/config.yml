@@ -132,7 +132,7 @@ commands:
                     sqlite \
                     cairo
                 echo "export PATH=/usr/local/opt/gnu-time/libexec/gnubin:/usr/local/opt/flex/bin:/usr/local/opt/bison/bin:\$PATH" >> $BASH_ENV
-              elif [ "$CODENAME" = "opensuse" ]; then
+              elif [ "$CODENAME" =~ "opensuse" ]; then
                 zypper --non-interactive update
                 zypper --non-interactive install --no-recommends \
                   git \
@@ -164,7 +164,7 @@ commands:
                   rpm-config-SUSE \
                   createrepo_c
                 zypper clean --all
-              elif [ "$CODENAME" = "fedora" ]; then
+              elif [ "$CODENAME" =~ "fedora" ]; then
                 yum -y update
                 yum -y install \
                   git \
@@ -198,7 +198,7 @@ commands:
                   redhat-rpm-config \
                   createrepo_c
                 yum clean all
-              elif [ "$CODENAME" = "mageia" ]; then
+              elif [ "$CODENAME" =~ "mageia" ]; then
                 urpmi --auto-update
                 urpmi --force --no-recommends \
                   git \
@@ -232,7 +232,7 @@ commands:
                   rpm-mageia-setup \
                   rpm-mageia-setup-build \
                   createrepo_c
-              elif [ "$CODENAME" = "alpine" ]; then
+              elif [ "$CODENAME" =~ "alpine" ]; then
                 apk update
                 apk add --no-cache \
                   bash \
@@ -261,7 +261,7 @@ commands:
                   boost-dev \
                   sqlite-dev \
                   cairo-dev
-              elif [ "$CODENAME" = "arch" ]; then
+              elif [ "$CODENAME" =~ "arch" ]; then
                 pacman -Syu --noconfirm --needed \
                   git \
                   openssh \
