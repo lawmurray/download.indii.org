@@ -282,7 +282,7 @@ commands:
                   eigen3-devel \
                   cairo-devel \
                   sqlite-devel \
-                  tree-sitter-devel \
+                  libtree-sitter-devel \
                   rpm \
                   rpmlint \
                   rpm-build \
