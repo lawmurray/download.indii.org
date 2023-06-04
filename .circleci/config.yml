@@ -25,6 +25,14 @@ executors:
       CODENAME: bullseye
     working_directory: /root/bullseye
 
+  bookworm:
+    docker:
+      - image: debian:bookworm
+    resource_class: large
+    environment:
+      CODENAME: bookworm
+    working_directory: /root/bookworm
+
   focal:
     docker:
       - image: ubuntu:focal
@@ -49,6 +57,14 @@ executors:
       CODENAME: kinetic
     working_directory: /root/kinetic
 
+  lunar:
+    docker:
+      - image: ubuntu:lunar
+    resource_class: large
+    environment:
+      CODENAME: lunar
+    working_directory: /root/lunar
+
   opensuse-leap-15-4:
     docker:
       - image: registry.opensuse.org/opensuse/leap:15.4
@@ -56,6 +72,14 @@ executors:
     environment:
       CODENAME: opensuse/leap/15.4
     working_directory: /root/opensuse-leap-15-4
+
+  opensuse-leap-15-5:
+    docker:
+      - image: registry.opensuse.org/opensuse/leap:15.5
+    resource_class: large
+    environment:
+      CODENAME: opensuse/leap/15.5
+    working_directory: /root/opensuse-leap-15-5
 
   opensuse-tumbleweed:
     docker:
@@ -89,6 +113,14 @@ executors:
       CODENAME: fedora/37
     working_directory: /root/fedora-37
 
+  fedora-38:
+    docker:
+      - image: registry.fedoraproject.org/fedora:38
+    resource_class: large
+    environment:
+      CODENAME: fedora/38
+    working_directory: /root/fedora-38
+
   mageia-8:
     docker:
       - image: mageia:8
@@ -96,6 +128,14 @@ executors:
     environment:
       CODENAME: mageia/8
     working_directory: /root/mageia-8
+
+  mageia-9:
+    docker:
+      - image: mageia:9
+    resource_class: large
+    environment:
+      CODENAME: mageia/9
+    working_directory: /root/mageia-9
 
   mac:
     macos:
