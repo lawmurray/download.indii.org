@@ -421,10 +421,16 @@ commands:
   checkout:
     steps:
       - run:
-          name: Checkout Birch
+          name: Checkout Doxide latest tag
           command: |
-              git clone --depth 1 https://github.com/lawmurray/Birch.git &&
-              cd Birch &&
+              git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/lawmurray/doxide.git
+              cd doxide
+              git checkout `git describe --tags --abbrev=0`
+      - run:
+          name: Checkout Birch latest tag
+          command: |
+              git clone --depth 1 https://github.com/lawmurray/Birch.git
+              cd Birch
               git checkout `git describe --tags --abbrev=0`
 
   version:
@@ -445,7 +451,7 @@ commands:
               fi
               VERSION_SAFE=`echo $VERSION | sed -E 's/\./_/g'`
 
-              for file in birch.yml configure.ac Makefile.am Makefile *.spec *.rb PKGBUILD; do
+              for file in configure.ac Makefile.am Makefile CMakeLists.txt *.yml *.yaml *.json *.spec *.rb PKGBUILD; do
                 if [[ -e $file ]]; then
                   cat $file | sed -E "s/0\.0\.0/$VERSION/g" | sed -E "s/0_0_0/$VERSION_SAFE/g" > $file.sponge
                   mv $file.sponge $file
@@ -463,6 +469,7 @@ commands:
               done
 
   source_cpp:
+    description: Archive source for C++ package
     parameters:
       dir:
         description: Directory containing the package
@@ -479,6 +486,7 @@ commands:
               make dist
 
   source_birch:
+    description: Archive source for Birch package
     parameters:
       dir:
         description: Directory containing the package
@@ -493,6 +501,28 @@ commands:
               birch bootstrap
               ./configure --disable-checks --prefix="$CIRCLE_WORKING_DIRECTORY" $CONFIGURE_FLAGS || (cat config.log && exit 1)
               make dist
+
+  source_cmake:
+    description: Archive source for CMake package
+    parameters:
+      dir:
+        description: Directory containing the package
+        type: string
+    steps:
+      - version:
+          dir: << parameters.dir >>
+      - run:
+          name: Archive source for << parameters.dir >>
+          command: |
+              cd << parameters.dir >>
+              TARNAME=`echo << parameters.dir >> | sed -E 's|.*/||'
+              TAG=`git describe --tags --abbrev=0`
+              if [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+                VERSION=`echo $TAG | sed -E 's/^v//'`
+              else
+                VERSION=0.0.0
+              fi
+              tar czf $TARNAME-$VERSION.tar.gz --transform 's|^|$TARNAME-$VERSION/|' src contrib CMakeLists.txt README.md LICENSE
 
   build_cpp:
     description: Build a C++ package
@@ -510,22 +540,6 @@ commands:
               ./bootstrap
               ./configure --prefix="$CIRCLE_WORKING_DIRECTORY" $CONFIGURE_FLAGS || (cat config.log && exit 1)
               make install
-
-  build_birch:
-    description: Build a Birch package
-    parameters:
-      dir:
-        description: Directory containing the package
-        type: string
-    steps:
-      - version:
-          dir: << parameters.dir >>
-      - run:
-          name: Build << parameters.dir >>
-          command: |
-              cd << parameters.dir >>
-              birch install --prefix="$CIRCLE_WORKING_DIRECTORY" $BIRCH_FLAGS || (cat config.log && exit 1)
-          no_output_timeout: 30m
 
   docs_birch:
     description: Document Birch package
@@ -645,12 +659,12 @@ commands:
               SHA256=($(sha256sum $TARNAME-$VERSION.tar.gz))
               cat $TARNAME.rb | sed -E "s/sha256 \"[0-9a-f]+\"/sha256 \"$SHA256\"/g" > $TARNAME.rb.sponge
               mv $TARNAME.rb.sponge $TARNAME.rb
-              mv $TARNAME-$VERSION.tar.gz $TARNAME.rb $CIRCLE_WORKING_DIRECTORY/brew/.
+              mv $TARNAME-$VERSION.tar.gz $TARNAME.rb $HOME/brew/.
 
   deploy_repo:
     parameters:
       subdomain:
-        description: Subdomain of repository, e.g. download.birch.sh
+        description: Subdomain of repository, e.g. download.indii.org
         type: string
     steps:
       - run:
@@ -661,6 +675,7 @@ commands:
                 cd << parameters.subdomain >>
                 mkdir rpm && cp -r $HOME/rpm/* rpm/.
                 mkdir deb && cp -r $HOME/deb/*/* deb/.  # merge repos
+                mkdir brew && cp -r $HOME/brew/* brew/.
 
                 # finalize apt repo (add key)
                 gpg --export --armor > deb/Release.key
@@ -675,31 +690,6 @@ commands:
                 git commit -m "Overwrite."
                 git remote add origin https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/lawmurray/<< parameters.subdomain >>.git
                 git push origin gh-pages -f
-              fi
-
-  deploy_brew:
-    parameters:
-      repo:
-        description: GitHub repo of repository, e.g. homebrew-birch
-        type: string
-    steps:
-      - run:
-          name: Deploy << parameters.repo >>
-          command: |
-              if [[ -n "$GITHUB_USERNAME" && -n "$GITHUB_PASSWORD" ]]; then
-                mkdir $CIRCLE_WORKING_DIRECTORY/<< parameters.repo >>
-                cd $CIRCLE_WORKING_DIRECTORY/brew || cd $HOME/brew  # may be run by mac or linux executor
-                cp *.rb *.tar.gz $CIRCLE_WORKING_DIRECTORY/<< parameters.repo >>/.
-                cd $CIRCLE_WORKING_DIRECTORY/<< parameters.repo >>
-                for file in *.rb; do
-                  cat $file | sed -E "s/homebrew-[A-Z0-9a-z]+/<< parameters.repo >>/g" > $file.sponge
-                  mv $file.sponge $file
-                done
-                git init
-                git add .
-                git commit -m "Overwrite."
-                git remote add origin https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/lawmurray/<< parameters.repo >>.git
-                git push origin master -f
               fi
 
   deploy_docs:
@@ -724,32 +714,6 @@ commands:
               fi
 
 jobs:
-  build:
-    parameters: 
-      os:
-        type: string
-    executor: << parameters.os >>
-    steps:
-      - environment
-      - checkout
-      - build_cpp:
-          dir: Birch/numbirch
-      - build_cpp:
-          dir: Birch/membirch
-      - build_cpp:
-          dir: Birch/birch
-      - build_birch:
-          dir: Birch/libraries/Standard
-      - build_birch:
-          dir: Birch/libraries/Cairo
-      - build_birch:
-          dir: Birch/libraries/SQLite
-      - persist_to_workspace:
-          root: ..
-          paths:
-            - << parameters.os >>
-      - end_if_pull_request
-
   deb:
     parameters: 
       os:
@@ -764,6 +728,8 @@ jobs:
       - build_cpp:
           dir: Birch/birch  # needed for source_birch
 
+      - source_cmake:
+          dir: doxide
       - source_cpp:
           dir: Birch/numbirch
       - source_cpp:
@@ -782,6 +748,8 @@ jobs:
           command: |
               mkdir -p $HOME/deb/$CODENAME/conf
               printf "Codename: $CODENAME\nSuite: stable\nComponents: main\nArchitectures: source amd64\nSignWith: default\n" > $HOME/deb/$CODENAME/conf/distributions
+      - package_deb:
+          dir: doxide
       - package_deb:
           dir: Birch/numbirch
       - package_deb:
@@ -817,6 +785,8 @@ jobs:
       - build_cpp:
           dir: Birch/birch  # needed for source_birch
 
+      - source_cmake:
+          dir: doxide
       - source_cpp:
           dir: Birch/numbirch
       - source_cpp:
@@ -837,6 +807,8 @@ jobs:
               gpg --export --armor > public.key
               rpm --import public.key
               rm public.key
+      - package_rpm:
+          dir: doxide
       - package_rpm:
           dir: Birch/numbirch
       - package_rpm:
@@ -874,6 +846,8 @@ jobs:
       - build_cpp:
           dir: Birch/birch  # needed for source_birch
 
+      - source_cmake:
+          dir: doxide
       - source_cpp:
           dir: Birch/numbirch
       - source_cpp:
@@ -890,7 +864,9 @@ jobs:
       - run:
           name: Initialize repository
           command: |
-              mkdir -p brew
+              mkdir -p $HOME/brew
+      - package_brew:
+          dir: doxide
       - package_brew:
           dir: Birch/numbirch
       - package_brew:
@@ -903,9 +879,6 @@ jobs:
           dir: Birch/libraries/Cairo
       - package_brew:
           dir: Birch/libraries/SQLite
-
-      - deploy_brew:
-          repo: homebrew-stage
 
       - persist_to_workspace:
           root: .
@@ -920,9 +893,9 @@ jobs:
       - attach_workspace:
           at: ..
       - deploy_repo:
-          subdomain: stage.birch.sh
+          subdomain: stage.indii.org
       - run:
-          name: Wait a little while for stage.birch.sh to be published
+          name: Wait a little while for stage.indii.org to be published
           command: sleep 120
 
   test_repo:
@@ -937,36 +910,47 @@ jobs:
           name: Test install
           command: |
               if [[ "$CODENAME" =~ "opensuse" ]]; then
-                zypper --gpg-auto-import-keys addrepo https://stage.birch.sh/rpm/$CODENAME/birch.repo
+                zypper --gpg-auto-import-keys addrepo https://stage.indii.org/rpm/$CODENAME/birch.repo
                 zypper --gpg-auto-import-keys refresh
                 zypper --non-interactive update
-                zypper --non-interactive install --recommends birch
+                zypper --non-interactive install --recommends doxide birch
               elif [[ "$CODENAME" =~ "fedora" || "$CODENAME" =~ "mageia" ]]; then
                 dnf install --assumeyes dnf-plugins-core
-                dnf config-manager --add-repo https://stage.birch.sh/rpm/$CODENAME/birch.repo
+                dnf config-manager --add-repo https://stage.indii.org/rpm/$CODENAME/birch.repo
                 dnf update --assumeyes
-                dnf install --assumeyes birch
+                dnf install --assumeyes doxide birch
               elif [[ "$CODENAME" =~ "mac" ]]; then
+                brew tap lawmurray/stage https://stage.indii.org/brew
                 brew update
                 brew upgrade
-                brew install lawmurray/stage/birch
+                brew install lawmurray/stage/doxide lawmurray/stage/birch
               else
                 apt update --assume-yes
                 apt upgrade --assume-yes
                 apt install --assume-yes curl gpg
-                echo "deb https://stage.birch.sh/deb $CODENAME main" | tee /etc/apt/sources.list.d/birch.list
-                curl -fsSL https://stage.birch.sh/deb/Release.key | gpg --dearmor | tee /etc/apt/trusted.gpg.d/birch.gpg > /dev/null
+                echo "deb https://stage.indii.org/deb $CODENAME main" | tee /etc/apt/sources.list.d/birch.list
+                curl -fsSL https://stage.indii.org/deb/Release.key | gpg --dearmor | tee /etc/apt/trusted.gpg.d/birch.gpg > /dev/null
                 apt update --assume-yes
-                apt install --assume-yes --install-recommends birch
+                apt install --assume-yes --install-recommends doxide birch
               fi
       - run:
-          name: Test run
+          name: Test Doxide
+          command: |
+            mkdir hello
+            cd hello
+            doxide init
+            cd ..
+            rm -rf hello
+      - run:
+          name: Test Birch
           command: |
             mkdir hello
             cd hello
             birch init
             birch build
             birch hello
+            cd ..
+            rm -rf hello
 
   docs:
     executor: default
@@ -1006,17 +990,15 @@ jobs:
       - attach_workspace:
           at: ..
       - deploy_repo:
-          subdomain: download.birch.sh
-      - deploy_brew:
-          repo: homebrew-birch
+          subdomain: download.indii.org
       - deploy_docs:
           subdomain: docs.birch.sh
 
 workflows:
   all:
     jobs:
-      # Linux repositories host binary packages, which are built first (slow)
-      # then tested (fast)
+      - docs
+
       - deb:
           matrix:
             parameters:
@@ -1042,6 +1024,12 @@ workflows:
                 - fedora-38
                 - mageia-8
 
+      - brew:
+          matrix:
+            parameters:
+              os:
+                - mac
+
       - stage_repo:
           requires:
             - deb-buster
@@ -1059,6 +1047,7 @@ workflows:
             - rpm-fedora-37
             - rpm-fedora-38
             - rpm-mageia-8
+            - brew-mac
 
       - test_repo:
           matrix:
@@ -1079,25 +1068,9 @@ workflows:
                 - fedora-37
                 - fedora-38
                 - mageia-8
+                - mac
           requires:
             - stage_repo
-
-      # Mac Homebrew repositories host source packages, which are staged first
-      # (fast) then tested (slow, build required)
-      - brew:
-          matrix:
-            parameters:
-              os:
-                - mac
-      - test_repo:
-          matrix:
-            parameters:
-              os:
-                - mac
-          requires:
-            - brew-mac
-
-      - docs
 
       - hold:
           type: approval
