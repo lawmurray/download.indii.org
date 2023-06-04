@@ -426,6 +426,7 @@ commands:
           command: |
               git clone --depth 1 https://github.com/lawmurray/doxide.git
               cd doxide
+              git fetch --tags
               git checkout `git describe --tags --abbrev=0`
               git submodule update --init --recursive --depth 1
       - run:
@@ -433,6 +434,7 @@ commands:
           command: |
               git clone --depth 1 https://github.com/lawmurray/Birch.git
               cd Birch
+              git fetch --tags
               git checkout `git describe --tags --abbrev=0`
 
   version:
