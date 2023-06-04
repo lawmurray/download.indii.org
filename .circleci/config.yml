@@ -184,7 +184,6 @@ commands:
                   libboost-math-dev \
                   libsqlite3-dev \
                   libcairo2-dev \
-                  libtree-sitter-dev \
                   doxygen \
                   build-essential \
                   apt-utils \
@@ -217,8 +216,7 @@ commands:
                     libyaml \
                     boost \
                     sqlite \
-                    cairo \
-                    tree-sitter
+                    cairo
                 echo "export PATH=/usr/local/opt/gnu-time/libexec/gnubin:/usr/local/opt/flex/bin:/usr/local/opt/bison/bin:\$PATH" >> $BASH_ENV
               elif [[ "$CODENAME" =~ "opensuse" ]]; then
                 zypper --non-interactive update
@@ -248,7 +246,6 @@ commands:
                   eigen3-devel \
                   cairo-devel \
                   sqlite3-devel \
-                  tree-sitter-devel \
                   rpmlint \
                   rpm-build \
                   rpm-config-SUSE \
@@ -282,7 +279,6 @@ commands:
                   eigen3-devel \
                   cairo-devel \
                   sqlite-devel \
-                  libtree-sitter-devel \
                   rpm \
                   rpmlint \
                   rpm-build \
@@ -318,7 +314,6 @@ commands:
                   eigen3-devel \
                   cairo-devel \
                   sqlite3-devel \
-                  tree-sitter-devel \
                   rpm \
                   rpmlint \
                   rpm-build \
@@ -350,8 +345,7 @@ commands:
                   boost \
                   eigen \
                   cairo \
-                  sqlite \
-                  tree-sitter
+                  sqlite
                 pacman -Sc --noconfirm
               else  # Debian variant
                 apt update --assume-yes
@@ -382,7 +376,6 @@ commands:
                   libboost-math-dev \
                   libsqlite3-dev \
                   libcairo2-dev \
-                  libtree-sitter-dev \
                   build-essential \
                   apt-utils \
                   dpkg \
