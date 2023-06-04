@@ -10,6 +10,18 @@ This repository provides packages for Linux and Mac for software including [Doxi
 
 ## :fontawesome-brands-ubuntu: Ubuntu
 
+??? example "Ubuntu 23.04 Lunar Lobster (amd64)"
+    Set up the repository:
+    ```
+    echo 'deb http://download.indii.org/deb lunar main' | sudo tee /etc/apt/sources.list.d/indii.list
+    curl -fsSL https://download.indii.org/deb/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/indii.gpg > /dev/null
+    sudo apt update
+    ```
+    Install packages:
+    ```
+    sudo apt install doxide birch
+    ```
+
 ??? example "Ubuntu 22.10 Kinetic Kudu (amd64)"
     Set up the repository:
     ```
@@ -20,10 +32,6 @@ This repository provides packages for Linux and Mac for software including [Doxi
     Install packages:
     ```
     sudo apt install doxide birch
-    ```
-    To enable Nvidia GPU support with Birch, [install CUDA][cuda] separately and then the NumBirch CUDA backend:
-    ```
-    sudo apt install numbirch-cuda-dev
     ```
 
 ??? example "Ubuntu 22.04 Jammy Jellyfish (amd64)"
@@ -37,10 +45,6 @@ This repository provides packages for Linux and Mac for software including [Doxi
     ```
     sudo apt install doxide birch
     ```
-    To enable Nvidia GPU support with Birch, [install CUDA][cuda] separately and then the NumBirch CUDA backend:
-    ```
-    sudo apt install numbirch-cuda-dev
-    ```
 
 ??? example "Ubuntu 20.04 Focal Fossa (amd64)"
     Set up the repository:
@@ -53,12 +57,20 @@ This repository provides packages for Linux and Mac for software including [Doxi
     ```
     sudo apt install doxide birch
     ```
-    To enable Nvidia GPU support with Birch, [install CUDA][cuda] separately and then the NumBirch CUDA backend:
-    ```
-    sudo apt install numbirch-cuda-dev
-    ```
 
 ## :simple-debian: Debian
+
+??? example "Debian 12 Bookworm (amd64)"
+    Set up the repository:
+    ```
+    echo 'deb http://download.indii.org/deb bookworm main' | sudo tee /etc/apt/sources.list.d/indii.list
+    curl -fsSL https://download.indii.org/deb/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/indii.gpg > /dev/null
+    sudo apt update
+    ```
+    Install packages:
+    ```
+    sudo apt install doxide birch
+    ```
 
 ??? example "Debian 11 Bullseye (amd64)"
     Set up the repository:
@@ -70,10 +82,6 @@ This repository provides packages for Linux and Mac for software including [Doxi
     Install packages:
     ```
     sudo apt install doxide birch
-    ```
-    To enable Nvidia GPU support with Birch, [install CUDA][cuda] separately and then the NumBirch CUDA backend:
-    ```
-    sudo apt install numbirch-cuda-dev
     ```
 
 ??? example "Debian 10 Buster (amd64)"
@@ -87,12 +95,19 @@ This repository provides packages for Linux and Mac for software including [Doxi
     ```
     sudo apt install doxide birch
     ```
-    To enable Nvidia GPU support with Birch, [install CUDA][cuda] separately and then the NumBirch CUDA backend:
-    ```
-    sudo apt install numbirch-cuda-dev
-    ```
 
 ## :fontawesome-brands-fedora: Fedora
+
+??? example "Fedora 38 (x86_64)"
+    Set up the repository:
+    ```
+    sudo dnf config-manager --add-repo https://download.indii.org/rpm/fedora/38/indii.repo
+    sudo dnf update
+    ```
+    Install packages:
+    ```
+    sudo dnf install doxide birch
+    ```
 
 ??? example "Fedora 37 (x86_64)"
     Set up the repository:
@@ -103,10 +118,6 @@ This repository provides packages for Linux and Mac for software including [Doxi
     Install packages:
     ```
     sudo dnf install doxide birch
-    ```
-    To enable Nvidia GPU support with Birch, [install CUDA][cuda] separately and then the NumBirch CUDA backend:
-    ```
-    sudo dnf install numbirch-cuda-devel
     ```
 
 ??? example "Fedora 36 (x86_64)"
@@ -119,10 +130,6 @@ This repository provides packages for Linux and Mac for software including [Doxi
     ```
     sudo dnf install doxide birch
     ```
-    To enable Nvidia GPU support with Birch, [install CUDA][cuda] separately and then the NumBirch CUDA backend:
-    ```
-    sudo dnf install numbirch-cuda-devel
-    ```
 
 ??? example "Fedora 35 (x86_64)"
     Set up the repository:
@@ -133,10 +140,6 @@ This repository provides packages for Linux and Mac for software including [Doxi
     Install packages:
     ```
     sudo dnf install doxide birch
-    ```
-    To enable Nvidia GPU support with Birch, [install CUDA][cuda] separately and then the NumBirch CUDA backend:
-    ```
-    sudo dnf install numbirch-cuda-devel
     ```
 
 ## :simple-opensuse: openSUSE
@@ -151,9 +154,16 @@ This repository provides packages for Linux and Mac for software including [Doxi
     ```
     sudo zypper install doxide birch
     ```
-    To enable Nvidia GPU support with Birch, [install CUDA][cuda] separately and then the NumBirch CUDA backend:
+
+??? example "openSUSE Leap 15.5 (x86_64)"
+    Set up the repository:
     ```
-    sudo zypper install numbirch-cuda-devel
+    sudo zypper addrepo https://download.indii.org/rpm/opensuse/leap/15.5/indii.repo
+    sudo zypper refresh
+    ```
+    Install packages:
+    ```
+    sudo zypper install doxide birch
     ```
 
 ??? example "openSUSE Leap 15.4 (x86_64)"
@@ -165,10 +175,6 @@ This repository provides packages for Linux and Mac for software including [Doxi
     Install packages:
     ```
     sudo zypper install doxide birch
-    ```
-    To enable Nvidia GPU support with Birch, [install CUDA][cuda] separately and then the NumBirch CUDA backend:
-    ```
-    sudo zypper install numbirch-cuda-devel
     ```
 
 ## :fontawesome-brands-linux: Mageia
@@ -183,21 +189,17 @@ This repository provides packages for Linux and Mac for software including [Doxi
     ```
     sudo dnf install doxide birch
     ```
-    To enable Nvidia GPU support with Birch, [install CUDA][cuda] separately and then the NumBirch CUDA backend:
-    ```
-    sudo dnf install numbirch-cuda-devel
-    ```
 
 ## :fontawesome-brands-apple: Mac
 
 ??? example "Homebrew"
     Install [Homebrew](https://brew.sh) if not already, add the tap with:
     ```sh
-    brew tap indii/all https://download.indii.org/brew
+    brew tap lawmurray/all https://download.indii.org/brew
     ```
     then install the packages that you need with e.g.
     ```
-    brew install indii/all/doxide indii/all/birch
+    brew install lawmurray/all/doxide lawmurray/all/birch
     ```
 
 ## :fontawesome-brands-windows: Windows
