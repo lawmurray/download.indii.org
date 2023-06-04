@@ -520,7 +520,7 @@ commands:
           name: Archive source for << parameters.dir >>
           command: |
               cd << parameters.dir >>
-              TARNAME=`echo << parameters.dir >> | sed -E 's|.*/||'
+              TARNAME=`echo << parameters.dir >> | sed -E 's|^.*/||'`
               TAG=`git describe --tags --abbrev=0`
               if [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
                 VERSION=`echo $TAG | sed -E 's/^v//'`
@@ -678,7 +678,15 @@ commands:
               if [[ -n "$GITHUB_USERNAME" && -n "$GITHUB_PASSWORD" ]]; then
                 git clone https://github.com/lawmurray/download.indii.org
                 cd download.indii.org
+
+                # finalize front page (update subdomain)
+                for file in `ls mkdocs.yaml docs/*.md`; do
+                  cat $file | sed s/download\.indii\.org/<< parameters.subdomain >>/g > $file.sponge
+                  mv $file.sponge $file
+                done
                 mkdocs build
+
+                # copy over packages
                 cd site
                 mkdir rpm && cp -r $HOME/rpm/* rpm/.
                 mkdir deb && cp -r $HOME/deb/*/* deb/.  # merge repos
@@ -694,7 +702,7 @@ commands:
 
                 # finalize brew repos (update subdomain)
                 for file in `ls brew/*.rb`; do
-                  cat $file | sed s/https:\/\/download\.indii\.org/https://<< parameters.subdomain >>/g > $file.sponge
+                  cat $file | sed s/download\.indii\.org/<< parameters.subdomain >>/g > $file.sponge
                   mv $file.sponge $file
                 done
 
