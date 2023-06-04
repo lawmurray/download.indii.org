@@ -419,13 +419,15 @@ commands:
             fi
 
   checkout:
+    description: Checkout code from Git
     steps:
       - run:
           name: Checkout Doxide latest tag
           command: |
-              git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/lawmurray/doxide.git
+              git clone --depth 1 https://github.com/lawmurray/doxide.git
               cd doxide
               git checkout `git describe --tags --abbrev=0`
+              git submodule update --init --recursive --depth 1
       - run:
           name: Checkout Birch latest tag
           command: |
@@ -434,6 +436,7 @@ commands:
               git checkout `git describe --tags --abbrev=0`
 
   version:
+    description: Update version number across files
     parameters:
       dir:
         description: Directory in which to update version number
