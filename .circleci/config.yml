@@ -671,8 +671,10 @@ commands:
           name: Deploy << parameters.subdomain >>
           command: |
               if [[ -n "$GITHUB_USERNAME" && -n "$GITHUB_PASSWORD" ]]; then
-                mkdir << parameters.subdomain >>
-                cd << parameters.subdomain >>
+                git clone https://github.com/lawmurray/download.indii.org
+                cd download.indii.org
+                mkdocs build
+                cd site
                 mkdir rpm && cp -r $HOME/rpm/* rpm/.
                 mkdir deb && cp -r $HOME/deb/*/* deb/.  # merge repos
                 mkdir brew && cp -r $HOME/brew/* brew/.
