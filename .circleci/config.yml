@@ -683,10 +683,17 @@ commands:
                 gpg --export --armor > deb/Release.key
 
                 # finalize rpm repos (add .repo file to each)
-                for CODENAME in `ls rpm/*/*/repodata/repomd.xml rpm/*/*/*/repodata/repomd.xml | sed -E 's|^rpm/||' | sed -E 's|/repodata/repomd.xml$||'`; do
-                  printf "[birch]\nname=Birch\ntype=rpm-md\nbaseurl=https://<< parameters.subdomain >>/rpm/$CODENAME\ngpgcheck=1\ngpgkey=https://<< parameters.subdomain >>/rpm/$CODENAME/repodata/repomd.xml.key\nenabled=1\nautorefresh=1\n" > rpm/$CODENAME/birch.repo
+                for codename in `ls rpm/*/*/repodata/repomd.xml rpm/*/*/*/repodata/repomd.xml | sed -E 's|^rpm/||' | sed -E 's|/repodata/repomd.xml$||'`; do
+                  printf "[birch]\nname=Birch\ntype=rpm-md\nbaseurl=https://<< parameters.subdomain >>/rpm/$codename\ngpgcheck=1\ngpgkey=https://<< parameters.subdomain >>/rpm/$codename/repodata/repomd.xml.key\nenabled=1\nautorefresh=1\n" > rpm/$codename/birch.repo
                 done
 
+                # finalize brew repos (update subdomain)
+                for file in `ls brew/*.rb`; do
+                  cat $file | sed s/https:\/\/download\.indii\.org/https://<< parameters.subdomain >>/g > $file.sponge
+                  mv $file.sponge $file
+                done
+
+                # publish
                 git init -b gh-pages
                 git add .
                 git commit -m "Overwrite."
