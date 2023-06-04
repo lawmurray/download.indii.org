@@ -129,14 +129,6 @@ executors:
       CODENAME: mageia/8
     working_directory: /root/mageia-8
 
-  mageia-9:
-    docker:
-      - image: mageia:9
-    resource_class: large
-    environment:
-      CODENAME: mageia/9
-    working_directory: /root/mageia-9
-
   mac:
     macos:
       xcode: 14.2.0
@@ -1037,7 +1029,6 @@ workflows:
                 - fedora-37
                 - fedora-38
                 - mageia-8
-                - mageia-9
 
       - stage_repo:
           requires:
@@ -1056,7 +1047,6 @@ workflows:
             - rpm-fedora-37
             - rpm-fedora-38
             - rpm-mageia-8
-            - rpm-mageia-9
 
       - test_repo:
           matrix:
@@ -1077,7 +1067,6 @@ workflows:
                 - fedora-37
                 - fedora-38
                 - mageia-8
-                - mageia-9
           requires:
             - stage_repo
 
@@ -1116,7 +1105,6 @@ workflows:
             - test_repo-fedora-37
             - test_repo-fedora-38
             - test_repo-mageia-8
-            - test_repo-mageia-9
             - test_repo-mac
             - docs
 
