@@ -527,7 +527,9 @@ commands:
               else
                 VERSION=0.0.0
               fi
-              tar czf $TARNAME-$VERSION.tar.gz --transform 's|^|$TARNAME-$VERSION/|' src contrib CMakeLists.txt README.md LICENSE
+              mkdir $TARNAME-$VERSION
+              cp -r src contrib CMakeLists.txt README.md LICENSE $TARNAME-$VERSION/.
+              tar czf $TARNAME-$VERSION.tar.gz $TARNAME-$VERSION 
 
   build_cpp:
     description: Build a C++ package
