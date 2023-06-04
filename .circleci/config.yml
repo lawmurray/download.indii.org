@@ -1019,34 +1019,44 @@ workflows:
               os:
                 - buster
                 - bullseye
+                - bookworm
                 - focal
                 - jammy
                 - kinetic
+                - lunar
 
       - rpm:
           matrix:
             parameters:
               os:
                 - opensuse-leap-15-4
+                - opensuse-leap-15-5
                 - opensuse-tumbleweed
                 - fedora-35
                 - fedora-36
                 - fedora-37
+                - fedora-38
                 - mageia-8
+                - mageia-9
 
       - stage_repo:
           requires:
             - deb-buster
             - deb-bullseye
+            - deb-bookworm
             - deb-focal
             - deb-jammy
             - deb-kinetic
+            - deb-lunar
             - rpm-opensuse-leap-15-4
+            - rpm-opensuse-leap-15-5
             - rpm-opensuse-tumbleweed
             - rpm-fedora-35
             - rpm-fedora-36
             - rpm-fedora-37
+            - rpm-fedora-38
             - rpm-mageia-8
+            - rpm-mageia-9
 
       - test_repo:
           matrix:
@@ -1054,15 +1064,20 @@ workflows:
               os:
                 - buster
                 - bullseye
+                - bookworm
                 - focal
                 - jammy
                 - kinetic
+                - lunar
                 - opensuse-leap-15-4
+                - opensuse-leap-15-5
                 - opensuse-tumbleweed
                 - fedora-35
                 - fedora-36
                 - fedora-37
+                - fedora-38
                 - mageia-8
+                - mageia-9
           requires:
             - stage_repo
 
@@ -1088,15 +1103,20 @@ workflows:
           requires:
             - test_repo-buster
             - test_repo-bullseye
+            - test_repo-bookworm
             - test_repo-focal
             - test_repo-jammy
             - test_repo-kinetic
+            - test_repo-lunar
             - test_repo-opensuse-leap-15-4
+            - test_repo-opensuse-leap-15-5
             - test_repo-opensuse-tumbleweed
             - test_repo-fedora-35
             - test_repo-fedora-36
             - test_repo-fedora-37
+            - test_repo-fedora-38
             - test_repo-mageia-8
+            - test_repo-mageia-9
             - test_repo-mac
             - docs
 
