@@ -172,6 +172,7 @@ commands:
                   autoconf \
                   automake \
                   libtool \
+                  cmake \
                   flex \
                   bison \
                   g++ \
@@ -183,6 +184,7 @@ commands:
                   libboost-math-dev \
                   libsqlite3-dev \
                   libcairo2-dev \
+                  libtree-sitter-dev \
                   doxygen \
                   build-essential \
                   apt-utils \
@@ -206,6 +208,7 @@ commands:
                     autoconf \
                     automake \
                     libtool \
+                    cmake \
                     flex \
                     bison \
                     libomp \
@@ -214,7 +217,8 @@ commands:
                     libyaml \
                     boost \
                     sqlite \
-                    cairo
+                    cairo \
+                    tree-sitter
                 echo "export PATH=/usr/local/opt/gnu-time/libexec/gnubin:/usr/local/opt/flex/bin:/usr/local/opt/bison/bin:\$PATH" >> $BASH_ENV
               elif [[ "$CODENAME" =~ "opensuse" ]]; then
                 zypper --non-interactive update
@@ -231,18 +235,20 @@ commands:
                   curl \
                   ca-certificates \
                   make \
-                  flex \
-                  bison \
-                  gcc-c++ \
                   autoconf \
                   automake \
                   libtool \
+                  cmake \
+                  flex \
+                  bison \
+                  gcc-c++ \
                   libyaml-devel \
                   jemalloc-devel \
                   boost-devel \
                   eigen3-devel \
                   cairo-devel \
                   sqlite3-devel \
+                  tree-sitter-devel \
                   rpmlint \
                   rpm-build \
                   rpm-config-SUSE \
@@ -263,18 +269,20 @@ commands:
                   curl \
                   ca-certificates \
                   make \
-                  flex \
-                  bison \
-                  gcc-c++ \
                   autoconf \
                   automake \
                   libtool \
+                  cmake \
+                  flex \
+                  bison \
+                  gcc-c++ \
                   libyaml-devel \
                   jemalloc-devel \
                   boost-devel \
                   eigen3-devel \
                   cairo-devel \
                   sqlite-devel \
+                  tree-sitter-devel \
                   rpm \
                   rpmlint \
                   rpm-build \
@@ -297,18 +305,20 @@ commands:
                   curl \
                   ca-certificates \
                   make \
-                  flex \
-                  bison \
-                  gcc-c++ \
                   autoconf \
                   automake \
                   libtool \
+                  cmake \
+                  flex \
+                  bison \
+                  gcc-c++ \
                   yaml-devel \
                   jemalloc-devel \
                   boost-devel \
                   eigen3-devel \
                   cairo-devel \
                   sqlite3-devel \
+                  tree-sitter-devel \
                   rpm \
                   rpmlint \
                   rpm-build \
@@ -327,19 +337,21 @@ commands:
                   binutils \
                   elfutils \
                   make \
+                  autoconf \
+                  automake \
+                  libtool \
+                  cmake \
                   flex \
                   bison \
                   gcc \
                   gdb \
-                  autoconf \
-                  automake \
-                  libtool \
                   jemalloc \
                   libyaml \
                   boost \
+                  eigen \
                   cairo \
                   sqlite \
-                  eigen
+                  tree-sitter
                 pacman -Sc --noconfirm
               else  # Debian variant
                 apt update --assume-yes
@@ -359,6 +371,7 @@ commands:
                   autoconf \
                   automake \
                   libtool \
+                  cmake \
                   flex \
                   bison \
                   g++ \
@@ -369,6 +382,7 @@ commands:
                   libboost-math-dev \
                   libsqlite3-dev \
                   libcairo2-dev \
+                  libtree-sitter-dev \
                   build-essential \
                   apt-utils \
                   dpkg \
