@@ -7,6 +7,7 @@ executors:
     resource_class: large
     environment:
       CODENAME: default
+      DEBIAN_FRONTEND: noninteractive
     working_directory: /home/circleci/default
 
   buster:
@@ -15,6 +16,7 @@ executors:
     resource_class: large
     environment:
       CODENAME: buster
+      DEBIAN_FRONTEND: noninteractive
     working_directory: /root/buster
 
   bullseye:
@@ -23,6 +25,7 @@ executors:
     resource_class: large
     environment:
       CODENAME: bullseye
+      DEBIAN_FRONTEND: noninteractive
     working_directory: /root/bullseye
 
   bookworm:
@@ -31,6 +34,7 @@ executors:
     resource_class: large
     environment:
       CODENAME: bookworm
+      DEBIAN_FRONTEND: noninteractive
     working_directory: /root/bookworm
 
   focal:
@@ -39,6 +43,7 @@ executors:
     resource_class: large
     environment:
       CODENAME: focal
+      DEBIAN_FRONTEND: noninteractive
     working_directory: /root/focal
 
   jammy:
@@ -47,6 +52,7 @@ executors:
     resource_class: large
     environment:
       CODENAME: jammy
+      DEBIAN_FRONTEND: noninteractive
     working_directory: /root/jammy
 
   kinetic:
@@ -55,6 +61,7 @@ executors:
     resource_class: large
     environment:
       CODENAME: kinetic
+      DEBIAN_FRONTEND: noninteractive
     working_directory: /root/kinetic
 
   lunar:
@@ -63,6 +70,7 @@ executors:
     resource_class: large
     environment:
       CODENAME: lunar
+      DEBIAN_FRONTEND: noninteractive
     working_directory: /root/lunar
 
   opensuse-leap-15-4:
@@ -145,8 +153,9 @@ commands:
           name: Install dependencies
           command: |
               if [ "$CODENAME" = "default" ]; then
-                sudo apt update
-                DEBIAN_FRONTEND=noninteractive sudo apt install -y --no-install-recommends \
+                sudo apt update --assume-yes
+                sudo apt upgrade --assume-yes
+                sudo apt install --assume-yes --no-install-recommends \
                   git \
                   ssh \
                   gpg \
@@ -188,8 +197,8 @@ commands:
                   python3-pip
                 sudo rm -rf /var/lib/apt/lists/*
               elif [[ "$CODENAME" =~ "mac" ]]; then
-                HOMEBREW_NO_AUTO_UPDATE=1 brew remove --force --ignore-dependencies node node@14 tcl-tk  # avoids these being unnecessarily updated as dependents later
-                HOMEBREW_NO_AUTO_UPDATE=1 brew install \
+                brew update
+                brew install \
                     git \
                     gnupg \
                     coreutils \
@@ -333,8 +342,9 @@ commands:
                   eigen
                 pacman -Sc --noconfirm
               else  # Debian variant
-                apt update
-                DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
+                apt update --assume-yes
+                apt upgrade --assume-yes
+                apt install --assume-yes --no-install-recommends \
                   git \
                   ssh \
                   gpg \
@@ -928,8 +938,9 @@ jobs:
           command: |
               if [[ "$CODENAME" =~ "opensuse" ]]; then
                 zypper --gpg-auto-import-keys addrepo https://stage.birch.sh/rpm/$CODENAME/birch.repo
-                zypper --gpg-auto-import-keys update --no-confirm
-                zypper install --no-confirm --recommends birch
+                zypper --gpg-auto-import-keys refresh
+                zypper --non-interactive update
+                zypper --non-interactive install --recommends birch
               elif [[ "$CODENAME" =~ "fedora" || "$CODENAME" =~ "mageia" ]]; then
                 dnf install --assumeyes dnf-plugins-core
                 dnf config-manager --add-repo https://stage.birch.sh/rpm/$CODENAME/birch.repo
@@ -941,6 +952,7 @@ jobs:
                 brew install lawmurray/stage/birch
               else
                 apt update --assume-yes
+                apt upgrade --assume-yes
                 apt install --assume-yes curl gpg
                 echo "deb https://stage.birch.sh/deb $CODENAME main" | tee /etc/apt/sources.list.d/birch.list
                 curl -fsSL https://stage.birch.sh/deb/Release.key | gpg --dearmor | tee /etc/apt/trusted.gpg.d/birch.gpg > /dev/null
