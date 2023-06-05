@@ -765,11 +765,11 @@ jobs:
       - source_cmake:
           dir: doxide
       - source_cpp:
-          dir: Birch/numbirch
+          dir: Birch/birch
       - source_cpp:
           dir: Birch/membirch
       - source_cpp:
-          dir: Birch/birch
+          dir: Birch/numbirch
       - source_birch:
           dir: Birch/libraries/Standard
       - source_birch:
@@ -784,13 +784,13 @@ jobs:
               printf "Codename: $CODENAME\nSuite: stable\nComponents: main\nArchitectures: source amd64\nSignWith: default\n" > $HOME/deb/$CODENAME/conf/distributions
       - package_deb:
           dir: doxide
+      - package_deb:
+          dir: Birch/birch
+      - package_deb:
+          dir: Birch/membirch
       - install_cuda_prereq
       - package_deb:
           dir: Birch/numbirch
-      - package_deb:
-          dir: Birch/membirch
-      - package_deb:
-          dir: Birch/birch
       - package_deb:
           dir: Birch/libraries/Standard
       - package_deb:
@@ -1038,7 +1038,7 @@ workflows:
           matrix:
             parameters:
               os:
-                - buster
+                #- buster
                 - bullseye
                 - bookworm
                 - focal
@@ -1050,8 +1050,8 @@ workflows:
           matrix:
             parameters:
               os:
-                - opensuse-leap-15-4
-                - opensuse-leap-15-5
+                #- opensuse-leap-15-4
+                #- opensuse-leap-15-5
                 - opensuse-tumbleweed
                 - fedora-35
                 - fedora-36
@@ -1067,36 +1067,23 @@ workflows:
 
       - stage_repo:
           requires:
-            - deb-buster
-            - deb-bullseye
-            - deb-bookworm
-            - deb-focal
-            - deb-jammy
-            - deb-kinetic
-            - deb-lunar
-            - rpm-opensuse-leap-15-4
-            - rpm-opensuse-leap-15-5
-            - rpm-opensuse-tumbleweed
-            - rpm-fedora-35
-            - rpm-fedora-36
-            - rpm-fedora-37
-            - rpm-fedora-38
-            - rpm-mageia-8
-            - brew-mac
+            - deb
+            - rpm
+            - brew
 
       - test_repo:
           matrix:
             parameters:
               os:
-                - buster
+                #- buster
                 - bullseye
                 - bookworm
                 - focal
                 - jammy
                 - kinetic
                 - lunar
-                - opensuse-leap-15-4
-                - opensuse-leap-15-5
+                #- opensuse-leap-15-4
+                #- opensuse-leap-15-5
                 - opensuse-tumbleweed
                 - fedora-35
                 - fedora-36
@@ -1110,22 +1097,7 @@ workflows:
       - hold:
           type: approval
           requires:
-            - test_repo-buster
-            - test_repo-bullseye
-            - test_repo-bookworm
-            - test_repo-focal
-            - test_repo-jammy
-            - test_repo-kinetic
-            - test_repo-lunar
-            - test_repo-opensuse-leap-15-4
-            - test_repo-opensuse-leap-15-5
-            - test_repo-opensuse-tumbleweed
-            - test_repo-fedora-35
-            - test_repo-fedora-36
-            - test_repo-fedora-37
-            - test_repo-fedora-38
-            - test_repo-mageia-8
-            - test_repo-mac
+            - test_repo
             - docs
 
       - deploy:
