@@ -184,7 +184,7 @@ commands:
                   libboost-math-dev \
                   libsqlite3-dev \
                   libcairo2-dev \
-                  doxygen \
+                  libicu-dev \
                   build-essential \
                   apt-utils \
                   dpkg \
@@ -246,6 +246,7 @@ commands:
                   eigen3-devel \
                   cairo-devel \
                   sqlite3-devel \
+                  libicu-devel \
                   rpmlint \
                   rpm-build \
                   rpm-config-SUSE \
@@ -279,6 +280,7 @@ commands:
                   eigen3-devel \
                   cairo-devel \
                   sqlite-devel \
+                  libicu-devel \
                   rpm \
                   rpmlint \
                   rpm-build \
@@ -314,6 +316,7 @@ commands:
                   eigen3-devel \
                   cairo-devel \
                   sqlite3-devel \
+                  libicu-devel \
                   rpm \
                   rpmlint \
                   rpm-build \
@@ -345,7 +348,8 @@ commands:
                   boost \
                   eigen \
                   cairo \
-                  sqlite
+                  sqlite \
+                  icu
                 pacman -Sc --noconfirm
               else  # Debian variant
                 apt update --assume-yes
@@ -376,6 +380,7 @@ commands:
                   libboost-math-dev \
                   libsqlite3-dev \
                   libcairo2-dev \
+                  libicu-dev \
                   build-essential \
                   apt-utils \
                   dpkg \
