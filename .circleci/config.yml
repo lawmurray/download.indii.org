@@ -4,7 +4,7 @@ executors:
   default:
     machine:
       image: ubuntu-2204:current
-    resource_class: large
+    resource_class: medium
     environment:
       CODENAME: default
       DEBIAN_FRONTEND: noninteractive
@@ -727,6 +727,15 @@ commands:
                 git remote add origin https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/lawmurray/<< parameters.subdomain >>.git
                 git push origin gh-pages -f
               fi
+      - run:
+          name: Wait for CloudFlare build, purge cache, wait again
+          command: |
+              sleep 120
+              curl -X POST "https://api.cloudflare.com/client/v4/zones/$CLOUDFLARE_ZONE/purge_cache" \
+                -H "Authorization: Bearer $CLOUDFLARE_TOKEN" \
+                -H "Content-Type: application/json" \
+                --data '{"purge_everything":true}'
+              sleep 30
 
   deploy_docs:
     parameters:
@@ -947,9 +956,6 @@ jobs:
           at: ..
       - deploy_repo:
           subdomain: stage.indii.org
-      - run:
-          name: Wait a little while for stage.indii.org to be published
-          command: sleep 180
 
   test_repo:
     parameters: 
