@@ -911,7 +911,7 @@ jobs:
           dir: Birch/libraries/SQLite
 
       - persist_to_workspace:
-          root: .
+          root: ..
           paths:
             - brew
 
