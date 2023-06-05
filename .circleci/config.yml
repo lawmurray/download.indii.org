@@ -749,6 +749,23 @@ commands:
                 git push origin gh-pages -f
               fi
 
+  destroy_repo:
+    parameters:
+      subdomain:
+        description: Subdomain of repository, e.g. stage.indii.org
+        type: string
+    steps:
+      - run:
+          name: Destroy << parameters.subdomain >>
+          command: |
+              if [[ -n "$GITHUB_USERNAME" && -n "$GITHUB_PASSWORD" ]]; then
+                mkdir << parameters.subdomain >>
+                cd << parameters.subdomain >>
+                git init -b gh-pages
+                git remote add origin https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/lawmurray/<< parameters.subdomain >>.git
+                git push origin gh-pages -f
+              fi
+
 jobs:
   deb:
     parameters: 
@@ -932,7 +949,7 @@ jobs:
           subdomain: stage.indii.org
       - run:
           name: Wait a little while for stage.indii.org to be published
-          command: sleep 120
+          command: sleep 180
 
   test_repo:
     parameters: 
@@ -1029,6 +1046,8 @@ jobs:
           subdomain: download.indii.org
       - deploy_docs:
           subdomain: docs.birch.sh
+      - destroy_repo:
+          subdomain: stage.indii.org
 
 workflows:
   all:
