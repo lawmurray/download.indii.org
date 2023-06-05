@@ -705,7 +705,7 @@ commands:
 
                 # finalize rpm repos (add .repo file to each)
                 for codename in `ls rpm/*/*/repodata/repomd.xml rpm/*/*/*/repodata/repomd.xml | sed -E 's|^rpm/||' | sed -E 's|/repodata/repomd.xml$||'`; do
-                  printf "[birch]\nname=Birch\ntype=rpm-md\nbaseurl=https://<< parameters.subdomain >>/rpm/$codename\ngpgcheck=1\ngpgkey=https://<< parameters.subdomain >>/rpm/$codename/repodata/repomd.xml.key\nenabled=1\nautorefresh=1\n" > rpm/$codename/birch.repo
+                  printf "[indii.org]\nname=indii.org\ntype=rpm-md\nbaseurl=https://<< parameters.subdomain >>/rpm/$codename\ngpgcheck=1\ngpgkey=https://<< parameters.subdomain >>/rpm/$codename/repodata/repomd.xml.key\nenabled=1\nautorefresh=1\n" > rpm/$codename/indii.org.repo
                 done
 
                 # finalize brew repos (update subdomain)
@@ -940,26 +940,26 @@ jobs:
           name: Test install
           command: |
               if [[ "$CODENAME" =~ "opensuse" ]]; then
-                zypper --gpg-auto-import-keys addrepo https://stage.indii.org/rpm/$CODENAME/birch.repo
+                zypper --gpg-auto-import-keys addrepo https://stage.indii.org/rpm/$CODENAME/indii.org.repo
                 zypper --gpg-auto-import-keys refresh
                 zypper --non-interactive update
                 zypper --non-interactive install --recommends doxide birch
               elif [[ "$CODENAME" =~ "fedora" || "$CODENAME" =~ "mageia" ]]; then
                 dnf install --assumeyes dnf-plugins-core
-                dnf config-manager --add-repo https://stage.indii.org/rpm/$CODENAME/birch.repo
+                dnf config-manager --add-repo https://stage.indii.org/rpm/$CODENAME/indii.org.repo
                 dnf update --assumeyes
                 dnf install --assumeyes doxide birch
               elif [[ "$CODENAME" =~ "mac" ]]; then
-                brew tap lawmurray/stage https://stage.indii.org/brew
+                brew tap indii.org/all https://stage.indii.org/brew
                 brew update
                 brew upgrade
-                brew install lawmurray/stage/doxide lawmurray/stage/birch
+                brew install doxide birch
               else
                 apt update --assume-yes
                 apt upgrade --assume-yes
                 apt install --assume-yes curl gpg
-                echo "deb https://stage.indii.org/deb $CODENAME main" | tee /etc/apt/sources.list.d/birch.list
-                curl -fsSL https://stage.indii.org/deb/Release.key | gpg --dearmor | tee /etc/apt/trusted.gpg.d/birch.gpg > /dev/null
+                echo "deb https://stage.indii.org/deb $CODENAME main" | tee /etc/apt/sources.list.d/indii.org.list
+                curl -fsSL https://stage.indii.org/deb/Release.key | gpg --dearmor | tee /etc/apt/trusted.gpg.d/indii.org.gpg > /dev/null
                 apt update --assume-yes
                 apt install --assume-yes --install-recommends doxide birch
               fi
