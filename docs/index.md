@@ -84,18 +84,6 @@ This software repository provides packages for [Doxide](https://doxide.org) and 
     sudo apt install doxide birch
     ```
 
-??? info "Debian 10 Buster (amd64)"
-    Add the repository:
-    ```
-    echo 'deb http://download.indii.org/deb buster main' | sudo tee /etc/apt/sources.list.d/indii.org.list
-    curl -fsSL https://download.indii.org/deb/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/indii.org.gpg > /dev/null
-    sudo apt update
-    ```
-    Install packages:
-    ```
-    sudo apt install doxide birch
-    ```
-
 ## :fontawesome-brands-fedora: Fedora
 
 ??? info "Fedora 38 (x86_64)"
@@ -155,28 +143,6 @@ This software repository provides packages for [Doxide](https://doxide.org) and 
     sudo zypper install doxide birch
     ```
 
-??? info "openSUSE Leap 15.5 (x86_64)"
-    Add the repository:
-    ```
-    sudo zypper addrepo https://download.indii.org/rpm/opensuse/leap/15.5/indii.org.repo
-    sudo zypper refresh
-    ```
-    Install packages:
-    ```
-    sudo zypper install doxide birch
-    ```
-
-??? info "openSUSE Leap 15.4 (x86_64)"
-    Add the repository:
-    ```
-    sudo zypper addrepo https://download.indii.org/rpm/opensuse/leap/15.4/indii.org.repo
-    sudo zypper refresh
-    ```
-    Install packages:
-    ```
-    sudo zypper install doxide birch
-    ```
-
 ## :fontawesome-brands-linux: Mageia
 
 ??? info "Mageia 8 (x86_64)"
@@ -195,7 +161,7 @@ This software repository provides packages for [Doxide](https://doxide.org) and 
 ??? info "Homebrew"
     Install [Homebrew](https://brew.sh) if not already. Add the tap:
     ```sh
-    brew tap indii.org/brew https://download.indii.org/brew
+    brew tap lawmurray/all
     ```
     Install packages:
     ```
