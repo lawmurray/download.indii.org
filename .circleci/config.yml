@@ -758,7 +758,6 @@ jobs:
       - end_if_pull_request
       - environment
       - checkout
-      - install_cuda_prereq
 
       - build_cpp:
           dir: Birch/birch  # needed for source_birch
@@ -785,6 +784,7 @@ jobs:
               printf "Codename: $CODENAME\nSuite: stable\nComponents: main\nArchitectures: source amd64\nSignWith: default\n" > $HOME/deb/$CODENAME/conf/distributions
       - package_deb:
           dir: doxide
+      - install_cuda_prereq
       - package_deb:
           dir: Birch/numbirch
       - package_deb:
@@ -815,7 +815,6 @@ jobs:
       - end_if_pull_request
       - environment
       - checkout
-      - install_cuda_prereq
 
       - build_cpp:
           dir: Birch/birch  # needed for source_birch
@@ -823,11 +822,11 @@ jobs:
       - source_cmake:
           dir: doxide
       - source_cpp:
-          dir: Birch/numbirch
+          dir: Birch/birch
       - source_cpp:
           dir: Birch/membirch
       - source_cpp:
-          dir: Birch/birch
+          dir: Birch/numbirch
       - source_birch:
           dir: Birch/libraries/Standard
       - source_birch:
@@ -845,11 +844,12 @@ jobs:
       - package_rpm:
           dir: doxide
       - package_rpm:
-          dir: Birch/numbirch
+          dir: Birch/birch
       - package_rpm:
           dir: Birch/membirch
+      - install_cuda_prereq
       - package_rpm:
-          dir: Birch/birch
+          dir: Birch/numbirch
       - package_rpm:
           dir: Birch/libraries/Standard
       - package_rpm:
@@ -884,11 +884,11 @@ jobs:
       - source_cmake:
           dir: doxide
       - source_cpp:
-          dir: Birch/numbirch
+          dir: Birch/birch
       - source_cpp:
           dir: Birch/membirch
       - source_cpp:
-          dir: Birch/birch
+          dir: Birch/numbirch
       - source_birch:
           dir: Birch/libraries/Standard
       - source_birch:
@@ -903,11 +903,11 @@ jobs:
       - package_brew:
           dir: doxide
       - package_brew:
-          dir: Birch/numbirch
+          dir: Birch/birch
       - package_brew:
           dir: Birch/membirch
       - package_brew:
-          dir: Birch/birch
+          dir: Birch/numbirch
       - package_brew:
           dir: Birch/libraries/Standard
       - package_brew:
