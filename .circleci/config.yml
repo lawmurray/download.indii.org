@@ -704,7 +704,6 @@ commands:
                 cd site
                 mkdir rpm && cp -r $HOME/rpm/* rpm/.
                 mkdir deb && cp -r $HOME/deb/*/* deb/.  # merge repos
-                mkdir brew && cp -r $HOME/brew/* brew/.
 
                 # finalize apt repo (add key)
                 gpg --export --armor > deb/Release.key
@@ -712,12 +711,6 @@ commands:
                 # finalize rpm repos (add .repo file to each)
                 for codename in `ls rpm/*/*/repodata/repomd.xml rpm/*/*/*/repodata/repomd.xml | sed -E 's|^rpm/||' | sed -E 's|/repodata/repomd.xml$||'`; do
                   printf "[indii.org]\nname=indii.org\ntype=rpm-md\nbaseurl=https://<< parameters.subdomain >>/rpm/$codename\ngpgcheck=1\ngpgkey=https://<< parameters.subdomain >>/rpm/$codename/repodata/repomd.xml.key\nenabled=1\nautorefresh=1\n" > rpm/$codename/indii.org.repo
-                done
-
-                # finalize brew repos (update subdomain)
-                for file in `ls brew/*.rb`; do
-                  cat $file | sed s/download\.indii\.org/<< parameters.subdomain >>/g > $file.sponge
-                  mv $file.sponge $file
                 done
 
                 # publish
@@ -737,6 +730,47 @@ commands:
                 --data '{"purge_everything":true}'
               sleep 30
 
+  destroy_repo:
+    parameters:
+      subdomain:
+        description: Subdomain of repository, e.g. stage.indii.org
+        type: string
+    steps:
+      - run:
+          name: Destroy << parameters.subdomain >>
+          command: |
+              if [[ -n "$GITHUB_USERNAME" && -n "$GITHUB_PASSWORD" ]]; then
+                mkdir << parameters.subdomain >>
+                cd << parameters.subdomain >>
+                git init -b gh-pages
+                git remote add origin https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/lawmurray/<< parameters.subdomain >>.git
+                git push origin gh-pages -f
+              fi
+
+  deploy_brew:
+      parameters:
+        repo:
+          description: GitHub repo of repository, e.g. homebrew-all
+          type: string
+      steps:
+        - run:
+            name: Deploy << parameters.repo >>
+            command: |
+                if [[ -n "$GITHUB_USERNAME" && -n "$GITHUB_PASSWORD" && -n "$VERSION" ]]; then
+                  mkdir << parameters.repo >>
+                  cd << parameters.repo >>
+                  cp -r $HOME/brew/* .
+                  for file in *.rb; do
+                    cat $file | sed -E "s/homebrew-[A-Z0-9a-z]+/<< parameters.repo >>/g" > $file.sponge
+                    mv $file.sponge $file
+                  done
+                  git init
+                  git add .
+                  git commit -m "Overwrite."
+                  git remote add origin https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/lawmurray/<< parameters.repo >>.git
+                  git push origin master -f
+                fi
+
   deploy_docs:
     parameters:
       subdomain:
@@ -754,23 +788,6 @@ commands:
                 git init -b gh-pages
                 git add .
                 git commit -m "Overwrite."
-                git remote add origin https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/lawmurray/<< parameters.subdomain >>.git
-                git push origin gh-pages -f
-              fi
-
-  destroy_repo:
-    parameters:
-      subdomain:
-        description: Subdomain of repository, e.g. stage.indii.org
-        type: string
-    steps:
-      - run:
-          name: Destroy << parameters.subdomain >>
-          command: |
-              if [[ -n "$GITHUB_USERNAME" && -n "$GITHUB_PASSWORD" ]]; then
-                mkdir << parameters.subdomain >>
-                cd << parameters.subdomain >>
-                git init -b gh-pages
                 git remote add origin https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/lawmurray/<< parameters.subdomain >>.git
                 git push origin gh-pages -f
               fi
@@ -947,7 +964,7 @@ jobs:
           paths:
             - brew
 
-  stage_repo:
+  stage:
     executor: default
     steps:
       - end_if_pull_request
@@ -956,8 +973,10 @@ jobs:
           at: ..
       - deploy_repo:
           subdomain: stage.indii.org
+      - deploy_brew:
+          repo: homebrew-stage
 
-  test_repo:
+  test:
     parameters: 
       os:
         type: string
@@ -979,7 +998,7 @@ jobs:
                 dnf update --assumeyes
                 dnf install --assumeyes doxide birch
               elif [[ "$CODENAME" =~ "mac" ]]; then
-                brew tap indii.org/all https://stage.indii.org/brew
+                brew tap lawmurray/stage
                 brew update
                 brew upgrade
                 brew install doxide birch
@@ -1011,6 +1030,22 @@ jobs:
             cd ..
             rm -rf hello
 
+  deploy:
+    executor: default
+    steps:
+      - end_if_pull_request
+      - environment
+      - attach_workspace:
+          at: ..
+      - deploy_repo:
+          subdomain: download.indii.org
+      - deploy_brew:
+          repo: homebrew-all
+      - deploy_docs:
+          subdomain: docs.birch.sh
+      - destroy_repo:
+          subdomain: stage.indii.org
+
   docs:
     executor: default
     steps:
@@ -1040,20 +1075,6 @@ jobs:
           root: ..
           paths:
             - docs
-
-  deploy:
-    executor: default
-    steps:
-      - end_if_pull_request
-      - environment
-      - attach_workspace:
-          at: ..
-      - deploy_repo:
-          subdomain: download.indii.org
-      - deploy_docs:
-          subdomain: docs.birch.sh
-      - destroy_repo:
-          subdomain: stage.indii.org
 
 workflows:
   all:
@@ -1091,13 +1112,13 @@ workflows:
               os:
                 - mac
 
-      - stage_repo:
+      - stage:
           requires:
             - deb
             - rpm
             - brew
 
-      - test_repo:
+      - test:
           matrix:
             parameters:
               os:
@@ -1118,12 +1139,12 @@ workflows:
                 - mageia-8
                 - mac
           requires:
-            - stage_repo
+            - stage
 
       - hold:
           type: approval
           requires:
-            - test_repo
+            - test
             - docs
 
       - deploy:
