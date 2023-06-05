@@ -196,6 +196,7 @@ commands:
                   reprepro \
                   python3 \
                   python3-pip
+                pip3 install mkdocs mkdocs-material
                 sudo rm -rf /var/lib/apt/lists/*
               elif [[ "$CODENAME" =~ "mac" ]]; then
                 brew update
