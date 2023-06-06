@@ -730,23 +730,6 @@ commands:
                 --data '{"purge_everything":true}'
               sleep 30
 
-  destroy_repo:
-    parameters:
-      subdomain:
-        description: Subdomain of repository, e.g. stage.indii.org
-        type: string
-    steps:
-      - run:
-          name: Destroy << parameters.subdomain >>
-          command: |
-              if [[ -n "$GITHUB_USERNAME" && -n "$GITHUB_PASSWORD" ]]; then
-                mkdir << parameters.subdomain >>
-                cd << parameters.subdomain >>
-                git init -b gh-pages
-                git remote add origin https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/lawmurray/<< parameters.subdomain >>.git
-                git push origin gh-pages -f
-              fi
-
   deploy_brew:
       parameters:
         repo:
@@ -790,6 +773,26 @@ commands:
                 git commit -m "Overwrite."
                 git remote add origin https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/lawmurray/<< parameters.subdomain >>.git
                 git push origin gh-pages -f
+              fi
+
+  destroy:
+    parameters:
+      repo:
+        description: Name of repository, e.g. stage.indii.org, homebrew-stage
+        type: string
+      branch:
+        description: Branch of repository, e.g. master, gh-pages
+        type: string
+    steps:
+      - run:
+          name: Destroy branch << parameters.branch >> of << parameters.repo >>
+          command: |
+              if [[ -n "$GITHUB_USERNAME" && -n "$GITHUB_PASSWORD" ]]; then
+                mkdir << parameters.repo >>
+                cd << parameters.repo >>
+                git init -b << parameters.branch >>
+                git remote add origin https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/lawmurray/<< parameters.repo >>.git
+                git push origin << parameters.branch >> -f
               fi
 
 jobs:
@@ -1045,8 +1048,12 @@ jobs:
           repo: homebrew-all
       - deploy_docs:
           subdomain: docs.birch.sh
-      - destroy_repo:
-          subdomain: stage.indii.org
+      - destroy:
+          repo: stage.indii.org
+          branch: gh-pages
+      - destroy:
+          repo: homebrew-stage
+          branch: master
 
   docs:
     executor: default
