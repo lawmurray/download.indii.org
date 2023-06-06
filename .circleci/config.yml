@@ -791,6 +791,7 @@ commands:
                 mkdir << parameters.repo >>
                 cd << parameters.repo >>
                 git init -b << parameters.branch >>
+                git commit --allow-empty -m "Deleted."
                 git remote add origin https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/lawmurray/<< parameters.repo >>.git
                 git push origin << parameters.branch >> -f
               fi
