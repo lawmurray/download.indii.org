@@ -739,7 +739,7 @@ commands:
         - run:
             name: Deploy << parameters.repo >>
             command: |
-                if [[ -n "$GITHUB_USERNAME" && -n "$GITHUB_PASSWORD" && -n "$VERSION" ]]; then
+                if [[ -n "$GITHUB_USERNAME" && -n "$GITHUB_PASSWORD" ]]; then
                   mkdir << parameters.repo >>
                   cd << parameters.repo >>
                   cp -r $HOME/brew/* .
