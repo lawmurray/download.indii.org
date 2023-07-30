@@ -56,7 +56,6 @@ executors:
     environment:
       CODENAME: kinetic
       DEBIAN_FRONTEND: noninteractive
-    working_directory: /root/kinetic
 
   lunar:
     docker:
