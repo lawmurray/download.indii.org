@@ -8,7 +8,6 @@ executors:
     environment:
       CODENAME: default
       DEBIAN_FRONTEND: noninteractive
-    working_directory: /home/circleci/default
 
   buster:
     docker:
@@ -17,7 +16,6 @@ executors:
     environment:
       CODENAME: buster
       DEBIAN_FRONTEND: noninteractive
-    working_directory: /root/buster
 
   bullseye:
     docker:
@@ -26,7 +24,6 @@ executors:
     environment:
       CODENAME: bullseye
       DEBIAN_FRONTEND: noninteractive
-    working_directory: /root/bullseye
 
   bookworm:
     docker:
@@ -35,7 +32,6 @@ executors:
     environment:
       CODENAME: bookworm
       DEBIAN_FRONTEND: noninteractive
-    working_directory: /root/bookworm
 
   focal:
     docker:
@@ -44,7 +40,6 @@ executors:
     environment:
       CODENAME: focal
       DEBIAN_FRONTEND: noninteractive
-    working_directory: /root/focal
 
   jammy:
     docker:
@@ -53,7 +48,6 @@ executors:
     environment:
       CODENAME: jammy
       DEBIAN_FRONTEND: noninteractive
-    working_directory: /root/jammy
 
   kinetic:
     docker:
@@ -71,7 +65,6 @@ executors:
     environment:
       CODENAME: lunar
       DEBIAN_FRONTEND: noninteractive
-    working_directory: /root/lunar
 
   opensuse-leap-15-4:
     docker:
@@ -79,7 +72,6 @@ executors:
     resource_class: large
     environment:
       CODENAME: opensuse/leap/15.4
-    working_directory: /root/opensuse-leap-15-4
 
   opensuse-leap-15-5:
     docker:
@@ -87,7 +79,6 @@ executors:
     resource_class: large
     environment:
       CODENAME: opensuse/leap/15.5
-    working_directory: /root/opensuse-leap-15-5
 
   opensuse-tumbleweed:
     docker:
@@ -95,7 +86,6 @@ executors:
     resource_class: large
     environment:
       CODENAME: opensuse/tumbleweed
-    working_directory: /root/opensuse-tumbleweed
 
   fedora-35:
     docker:
@@ -103,7 +93,6 @@ executors:
     resource_class: large
     environment:
       CODENAME: fedora/35
-    working_directory: /root/fedora-35
 
   fedora-36:
     docker:
@@ -111,7 +100,6 @@ executors:
     resource_class: large
     environment:
       CODENAME: fedora/36
-    working_directory: /root/fedora-36
 
   fedora-37:
     docker:
@@ -119,7 +107,6 @@ executors:
     resource_class: large
     environment:
       CODENAME: fedora/37
-    working_directory: /root/fedora-37
 
   fedora-38:
     docker:
@@ -127,7 +114,6 @@ executors:
     resource_class: large
     environment:
       CODENAME: fedora/38
-    working_directory: /root/fedora-38
 
   mageia-8:
     docker:
@@ -135,7 +121,6 @@ executors:
     resource_class: large
     environment:
       CODENAME: mageia/8
-    working_directory: /root/mageia-8
 
   mac:
     macos:
@@ -143,7 +128,6 @@ executors:
     resource_class: medium
     environment:
       CODENAME: mac
-    working_directory: /Users/distiller/mac
 
 commands:
 
@@ -574,8 +558,8 @@ commands:
           command: |
               cd Birch/<< parameters.dir >>
               birch docs
-              mkdir -p $HOME/docs/docs/<< parameters.dir >>
-              cp -r docs/* $HOME/docs/docs/<< parameters.dir >>/.
+              mkdir -p $CIRCLE_WORKING_DIRECTORY/../docs/docs/<< parameters.dir >>
+              cp -r docs/* $_/.
 
   package_deb:
     parameters:
@@ -615,7 +599,7 @@ commands:
           name: Deploy Debian package << parameters.dir >>
           command: |
               cd << parameters.dir >>
-              reprepro -b $HOME/deb/$CODENAME --ignore=wrongdistribution include $CODENAME *.changes
+              reprepro -b $CIRCLE_WORKING_DIRECTORY/../deb/$CODENAME --ignore=wrongdistribution include $CODENAME *.changes
 
   package_rpm:
     parameters:
@@ -641,22 +625,22 @@ commands:
                 VERSION=0.0.0
               fi
               TARNAME=`ls *-$VERSION.tar.gz | grep -Eo '^[a-z\-]+[a-z]'`
-              mkdir -p $HOME/rpmbuild/SOURCES $HOME/rpmbuild/BUILD
-              mv $TARNAME-$VERSION.tar.gz $HOME/rpmbuild/SOURCES/.
-              rpmbuild --define="_topdir $HOME/rpmbuild" --define="_smp_mflags -j$JOBS" --define="debug_package %{nil}" -ba $TARNAME.spec
+              mkdir -p $CIRCLE_WORKING_DIRECTORY/../rpmbuild/SOURCES
+              mv $TARNAME-$VERSION.tar.gz $_/.
+              rpmbuild --define="_topdir $CIRCLE_WORKING_DIRECTORY/../rpmbuild" --define="_smp_mflags -j$JOBS" --define="debug_package %{nil}" -ba $TARNAME.spec
       - run:
           name: Sign RPM package << parameters.dir >>
           command: |
-              rpmsign --addsign $HOME/rpmbuild/RPMS/x86_64/*.rpm
+              rpmsign --addsign $CIRCLE_WORKING_DIRECTORY/../rpmbuild/RPMS/x86_64/*.rpm
       - run:
           name: Install RPM package << parameters.dir >>
           command: |
-              rpm --install --nodeps $HOME/rpmbuild/RPMS/x86_64/*.rpm  # establish dependencies as we go
+              rpm --install --nodeps $CIRCLE_WORKING_DIRECTORY/../rpmbuild/RPMS/x86_64/*.rpm  # establish dependencies as we go
       - run:
           name: Deploy RPM package << parameters.dir >>
           command: |
-              mv $HOME/rpmbuild/RPMS/x86_64/*.rpm $HOME/rpm/$CODENAME/x86_64/.
-              mv $HOME/rpmbuild/SRPMS/*.rpm $HOME/rpm/$CODENAME/src/.
+              mv $CIRCLE_WORKING_DIRECTORY/../rpmbuild/RPMS/x86_64/*.rpm $CIRCLE_WORKING_DIRECTORY/../rpm/$CODENAME/x86_64/.
+              mv $CIRCLE_WORKING_DIRECTORY/../rpmbuild/SRPMS/*.rpm $CIRCLE_WORKING_DIRECTORY/../rpm/$CODENAME/src/.
 
   package_brew:
     parameters:
@@ -678,7 +662,7 @@ commands:
               SHA256=($(sha256sum $TARNAME-$VERSION.tar.gz))
               cat $TARNAME.rb | sed -E "s/sha256 \"[0-9a-f]+\"/sha256 \"$SHA256\"/g" > $TARNAME.rb.sponge
               mv $TARNAME.rb.sponge $TARNAME.rb
-              mv $TARNAME-$VERSION.tar.gz $TARNAME.rb $HOME/brew/.
+              mv $TARNAME-$VERSION.tar.gz $TARNAME.rb $CIRCLE_WORKING_DIRECTORY/../brew/.
 
   deploy_repo:
     parameters:
@@ -702,8 +686,8 @@ commands:
 
                 # copy over packages
                 cd site
-                mkdir rpm && cp -r $HOME/rpm/* rpm/.
-                mkdir deb && cp -r $HOME/deb/*/* deb/.  # merge repos
+                mkdir rpm && cp -r $CIRCLE_WORKING_DIRECTORY/../rpm/* rpm/.
+                mkdir deb && cp -r $CIRCLE_WORKING_DIRECTORY/../deb/*/* deb/.  # merge repos
 
                 # finalize apt repo (add key)
                 gpg --export --armor > deb/Release.key
@@ -742,7 +726,7 @@ commands:
                 if [[ -n "$GITHUB_USERNAME" && -n "$GITHUB_PASSWORD" ]]; then
                   mkdir << parameters.repo >>
                   cd << parameters.repo >>
-                  cp -r $HOME/brew/* .
+                  cp -r $CIRCLE_WORKING_DIRECTORY/../brew/* .
                   for file in *.rb; do
                     cat $file | sed -E "s/homebrew-[A-Z0-9a-z]+/<< parameters.repo >>/g" > $file.sponge
                     mv $file.sponge $file
@@ -765,7 +749,7 @@ commands:
           command: |
               if [[ -n "$GITHUB_USERNAME" && -n "$GITHUB_PASSWORD" ]]; then
                 pip3 install mkdocs mkdocs-material
-                cd $HOME/docs
+                cd $CIRCLE_WORKING_DIRECTORY/../docs
                 mkdocs build
                 cd site
                 git init -b gh-pages
@@ -828,8 +812,8 @@ jobs:
       - run:
           name: Initialize repository
           command: |
-              mkdir -p $HOME/deb/$CODENAME/conf
-              printf "Codename: $CODENAME\nSuite: stable\nComponents: main\nArchitectures: source amd64\nSignWith: default\n" > $HOME/deb/$CODENAME/conf/distributions
+              mkdir -p $CIRCLE_WORKING_DIRECTORY/../deb/$CODENAME/conf
+              printf "Codename: $CODENAME\nSuite: stable\nComponents: main\nArchitectures: source amd64\nSignWith: default\n" > $_/distributions
       - package_deb:
           dir: doxide
       - package_deb:
@@ -848,7 +832,7 @@ jobs:
       - run:
           name: Remove unnecessary files
           command: |
-              rm -rf $HOME/deb/$CODENAME/{conf,db}
+              rm -rf $CIRCLE_WORKING_DIRECTORY/../deb/$CODENAME/{conf,db}
       - persist_to_workspace:
           root: ..
           paths:
@@ -885,7 +869,7 @@ jobs:
       - run:
           name: Initialize repository
           command: |
-              mkdir -p $HOME/rpm/$CODENAME/{x86_64,src}
+              mkdir -p $CIRCLE_WORKING_DIRECTORY/../rpm/$CODENAME/{x86_64,src}
               gpg --export --armor > public.key
               rpm --import public.key
               rm public.key
@@ -907,7 +891,7 @@ jobs:
       - run:
           name: Finalize repository
           command: |
-              cd $HOME/rpm/$CODENAME
+              cd $CIRCLE_WORKING_DIRECTORY/../rpm/$CODENAME
               createrepo .
               gpg --detach-sign --armor repodata/repomd.xml
               gpg --export --armor > repodata/repomd.xml.key
@@ -947,7 +931,7 @@ jobs:
       - run:
           name: Initialize repository
           command: |
-              mkdir -p $HOME/brew
+              mkdir -p $CIRCLE_WORKING_DIRECTORY/../brew
       - package_brew:
           dir: doxide
       - package_brew:
@@ -1069,7 +1053,7 @@ jobs:
       - run:
           name: Initialize docs
           command: |
-              mkdir -p $HOME/docs/docs
+              mkdir -p $CIRCLE_WORKING_DIRECTORY/../docs/docs
       - docs_birch:
           dir: libraries/Standard
       - docs_birch:
@@ -1079,8 +1063,8 @@ jobs:
       - run:
           name: Finalize docs
           command: |
-              cp Birch/mkdocs.yml $HOME/docs/.
-              cp Birch/README.md $HOME/docs/docs/index.md
+              cp Birch/mkdocs.yml $CIRCLE_WORKING_DIRECTORY/../docs/.
+              cp Birch/README.md $CIRCLE_WORKING_DIRECTORY/../docs/docs/index.md
       - persist_to_workspace:
           root: ..
           paths:
