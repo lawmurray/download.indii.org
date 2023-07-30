@@ -558,7 +558,7 @@ commands:
           command: |
               cd Birch/<< parameters.dir >>
               birch docs
-              mkdir -p $CIRCLE_WORKING_DIRECTORY/../docs/docs/<< parameters.dir >>
+              mkdir -p $HOME/docs/docs/<< parameters.dir >>
               cp -r docs/* $_/.
 
   package_deb:
@@ -599,7 +599,7 @@ commands:
           name: Deploy Debian package << parameters.dir >>
           command: |
               cd << parameters.dir >>
-              reprepro -b $CIRCLE_WORKING_DIRECTORY/../deb/$CODENAME --ignore=wrongdistribution include $CODENAME *.changes
+              reprepro -b $HOME/deb/$CODENAME --ignore=wrongdistribution include $CODENAME *.changes
 
   package_rpm:
     parameters:
@@ -625,22 +625,22 @@ commands:
                 VERSION=0.0.0
               fi
               TARNAME=`ls *-$VERSION.tar.gz | grep -Eo '^[a-z\-]+[a-z]'`
-              mkdir -p $CIRCLE_WORKING_DIRECTORY/../rpmbuild/SOURCES
+              mkdir -p $HOME/rpmbuild/SOURCES
               mv $TARNAME-$VERSION.tar.gz $_/.
-              rpmbuild --define="_topdir $CIRCLE_WORKING_DIRECTORY/../rpmbuild" --define="_smp_mflags -j$JOBS" --define="debug_package %{nil}" -ba $TARNAME.spec
+              rpmbuild --define="_topdir $HOME/rpmbuild" --define="_smp_mflags -j$JOBS" --define="debug_package %{nil}" -ba $TARNAME.spec
       - run:
           name: Sign RPM package << parameters.dir >>
           command: |
-              rpmsign --addsign $CIRCLE_WORKING_DIRECTORY/../rpmbuild/RPMS/x86_64/*.rpm
+              rpmsign --addsign $HOME/rpmbuild/RPMS/x86_64/*.rpm
       - run:
           name: Install RPM package << parameters.dir >>
           command: |
-              rpm --install --nodeps $CIRCLE_WORKING_DIRECTORY/../rpmbuild/RPMS/x86_64/*.rpm  # establish dependencies as we go
+              rpm --install --nodeps $HOME/rpmbuild/RPMS/x86_64/*.rpm  # establish dependencies as we go
       - run:
           name: Deploy RPM package << parameters.dir >>
           command: |
-              mv $CIRCLE_WORKING_DIRECTORY/../rpmbuild/RPMS/x86_64/*.rpm $CIRCLE_WORKING_DIRECTORY/../rpm/$CODENAME/x86_64/.
-              mv $CIRCLE_WORKING_DIRECTORY/../rpmbuild/SRPMS/*.rpm $CIRCLE_WORKING_DIRECTORY/../rpm/$CODENAME/src/.
+              mv $HOME/rpmbuild/RPMS/x86_64/*.rpm $HOME/rpm/$CODENAME/x86_64/.
+              mv $HOME/rpmbuild/SRPMS/*.rpm $HOME/rpm/$CODENAME/src/.
 
   package_brew:
     parameters:
@@ -662,7 +662,7 @@ commands:
               SHA256=($(sha256sum $TARNAME-$VERSION.tar.gz))
               cat $TARNAME.rb | sed -E "s/sha256 \"[0-9a-f]+\"/sha256 \"$SHA256\"/g" > $TARNAME.rb.sponge
               mv $TARNAME.rb.sponge $TARNAME.rb
-              mv $TARNAME-$VERSION.tar.gz $TARNAME.rb $CIRCLE_WORKING_DIRECTORY/../brew/.
+              mv $TARNAME-$VERSION.tar.gz $TARNAME.rb $HOME/brew/.
 
   deploy_repo:
     parameters:
@@ -686,8 +686,8 @@ commands:
 
                 # copy over packages
                 cd site
-                mkdir rpm && cp -r $CIRCLE_WORKING_DIRECTORY/../rpm/* rpm/.
-                mkdir deb && cp -r $CIRCLE_WORKING_DIRECTORY/../deb/*/* deb/.  # merge repos
+                mkdir rpm && cp -r $HOME/rpm/* rpm/.
+                mkdir deb && cp -r $HOME/deb/*/* deb/.  # merge repos
 
                 # finalize apt repo (add key)
                 gpg --export --armor > deb/Release.key
@@ -726,7 +726,7 @@ commands:
                 if [[ -n "$GITHUB_USERNAME" && -n "$GITHUB_PASSWORD" ]]; then
                   mkdir << parameters.repo >>
                   cd << parameters.repo >>
-                  cp -r $CIRCLE_WORKING_DIRECTORY/../brew/* .
+                  cp -r $HOME/brew/* .
                   for file in *.rb; do
                     cat $file | sed -E "s/homebrew-[A-Z0-9a-z]+/<< parameters.repo >>/g" > $file.sponge
                     mv $file.sponge $file
@@ -749,7 +749,7 @@ commands:
           command: |
               if [[ -n "$GITHUB_USERNAME" && -n "$GITHUB_PASSWORD" ]]; then
                 pip3 install mkdocs mkdocs-material
-                cd $CIRCLE_WORKING_DIRECTORY/../docs
+                cd $HOME/docs
                 mkdocs build
                 cd site
                 git init -b gh-pages
@@ -812,7 +812,7 @@ jobs:
       - run:
           name: Initialize repository
           command: |
-              mkdir -p $CIRCLE_WORKING_DIRECTORY/../deb/$CODENAME/conf
+              mkdir -p $HOME/deb/$CODENAME/conf
               printf "Codename: $CODENAME\nSuite: stable\nComponents: main\nArchitectures: source amd64\nSignWith: default\n" > $_/distributions
       - package_deb:
           dir: doxide
@@ -832,7 +832,7 @@ jobs:
       - run:
           name: Remove unnecessary files
           command: |
-              rm -rf $CIRCLE_WORKING_DIRECTORY/../deb/$CODENAME/{conf,db}
+              rm -rf $HOME/deb/$CODENAME/{conf,db}
       - persist_to_workspace:
           root: ..
           paths:
@@ -869,7 +869,7 @@ jobs:
       - run:
           name: Initialize repository
           command: |
-              mkdir -p $CIRCLE_WORKING_DIRECTORY/../rpm/$CODENAME/{x86_64,src}
+              mkdir -p $HOME/rpm/$CODENAME/{x86_64,src}
               gpg --export --armor > public.key
               rpm --import public.key
               rm public.key
@@ -891,7 +891,7 @@ jobs:
       - run:
           name: Finalize repository
           command: |
-              cd $CIRCLE_WORKING_DIRECTORY/../rpm/$CODENAME
+              cd $HOME/rpm/$CODENAME
               createrepo .
               gpg --detach-sign --armor repodata/repomd.xml
               gpg --export --armor > repodata/repomd.xml.key
@@ -931,7 +931,7 @@ jobs:
       - run:
           name: Initialize repository
           command: |
-              mkdir -p $CIRCLE_WORKING_DIRECTORY/../brew
+              mkdir -p $HOME/brew
       - package_brew:
           dir: doxide
       - package_brew:
@@ -1053,7 +1053,7 @@ jobs:
       - run:
           name: Initialize docs
           command: |
-              mkdir -p $CIRCLE_WORKING_DIRECTORY/../docs/docs
+              mkdir -p $HOME/docs/docs
       - docs_birch:
           dir: libraries/Standard
       - docs_birch:
@@ -1063,8 +1063,8 @@ jobs:
       - run:
           name: Finalize docs
           command: |
-              cp Birch/mkdocs.yml $CIRCLE_WORKING_DIRECTORY/../docs/.
-              cp Birch/README.md $CIRCLE_WORKING_DIRECTORY/../docs/docs/index.md
+              cp Birch/mkdocs.yml $HOME/docs/.
+              cp Birch/README.md $HOME/docs/docs/index.md
       - persist_to_workspace:
           root: ..
           paths:
