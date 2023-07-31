@@ -1014,7 +1014,7 @@ jobs:
           name: Install dependencies
           command: |
             choco install -y cmake.portable sudo
-            cd contrib\libyaml
+            cd doxide\contrib\libyaml
             mkdir build
             cd build
             cmake .. -DCMAKE_INSTALL_PREFIX=c:\ProgramData\chocolatey
