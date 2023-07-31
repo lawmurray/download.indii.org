@@ -645,7 +645,7 @@ commands:
               mv $HOME/rpmbuild/RPMS/x86_64/*.rpm $HOME/rpm/$CODENAME/x86_64/.
               mv $HOME/rpmbuild/SRPMS/*.rpm $HOME/rpm/$CODENAME/src/.
 
-  package_brew:
+  package_mac:
     parameters:
       dir:
         description: Directory containing the package
@@ -667,7 +667,7 @@ commands:
               mv $TARNAME.rb.sponge $TARNAME.rb
               mv $TARNAME-$VERSION.tar.gz $TARNAME.rb $HOME/brew/.
 
-  deploy_repo:
+  deploy_linux:
     parameters:
       subdomain:
         description: Subdomain of repository, e.g. download.indii.org
@@ -717,7 +717,7 @@ commands:
                 --data '{"purge_everything":true}'
               sleep 30
 
-  deploy_brew:
+  deploy_mac:
       parameters:
         repo:
           description: GitHub repo of repository, e.g. homebrew-all
@@ -935,11 +935,8 @@ jobs:
           paths:
             - rpm
 
-  brew:
-    parameters: 
-      os:
-        type: string
-    executor: << parameters.os >>
+  mac:
+    executor: mac
     steps:
       - end_if_pull_request
       - environment
@@ -950,23 +947,23 @@ jobs:
           name: Initialize repository
           command: |
               mkdir -p $HOME/brew
-      - package_brew:
+      - package_mac:
           dir: doxide
-      - package_brew:
+      - package_mac:
           dir: Birch/birch
-      - package_brew:
+      - package_mac:
           dir: Birch/membirch
-      - package_brew:
+      - package_mac:
           dir: Birch/numbirch
-      - package_brew:
+      - package_mac:
           dir: Birch/libraries/Standard
-      - package_brew:
+      - package_mac:
           dir: Birch/libraries/Cairo
-      - package_brew:
+      - package_mac:
           dir: Birch/libraries/SQLite
 
       # stage now
-      - deploy_brew:
+      - deploy_mac:
           repo: homebrew-stage
 
       - persist_to_workspace:
@@ -981,7 +978,7 @@ jobs:
       - environment
       - attach_workspace:
           at: ..
-      - deploy_repo:
+      - deploy_linux:
           subdomain: stage.indii.org
 
   test:
@@ -1045,9 +1042,9 @@ jobs:
       - environment
       - attach_workspace:
           at: ..
-      - deploy_repo:
+      - deploy_linux:
           subdomain: download.indii.org
-      - deploy_brew:
+      - deploy_mac:
           repo: homebrew-all
       - deploy_docs:
           subdomain: docs.birch.sh
@@ -1090,11 +1087,7 @@ workflows:
           requires:
             - prepare
 
-      - brew:
-          matrix:
-            parameters:
-              os:
-                - mac
+      - mac:
           requires:
             - prepare
 
@@ -1105,7 +1098,7 @@ workflows:
               os:
                 - mac
           requires:
-            - brew
+            - mac
 
       - stage:
           requires:
