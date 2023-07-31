@@ -156,6 +156,17 @@ This software repository provides packages for [Doxide](https://doxide.org) and 
     sudo dnf install doxide birch
     ```
 
+??? info "Mageia 9 (x86_64)"
+    Add the repository:
+    ```
+    sudo dnf config-manager --add-repo https://download.indii.org/rpm/mageia/9/indii.org.repo
+    sudo dnf update
+    ```
+    Install packages:
+    ```
+    sudo dnf install doxide birch
+    ```
+
 ## :fontawesome-brands-apple: Mac
 
 Install [Homebrew](https://brew.sh) if not already. Add the tap:

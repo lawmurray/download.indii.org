@@ -122,6 +122,13 @@ executors:
     environment:
       CODENAME: mageia/8
 
+  mageia-9:
+    docker:
+      - image: mageia:9
+    resource_class: large
+    environment:
+      CODENAME: mageia/9
+
   mac:
     macos:
       xcode: 14.2.0
@@ -1150,6 +1157,7 @@ workflows:
                 - fedora-37
                 - fedora-38
                 - mageia-8
+                - mageia-9
           requires:
             - prepare
 
@@ -1193,6 +1201,7 @@ workflows:
                 - fedora-37
                 - fedora-38
                 - mageia-8
+                - mageia-9
           requires:
             - stage
 
