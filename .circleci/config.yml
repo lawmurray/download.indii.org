@@ -693,7 +693,8 @@ commands:
               cmake ..
               cmake --build . --config Release
               cmake --build . --config Release --target package
-              cp *.exe x64/Release/*.exe $HOME/win/.
+              cp *.exe $HOME\win\.
+              cp x64\Release\*.exe $HOME\win\.
 
   deploy:
     parameters:
