@@ -816,7 +816,6 @@ jobs:
   prepare:
     executor: default
     steps:
-      - end_if_pull_request
       - environment
       - checkout
 
@@ -885,7 +884,6 @@ jobs:
         type: string
     executor: << parameters.os >>
     steps:
-      - end_if_pull_request
       - environment
       - attach_workspace:
           at: ..
@@ -925,7 +923,6 @@ jobs:
         type: string
     executor: << parameters.os >>
     steps:
-      - end_if_pull_request
       - environment
       - attach_workspace:
           at: ..
@@ -967,7 +964,6 @@ jobs:
   mac:
     executor: mac
     steps:
-      - end_if_pull_request
       - environment
       - attach_workspace:
           at: ..
@@ -1003,7 +999,6 @@ jobs:
   win:
     executor: win
     steps:
-      - end_if_pull_request
       - run:
           name: Install dependencies
           command: |
