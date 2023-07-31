@@ -129,6 +129,17 @@ executors:
     environment:
       CODENAME: mac
 
+  win:
+    machine:
+      image: 'windows-server-2022-gui:current'
+      shell: powershell.exe -ExecutionPolicy Bypass
+    resource_class: windows.medium
+    environment:
+      CXXFLAGS: /I "c:\ProgramData\chocolatey\include"
+      LDFLAGS: /LIBPATH:"c:\ProgramData\chocolatey\lib"
+      CMAKE_GENERATOR: Visual Studio 17 2022
+      CMAKE_GENERATOR_PLATFORM: x64
+
 commands:
 
   environment:
@@ -667,7 +678,24 @@ commands:
               mv $TARNAME.rb.sponge $TARNAME.rb
               mv $TARNAME-$VERSION.tar.gz $TARNAME.rb $HOME/brew/.
 
-  deploy_linux:
+  package_win:
+    parameters:
+      dir:
+        description: Directory containing the package
+        type: string
+    steps:
+      - run:
+          name: Executable for << parameters.dir >>
+          command: |
+              cd << parameters.dir >>
+              mkdir build
+              cd build
+              cmake ..
+              cmake --build . --config Release
+              cmake --build . --config Release --target package
+              cp *.exe x64/Release/*.exe $HOME/win/.
+
+  deploy:
     parameters:
       subdomain:
         description: Subdomain of repository, e.g. download.indii.org
@@ -690,7 +718,8 @@ commands:
                 # copy over packages
                 cd site
                 mkdir rpm && cp -r $HOME/rpm/* rpm/.
-                mkdir deb && cp -r $HOME/deb/*/* deb/.  # merge repos
+                mkdir deb && cp -r $HOME/deb/*/* deb/.  # merge Debian repos
+                mkdir win && cp -r $HOME/win/* win/.
 
                 # finalize apt repo (add key)
                 gpg --export --armor > deb/Release.key
@@ -971,6 +1000,37 @@ jobs:
           paths:
             - brew
 
+  win:
+    executor: win
+    steps:
+      - end_if_pull_request
+      - run:
+          name: Install dependencies
+          command: |
+            choco install -y cmake.portable sudo
+            cd contrib\libyaml
+            mkdir build
+            cd build
+            cmake .. -DCMAKE_INSTALL_PREFIX=c:\ProgramData\chocolatey
+            cmake --build . --config Release
+            sudo cmake --install . --config Release
+            cd ..\..\..
+            sudo cp -r contrib\CLI11\include\CLI c:\ProgramData\chocolatey\include\.
+      - attach_workspace:
+          at: ..
+
+      - run:
+          name: Initialize repository
+          command: |
+              mkdir -p $HOME/win
+      - package_win:
+          dir: doxide
+
+      - persist_to_workspace:
+          root: ..
+          paths:
+            - win
+
   stage:
     executor: default
     steps:
@@ -978,7 +1038,7 @@ jobs:
       - environment
       - attach_workspace:
           at: ..
-      - deploy_linux:
+      - deploy:
           subdomain: stage.indii.org
 
   test:
@@ -1042,7 +1102,7 @@ jobs:
       - environment
       - attach_workspace:
           at: ..
-      - deploy_linux:
+      - deploy:
           subdomain: download.indii.org
       - deploy_mac:
           repo: homebrew-all
@@ -1091,6 +1151,10 @@ workflows:
           requires:
             - prepare
 
+      - win:
+          requires:
+            - prepare
+
       - test:
           matrix:
             alias: test_mac
@@ -1104,6 +1168,7 @@ workflows:
           requires:
             - deb
             - rpm
+            - win
 
       - test:
           matrix:
