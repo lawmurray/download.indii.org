@@ -448,14 +448,14 @@ commands:
           command: |
               git clone https://github.com/lawmurray/doxide.git
               cd doxide
-              git checkout `git describe --tags --abbrev=0`
+              git checkout $(git describe --tags --abbrev=0)
               git submodule update --init --recursive --depth 1
       - run:
           name: Checkout Birch latest tag
           command: |
               git clone https://github.com/lawmurray/Birch.git
               cd Birch
-              git checkout `git describe --tags --abbrev=0`
+              git checkout $(git describe --tags --abbrev=0)
 
   version:
     description: Update version number
@@ -468,13 +468,8 @@ commands:
           name: Update version number for << parameters.dir >>
           command: |
               cd << parameters.dir >>
-              TAG=`git describe --tags --abbrev=0`
-              if [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-                VERSION=`echo $TAG | sed -E 's/^v//'`
-              else
-                VERSION=0.0.0
-              fi
-              VERSION_SAFE=`echo $VERSION | sed -E 's/\./_/g'`
+              VERSION=$(git describe --tags --abbrev=0 | sed -E 's/^v//')
+              VERSION_SAFE=$(echo $VERSION | sed -E 's/\./_/g')
 
               for file in configure.ac Makefile.am Makefile CMakeLists.txt *.yml *.yaml *.json *.spec *.rb PKGBUILD; do
                 if [[ -e $file ]]; then
@@ -486,7 +481,7 @@ commands:
                 if [[ -e $file ]]; then
                   cat $file | sed -E "s|0\.0\.0-1|$VERSION-1~$CODENAME|g" | sed -E "s/0\.0\.0/$VERSION/g" | sed -E "s/0_0_0/$VERSION_SAFE/g" > $file.sponge
                   mv $file.sponge $file
-                  NEWNAME=`echo $file | sed -E "s/0\.0\.0/$VERSION/g"`
+                  NEWNAME=$(echo $file | sed -E "s/0\.0\.0/$VERSION/g")
                   if [[ "$NEWNAME" != "$file" ]]; then
                     mv $file $NEWNAME
                   fi
@@ -591,13 +586,8 @@ commands:
           name: Archive source for << parameters.dir >>
           command: |
               cd << parameters.dir >>
-              TARNAME=`echo << parameters.dir >> | sed -E 's|^.*/||'`
-              TAG=`git describe --tags --abbrev=0`
-              if [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-                VERSION=`echo $TAG | sed -E 's/^v//'`
-              else
-                VERSION=0.0.0
-              fi
+              TARNAME=$(echo << parameters.dir >> | sed -E 's|^.*/||')
+              VERSION=$(git describe --tags --abbrev=0 | sed -E 's/^v//')
               mkdir $TARNAME-$VERSION
               cp -r src contrib CMakeLists.txt README.md LICENSE $TARNAME-$VERSION/.
               tar czf $TARNAME-$VERSION.tar.gz $TARNAME-$VERSION
@@ -650,13 +640,8 @@ commands:
                 export JOBS=8
               fi
               cd << parameters.dir >>
-              TAG=`git describe --tags --abbrev=0`
-              if [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-                VERSION=`echo $TAG | sed -E 's/^v//'`
-              else
-                VERSION=0.0.0
-              fi
-              TARNAME=`ls *-$VERSION.tar.gz | grep -Eo '^[a-z\-]+[a-z]'`
+              VERSION=$(git describe --tags --abbrev=0 | sed -E 's/^v//')
+              TARNAME=$(ls *-$VERSION.tar.gz | grep -Eo '^[a-z\-]+[a-z]')
               mv $TARNAME-$VERSION.tar.gz ${TARNAME}_$VERSION.orig.tar.gz
               tar xzf ${TARNAME}_$VERSION.orig.tar.gz
               cp -r debian $TARNAME-$VERSION/.
@@ -690,13 +675,8 @@ commands:
                 export JOBS=8
               fi
               cd << parameters.dir >>
-              TAG=`git describe --tags --abbrev=0`
-              if [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-                VERSION=`echo $TAG | sed -E 's/^v//'`
-              else
-                VERSION=0.0.0
-              fi
-              TARNAME=`ls *-$VERSION.tar.gz | grep -Eo '^[a-z\-]+[a-z]'`
+              VERSION=$(git describe --tags --abbrev=0 | sed -E 's/^v//')
+              TARNAME=$(ls *-$VERSION.tar.gz | grep -Eo '^[a-z\-]+[a-z]')
               mkdir -p $HOME/rpmbuild/SOURCES
               mv $TARNAME-$VERSION.tar.gz $_/.
               rpmbuild --define="_topdir $HOME/rpmbuild" --define="_smp_mflags -j$JOBS" --define="debug_package %{nil}" -ba $TARNAME.spec
@@ -724,14 +704,9 @@ commands:
           name: Homebrew package for << parameters.dir >>
           command: |
               cd << parameters.dir >>
-              TAG=`git describe --tags --abbrev=0`
-              if [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-                VERSION=`echo $TAG | sed -E 's/^v//'`
-              else
-                VERSION=0.0.0
-              fi
-              TARNAME=`ls *-$VERSION.tar.gz | grep -Eo '^[a-z\-]+[a-z]'`
-              SHA256=($(sha256sum $TARNAME-$VERSION.tar.gz))
+              VERSION=$(git describe --tags --abbrev=0 | sed -E 's/^v//')
+              TARNAME=$(ls *-$VERSION.tar.gz | grep -Eo '^[a-z\-]+[a-z]')
+              SHA256=$(sha256sum $TARNAME-$VERSION.tar.gz)
               cat $TARNAME.rb | sed -E "s/sha256 \"[0-9a-f]+\"/sha256 \"$SHA256\"/g" > $TARNAME.rb.sponge
               mv $TARNAME.rb.sponge $TARNAME.rb
               mv $TARNAME-$VERSION.tar.gz $TARNAME.rb $HOME/brew/.
@@ -768,7 +743,7 @@ commands:
                 cd download.indii.org
 
                 # finalize front page (update subdomain)
-                for file in `ls mkdocs.yaml docs/*.md`; do
+                for file in $(ls mkdocs.yaml docs/*.md); do
                   cat $file | sed s/download\.indii\.org/<< parameters.subdomain >>/g > $file.sponge
                   mv $file.sponge $file
                 done
@@ -784,7 +759,7 @@ commands:
                 gpg --export --armor > deb/Release.key
 
                 # finalize rpm repos (add .repo file to each)
-                for codename in `ls rpm/*/*/repodata/repomd.xml rpm/*/*/*/repodata/repomd.xml | sed -E 's|^rpm/||' | sed -E 's|/repodata/repomd.xml$||'`; do
+                for codename in $(ls rpm/*/*/repodata/repomd.xml rpm/*/*/*/repodata/repomd.xml | sed -E 's|^rpm/||' | sed -E 's|/repodata/repomd.xml$||'); do
                   printf "[indii.org]\nname=indii.org\ntype=rpm-md\nbaseurl=https://<< parameters.subdomain >>/rpm/$codename\ngpgcheck=1\ngpgkey=https://<< parameters.subdomain >>/rpm/$codename/repodata/repomd.xml.key\nenabled=1\nautorefresh=1\n" > rpm/$codename/indii.org.repo
                 done
 
