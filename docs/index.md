@@ -158,26 +158,28 @@ This software repository provides packages for [Doxide](https://doxide.org) and 
 
 ## :fontawesome-brands-apple: Mac
 
-??? info "Homebrew"
-    Install [Homebrew](https://brew.sh) if not already. Add the tap:
-    ```sh
-    brew tap lawmurray/all
-    ```
-    Install packages:
-    ```
-    brew install doxide birch
-    ```
+Install [Homebrew](https://brew.sh) if not already. Add the tap:
+```sh
+brew tap lawmurray/all
+```
+Install packages:
+```
+brew install doxide birch
+```
 
 ## :fontawesome-brands-windows: Windows
 
-Native support is not yet provided, but you can install [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/install) with one of the Linux distributions above and follow the instructions for it.
+- [:material-download: Doxide installer](https://download.indii.org/win/doxide-installer.exe)
+- [:material-download: Doxide standalone executable](https://download.indii.org/win/doxide.exe) (place somewhere on your `PATH`, e.g. working directory)
+
+Birch is not available on Windows, at least natively, but you can install [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/install) with a Linux distribution of your choice from above, and install the package for it.
 
 ## :fontawesome-solid-file-zipper: Others: Install from source
 
-If a package is not available for your operating system or you have special requirements, you can install from source. See:
+If a package is not available for your operating system or you have special requirements, you can install from source. See further instructions in `README` files:
 
-- [Doxide README.md](https://github.com/lawmurray/doxide)
-- [Birch README.md](https://github.com/lawmurray/Birch)
+- [:simple-readme: Doxide](https://github.com/lawmurray/doxide)
+- [:simple-readme: Birch](https://github.com/lawmurray/Birch)
 
 ## About
 
