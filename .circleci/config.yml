@@ -560,8 +560,7 @@ commands:
           command: |
               cd Birch/<< parameters.dir >>
               birch docs
-              mkdir -p $HOME/docs/docs/<< parameters.dir >>
-              cp -r docs/* $_/.
+              cp -r docs $HOME/docs/docs/<< parameters.dir >>
 
   package_deb:
     parameters:
@@ -827,7 +826,7 @@ jobs:
       - run:
           name: Initialize docs
           command: |
-              mkdir -p docs/docs
+              mkdir -p $HOME/docs/docs
       - docs_birch:
           dir: libraries/Standard
       - docs_birch:
@@ -846,8 +845,7 @@ jobs:
       - persist_to_workspace:
           root: ..
           paths:
-            - doxide
-            - Birch
+            - project
             - docs
 
   deb:
