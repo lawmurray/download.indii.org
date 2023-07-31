@@ -561,7 +561,8 @@ commands:
           command: |
               cd Birch/<< parameters.dir >>
               birch docs
-              cp -r docs $HOME/docs/docs/<< parameters.dir >>
+              mkdir -p $HOME/docs/docs/<< parameters.dir >>
+              cp -r docs/* $_/.
 
   package_deb:
     parameters:
