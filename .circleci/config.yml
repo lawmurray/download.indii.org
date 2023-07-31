@@ -1006,6 +1006,8 @@ jobs:
   win:
     executor: win
     steps:
+      - attach_workspace:
+          at: ..
       - run:
           name: Install dependencies
           command: |
@@ -1016,8 +1018,6 @@ jobs:
             cmake .. -DCMAKE_INSTALL_PREFIX=c:\ProgramData\chocolatey
             cmake --build . --config Release
             sudo cmake --install . --config Release
-      - attach_workspace:
-          at: ..
 
       - run:
           name: Initialize repository
