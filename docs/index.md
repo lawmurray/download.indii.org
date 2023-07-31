@@ -145,10 +145,10 @@ This software repository provides packages for [Doxide](https://doxide.org) and 
 
 ## :fontawesome-brands-linux: Mageia
 
-??? info "Mageia 8 (x86_64)"
+??? info "Mageia Cauldron (x86_64)"
     Add the repository:
     ```
-    sudo dnf config-manager --add-repo https://download.indii.org/rpm/mageia/8/indii.org.repo
+    sudo dnf config-manager --add-repo https://download.indii.org/rpm/mageia/cauldron/indii.org.repo
     sudo dnf update
     ```
     Install packages:
@@ -156,10 +156,10 @@ This software repository provides packages for [Doxide](https://doxide.org) and 
     sudo dnf install doxide birch
     ```
 
-??? info "Mageia 9 (x86_64)"
+??? info "Mageia 8 (x86_64)"
     Add the repository:
     ```
-    sudo dnf config-manager --add-repo https://download.indii.org/rpm/mageia/9/indii.org.repo
+    sudo dnf config-manager --add-repo https://download.indii.org/rpm/mageia/8/indii.org.repo
     sudo dnf update
     ```
     Install packages:
