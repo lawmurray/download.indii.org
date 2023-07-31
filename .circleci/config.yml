@@ -122,13 +122,6 @@ executors:
     environment:
       CODENAME: mageia/8
 
-  mageia-cauldron:
-    docker:
-      - image: mageia:cauldron
-    resource_class: large
-    environment:
-      CODENAME: mageia/cauldron
-
   mac:
     macos:
       xcode: 14.2.0
@@ -1144,7 +1137,6 @@ workflows:
                 - fedora-37
                 - fedora-38
                 - mageia-8
-                - mageia-cauldron
           requires:
             - prepare
 
@@ -1188,7 +1180,6 @@ workflows:
                 - fedora-37
                 - fedora-38
                 - mageia-8
-                - mageia-cauldron
           requires:
             - stage
 
