@@ -969,8 +969,8 @@ jobs:
   win:
     executor: win
     steps:
+      - checkout  # required for environment_win
       - environment_win
-      - checkout
       - prepare_win
 
       - run:
