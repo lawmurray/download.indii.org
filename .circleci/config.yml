@@ -432,14 +432,14 @@ commands:
               git checkout `git describe --tags --abbrev=0`
 
   version:
-    description: Update version number across files
+    description: Update version number
     parameters:
       dir:
         description: Directory in which to update version number
         type: string
     steps:
       - run:
-          name: Update version number
+          name: Update version number for << parameters.dir >>
           command: |
               cd << parameters.dir >>
               TAG=`git describe --tags --abbrev=0`
@@ -542,6 +542,19 @@ commands:
               ./bootstrap
               ./configure --prefix="$HOME" $CONFIGURE_FLAGS || (cat config.log && exit 1)
               make install
+
+  clean_cpp:
+    description: Clean a C++ package
+    parameters:
+      dir:
+        description: Directory containing the package
+        type: string
+    steps:
+      - run:
+          name: Clean << parameters.dir >>
+          command: |
+              cd << parameters.dir >>
+              make distclean
 
   docs_birch:
     description: Document Birch package
@@ -780,18 +793,31 @@ commands:
               fi
 
 jobs:
-  deb:
-    parameters: 
-      os:
-        type: string
-    executor: << parameters.os >>
+  prepare:
+    executor: default
     steps:
       - end_if_pull_request
       - environment
       - checkout
 
+      - version:
+          dir: doxide
+      - version:
+          dir: Birch/birch
+      - version:
+          dir: Birch/membirch
+      - version:
+          dir: Birch/numbirch
+      - version:
+          dir: Birch/libraries/Standard
+      - version:
+          dir: Birch/libraries/Cairo
+      - version:
+          dir: Birch/libraries/SQLite
+
+      # build birch, needed for source_birch and docs_birch
       - build_cpp:
-          dir: Birch/birch  # needed for source_birch
+          dir: Birch/birch
 
       - source_cmake:
           dir: doxide
@@ -807,6 +833,43 @@ jobs:
           dir: Birch/libraries/Cairo
       - source_birch:
           dir: Birch/libraries/SQLite
+
+      - run:
+          name: Initialize docs
+          command: |
+              mkdir -p docs/docs
+      - docs_birch:
+          dir: libraries/Standard
+      - docs_birch:
+          dir: libraries/Cairo
+      - docs_birch:
+          dir: libraries/SQLite
+      - run:
+          name: Finalize docs
+          command: |
+              cp Birch/mkdocs.yml $HOME/docs/.
+              cp Birch/README.md $HOME/docs/docs/index.md
+
+      - clean_cpp:
+          dir: Birch/birch
+
+      - persist_to_workspace:
+          root: ..
+          paths:
+            - doxide
+            - Birch
+            - docs
+
+  deb:
+    parameters: 
+      os:
+        type: string
+    executor: << parameters.os >>
+    steps:
+      - end_if_pull_request
+      - environment
+      - attach_workspace:
+          at: ..
 
       - run:
           name: Initialize repository
@@ -845,25 +908,8 @@ jobs:
     steps:
       - end_if_pull_request
       - environment
-      - checkout
-
-      - build_cpp:
-          dir: Birch/birch  # needed for source_birch
-
-      - source_cmake:
-          dir: doxide
-      - source_cpp:
-          dir: Birch/birch
-      - source_cpp:
-          dir: Birch/membirch
-      - source_cpp:
-          dir: Birch/numbirch
-      - source_birch:
-          dir: Birch/libraries/Standard
-      - source_birch:
-          dir: Birch/libraries/Cairo
-      - source_birch:
-          dir: Birch/libraries/SQLite
+      - attach_workspace:
+          at: ..
 
       - run:
           name: Initialize repository
@@ -907,25 +953,8 @@ jobs:
     steps:
       - end_if_pull_request
       - environment
-      - checkout
-
-      - build_cpp:
-          dir: Birch/birch  # needed for source_birch
-
-      - source_cmake:
-          dir: doxide
-      - source_cpp:
-          dir: Birch/birch
-      - source_cpp:
-          dir: Birch/membirch
-      - source_cpp:
-          dir: Birch/numbirch
-      - source_birch:
-          dir: Birch/libraries/Standard
-      - source_birch:
-          dir: Birch/libraries/Cairo
-      - source_birch:
-          dir: Birch/libraries/SQLite
+      - attach_workspace:
+          at: ..
 
       - run:
           name: Initialize repository
@@ -1039,40 +1068,10 @@ jobs:
           repo: homebrew-stage
           branch: master
 
-  docs:
-    executor: default
-    steps:
-      - end_if_pull_request
-      - environment
-      - checkout
-
-      - build_cpp:
-          dir: Birch/birch  # needed for birch docs
-
-      - run:
-          name: Initialize docs
-          command: |
-              mkdir -p $HOME/docs/docs
-      - docs_birch:
-          dir: libraries/Standard
-      - docs_birch:
-          dir: libraries/Cairo
-      - docs_birch:
-          dir: libraries/SQLite
-      - run:
-          name: Finalize docs
-          command: |
-              cp Birch/mkdocs.yml $HOME/docs/.
-              cp Birch/README.md $HOME/docs/docs/index.md
-      - persist_to_workspace:
-          root: ..
-          paths:
-            - docs
-
 workflows:
   all:
     jobs:
-      - docs
+      - prepare
 
       - deb:
           matrix:
@@ -1085,25 +1084,29 @@ workflows:
                 - jammy
                 - kinetic
                 - lunar
+          requires:
+            - prepare
 
       - rpm:
           matrix:
             parameters:
               os:
-                #- opensuse-leap-15-4
-                #- opensuse-leap-15-5
                 - opensuse-tumbleweed
                 - fedora-35
                 - fedora-36
                 - fedora-37
                 - fedora-38
                 - mageia-8
+          requires:
+            - prepare
 
       - brew:
           matrix:
             parameters:
               os:
                 - mac
+          requires:
+            - prepare
 
       - test:
           matrix:
@@ -1124,15 +1127,12 @@ workflows:
             alias: test_linux
             parameters:
               os:
-                #- buster
                 - bullseye
                 - bookworm
                 - focal
                 - jammy
                 - kinetic
                 - lunar
-                #- opensuse-leap-15-4
-                #- opensuse-leap-15-5
                 - opensuse-tumbleweed
                 - fedora-35
                 - fedora-36
@@ -1147,7 +1147,6 @@ workflows:
           requires:
             - test_mac
             - test_linux
-            - docs
 
       - deploy:
           requires:
