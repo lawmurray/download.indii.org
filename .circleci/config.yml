@@ -8,6 +8,7 @@ executors:
     environment:
       CODENAME: default
       DEBIAN_FRONTEND: noninteractive
+      MAKEFLAGS: -j8
 
   buster:
     docker:
