@@ -176,6 +176,7 @@ commands:
                   libjemalloc-dev \
                   libeigen3-dev \
                   libyaml-dev \
+                  libcli11-dev \
                   libboost-math-dev \
                   libsqlite3-dev \
                   libcairo2-dev \
@@ -210,6 +211,7 @@ commands:
                     jemalloc \
                     eigen \
                     libyaml \
+                    cli11 \
                     boost \
                     sqlite \
                     cairo
@@ -237,6 +239,7 @@ commands:
                   bison \
                   gcc-c++ \
                   libyaml-devel \
+                  cli11-devel \
                   jemalloc-devel \
                   boost-devel \
                   eigen3-devel \
@@ -271,6 +274,7 @@ commands:
                   bison \
                   gcc-c++ \
                   libyaml-devel \
+                  cli11-devel \
                   jemalloc-devel \
                   boost-devel \
                   eigen3-devel \
@@ -307,6 +311,7 @@ commands:
                   bison \
                   gcc-c++ \
                   yaml-devel \
+                  cli11-devel \
                   jemalloc-devel \
                   boost-devel \
                   eigen3-devel \
@@ -341,6 +346,7 @@ commands:
                   gdb \
                   jemalloc \
                   libyaml \
+                  cli11 \
                   boost \
                   eigen \
                   cairo \
@@ -373,6 +379,7 @@ commands:
                   libjemalloc-dev \
                   libeigen3-dev \
                   libyaml-dev \
+                  libcli11-dev \
                   libboost-math-dev \
                   libsqlite3-dev \
                   libcairo2-dev \
@@ -436,6 +443,10 @@ commands:
               cd doxide
               git checkout `git describe --tags --abbrev=0`
               git submodule update --init --recursive --depth 1
+              if [[ "$CODENAME" =~ "mageia" ]]; then
+                # install CLI11, as no package available
+                sudo cp -r contrib/CLI11/include/CLI /usr/local/include/.
+              fi
       - run:
           name: Checkout Birch latest tag
           command: |
@@ -685,7 +696,7 @@ commands:
         type: string
     steps:
       - run:
-          name: Executable for << parameters.dir >>
+          name: Installer for << parameters.dir >>
           command: |
               cd << parameters.dir >>
               mkdir build
