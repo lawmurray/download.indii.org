@@ -411,6 +411,20 @@ commands:
               git config --global user.name "Birch Machine"
               git config --global user.email "birch-machine@indii.org"
 
+  environment_win:
+    environment:
+    steps:
+      - run:
+          name: Install dependencies
+          command: |
+            choco install -y cmake.portable nsis.portable sudo
+            cd doxide\contrib\libyaml
+            mkdir build
+            cd build
+            cmake .. -DCMAKE_INSTALL_PREFIX=c:\ProgramData\chocolatey
+            cmake --build . --config Release
+            sudo cmake --install . --config Release
+
   install_cuda_prereq:
     steps:
       - run:
@@ -479,6 +493,63 @@ commands:
                 fi
               done
 
+  version_win:
+    description: Update version number
+    parameters:
+      dir:
+        description: Directory in which to update version number
+        type: string
+    steps:
+      - run:
+          name: Update version number for << parameters.dir >>
+          command: |
+              cd << parameters.dir >>
+              $version=$(git describe --tags --abbrev=0).Substring(1)
+              $contents = Get-Content -Path CMakeLists.txt
+              $contents = $contents -replace '0.0.0', $version
+              $contents | Set-Content -Path CMakeLists.txt
+
+  prepare:
+    steps:
+      - version:
+          dir: doxide
+      - version:
+          dir: Birch/birch
+      - version:
+          dir: Birch/membirch
+      - version:
+          dir: Birch/numbirch
+      - version:
+          dir: Birch/libraries/Standard
+      - version:
+          dir: Birch/libraries/Cairo
+      - version:
+          dir: Birch/libraries/SQLite
+
+      # build birch, needed for source_birch and docs_birch
+      - build_cpp:
+          dir: Birch/birch
+
+      - source_cmake:
+          dir: doxide
+      - source_cpp:
+          dir: Birch/birch
+      - source_cpp:
+          dir: Birch/membirch
+      - source_cpp:
+          dir: Birch/numbirch
+      - source_birch:
+          dir: Birch/libraries/Standard
+      - source_birch:
+          dir: Birch/libraries/Cairo
+      - source_birch:
+          dir: Birch/libraries/SQLite
+
+  prepare_win:
+    steps:
+      - version_win:
+          dir: doxide
+
   source_cpp:
     description: Archive source for C++ package
     parameters:
@@ -546,19 +617,6 @@ commands:
               ./bootstrap
               ./configure --prefix="$HOME" $CONFIGURE_FLAGS || (cat config.log && exit 1)
               make install
-
-  clean_cpp:
-    description: Clean a C++ package
-    parameters:
-      dir:
-        description: Directory containing the package
-        type: string
-    steps:
-      - run:
-          name: Clean << parameters.dir >>
-          command: |
-              cd << parameters.dir >>
-              make distclean
 
   docs_birch:
     description: Document Birch package
@@ -814,70 +872,6 @@ commands:
               fi
 
 jobs:
-  prepare:
-    executor: default
-    steps:
-      - environment
-      - checkout
-
-      - version:
-          dir: doxide
-      - version:
-          dir: Birch/birch
-      - version:
-          dir: Birch/membirch
-      - version:
-          dir: Birch/numbirch
-      - version:
-          dir: Birch/libraries/Standard
-      - version:
-          dir: Birch/libraries/Cairo
-      - version:
-          dir: Birch/libraries/SQLite
-
-      # build birch, needed for source_birch and docs_birch
-      - build_cpp:
-          dir: Birch/birch
-
-      - source_cmake:
-          dir: doxide
-      - source_cpp:
-          dir: Birch/birch
-      - source_cpp:
-          dir: Birch/membirch
-      - source_cpp:
-          dir: Birch/numbirch
-      - source_birch:
-          dir: Birch/libraries/Standard
-      - source_birch:
-          dir: Birch/libraries/Cairo
-      - source_birch:
-          dir: Birch/libraries/SQLite
-
-      - run:
-          name: Initialize docs
-          command: |
-              mkdir -p $HOME/docs/docs
-      - docs_birch:
-          dir: libraries/Standard
-      - docs_birch:
-          dir: libraries/Cairo
-      - docs_birch:
-          dir: libraries/SQLite
-      - run:
-          name: Finalize docs
-          command: |
-              cp Birch/mkdocs.yml $HOME/docs/.
-              cp Birch/README.md $HOME/docs/docs/index.md
-
-      - clean_cpp:
-          dir: Birch/birch
-
-      - persist_to_workspace:
-          root: ..
-          paths:
-            - project
-            - docs
 
   deb:
     parameters: 
@@ -886,8 +880,8 @@ jobs:
     executor: << parameters.os >>
     steps:
       - environment
-      - attach_workspace:
-          at: ..
+      - checkout
+      - prepare
 
       - run:
           name: Initialize repository
@@ -925,8 +919,8 @@ jobs:
     executor: << parameters.os >>
     steps:
       - environment
-      - attach_workspace:
-          at: ..
+      - checkout
+      - prepare
 
       - run:
           name: Initialize repository
@@ -966,8 +960,8 @@ jobs:
     executor: mac
     steps:
       - environment
-      - attach_workspace:
-          at: ..
+      - checkout
+      - prepare
 
       - run:
           name: Initialize repository
@@ -1000,18 +994,9 @@ jobs:
   win:
     executor: win
     steps:
-      - attach_workspace:
-          at: ..
-      - run:
-          name: Install dependencies
-          command: |
-            choco install -y cmake.portable nsis.portable sudo
-            cd doxide\contrib\libyaml
-            mkdir build
-            cd build
-            cmake .. -DCMAKE_INSTALL_PREFIX=c:\ProgramData\chocolatey
-            cmake --build . --config Release
-            sudo cmake --install . --config Release
+      - environment_win
+      - checkout
+      - prepare_win
 
       - run:
           name: Initialize repository
@@ -1024,6 +1009,33 @@ jobs:
           root: ..
           paths:
             - win
+
+  docs:
+    executor: default
+    steps:
+      - environment
+      - checkout
+      - prepare
+      - run:
+          name: Initialize docs
+          command: |
+              mkdir -p $HOME/docs/docs
+      - docs_birch:
+          dir: libraries/Standard
+      - docs_birch:
+          dir: libraries/Cairo
+      - docs_birch:
+          dir: libraries/SQLite
+      - run:
+          name: Finalize docs
+          command: |
+              cp Birch/mkdocs.yml $HOME/docs/.
+              cp Birch/README.md $HOME/docs/docs/index.md
+
+      - persist_to_workspace:
+          root: ..
+          paths:
+            - docs
 
   stage:
     executor: default
@@ -1112,8 +1124,6 @@ jobs:
 workflows:
   all:
     jobs:
-      - prepare
-
       - deb:
           matrix:
             parameters:
@@ -1125,8 +1135,6 @@ workflows:
                 - jammy
                 - kinetic
                 - lunar
-          requires:
-            - prepare
 
       - rpm:
           matrix:
@@ -1138,16 +1146,9 @@ workflows:
                 - fedora-37
                 - fedora-38
                 - mageia-8
-          requires:
-            - prepare
 
-      - mac:
-          requires:
-            - prepare
-
-      - win:
-          requires:
-            - prepare
+      - mac
+      - win
 
       - test:
           matrix:
