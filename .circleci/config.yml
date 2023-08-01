@@ -1124,6 +1124,7 @@ workflows:
 
       - mac
       - win
+      - docs
 
       - test:
           matrix:
@@ -1165,6 +1166,7 @@ workflows:
           requires:
             - test_mac
             - test_linux
+            - docs
 
       - deploy:
           requires:
