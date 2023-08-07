@@ -417,7 +417,7 @@ commands:
       - run:
           name: Install dependencies
           command: |
-            choco install -y cmake.portable nsis.portable sudo
+            choco install -y cmake.portable nsis.portable sudo checksum
             cd doxide\contrib\libyaml
             mkdir build
             cd build
@@ -728,6 +728,9 @@ commands:
               cmake --build . --config Release --target package
               cp *.exe $HOME\win\.
               cp Release\*.exe $HOME\win\.
+              cd $HOME\win
+              checksum -t sha256 doxide.exe > doxide.exe.sha256
+              checksum -t sha256 doxide-installer.exe > doxide-installer.exe.sha256
 
   deploy:
     parameters:

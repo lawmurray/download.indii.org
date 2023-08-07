@@ -169,17 +169,19 @@ brew install doxide birch
 
 ## :fontawesome-brands-windows: Windows
 
-- [:material-download: Doxide installer](https://download.indii.org/win/doxide-installer.exe)
-- [:material-download: Doxide standalone executable](https://download.indii.org/win/doxide.exe) (place somewhere on your `PATH`, e.g. working directory)
+[:material-download: Doxide installer](https://download.indii.org/win/doxide-installer.exe){ .md-button } [:material-download: Doxide program only](https://download.indii.org/win/doxide.exe){ .md-button }
+
+- [Checksum for Doxide installer](https://download.indii.org/win/doxide-installer.exe.sha256)
+- [Checksum for Doxide program only](https://download.indii.org/win/doxide.exe.sha256)
 
 Birch is not available on Windows, at least natively, but you can install [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/install) with a Linux distribution of your choice from above, and install the package for it.
 
 ## :fontawesome-solid-file-zipper: Others: Install from source
 
-If a package is not available for your operating system or you have special requirements, you can install from source. See further instructions in `README` files:
+If a package is not available for your operating system or you have special requirements, you can install from source. See further instructions:
 
-- [:simple-readme: Doxide](https://github.com/lawmurray/doxide)
-- [:simple-readme: Birch](https://github.com/lawmurray/Birch)
+[:simple-readme: Doxide from source](https://github.com/lawmurray/doxide){ .md-button }
+[:simple-readme: Birch from source](https://github.com/lawmurray/Birch){ .md-button }
 
 ## About
 
