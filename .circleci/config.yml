@@ -50,14 +50,6 @@ executors:
       CODENAME: jammy
       DEBIAN_FRONTEND: noninteractive
 
-  kinetic:
-    docker:
-      - image: ubuntu:kinetic
-    resource_class: large
-    environment:
-      CODENAME: kinetic
-      DEBIAN_FRONTEND: noninteractive
-
   lunar:
     docker:
       - image: ubuntu:lunar
@@ -1111,7 +1103,6 @@ workflows:
                 - bookworm
                 - focal
                 - jammy
-                - kinetic
                 - lunar
 
       - rpm:
@@ -1153,7 +1144,6 @@ workflows:
                 - bookworm
                 - focal
                 - jammy
-                - kinetic
                 - lunar
                 - opensuse-tumbleweed
                 - fedora-35
