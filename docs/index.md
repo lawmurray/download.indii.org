@@ -22,18 +22,6 @@ This software repository provides packages for [Doxide](https://doxide.org) and 
     sudo apt install doxide birch
     ```
 
-??? info "Ubuntu 22.10 Kinetic Kudu (amd64)"
-    Add the repository:
-    ```
-    echo 'deb http://download.indii.org/deb kinetic main' | sudo tee /etc/apt/sources.list.d/indii.org.list
-    curl -fsSL https://download.indii.org/deb/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/indii.org.gpg > /dev/null
-    sudo apt update
-    ```
-    Install packages:
-    ```
-    sudo apt install doxide birch
-    ```
-
 ??? info "Ubuntu 22.04 Jammy Jellyfish (amd64)"
     Add the repository:
     ```
