@@ -220,6 +220,7 @@ commands:
                   zstd \
                   curl \
                   ca-certificates \
+                  awk \
                   make \
                   autoconf \
                   automake \
