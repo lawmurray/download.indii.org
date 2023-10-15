@@ -50,6 +50,14 @@ executors:
       CODENAME: jammy
       DEBIAN_FRONTEND: noninteractive
 
+  mantic:
+    docker:
+      - image: ubuntu:mantic
+    resource_class: large
+    environment:
+      CODENAME: mantic
+      DEBIAN_FRONTEND: noninteractive
+
   lunar:
     docker:
       - image: ubuntu:lunar
@@ -1105,6 +1113,7 @@ workflows:
                 - focal
                 - jammy
                 - lunar
+                - mantic
 
       - rpm:
           matrix:
@@ -1146,6 +1155,7 @@ workflows:
                 - focal
                 - jammy
                 - lunar
+                - mantic
                 - opensuse-tumbleweed
                 - fedora-35
                 - fedora-36

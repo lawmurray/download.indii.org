@@ -10,6 +10,18 @@ This software repository provides packages for [Doxide](https://doxide.org) and 
 
 ## :fontawesome-brands-ubuntu: Ubuntu
 
+??? info "Ubuntu 23.10 Mantic Minotaur (amd64)"
+    Add the repository:
+    ```
+    echo 'deb http://download.indii.org/deb mantic main' | sudo tee /etc/apt/sources.list.d/indii.org.list
+    curl -fsSL https://download.indii.org/deb/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/indii.org.gpg > /dev/null
+    sudo apt update
+    ```
+    Install packages:
+    ```
+    sudo apt install doxide birch
+    ```
+
 ??? info "Ubuntu 23.04 Lunar Lobster (amd64)"
     Add the repository:
     ```
