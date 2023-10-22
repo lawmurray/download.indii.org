@@ -441,7 +441,7 @@ commands:
               circleci step halt
             fi
 
-  checkout:
+  checkout_packages:
     description: Checkout code from Git
     steps:
       - run:
@@ -860,6 +860,7 @@ jobs:
     steps:
       - environment
       - checkout
+      - checkout_packages
       - prepare
 
       - run:
@@ -899,6 +900,7 @@ jobs:
     steps:
       - environment
       - checkout
+      - checkout_packages
       - prepare
 
       - run:
@@ -940,6 +942,7 @@ jobs:
     steps:
       - environment
       - checkout
+      - checkout_packages
       - prepare
 
       - run:
@@ -974,6 +977,7 @@ jobs:
     executor: win
     steps:
       - checkout  # required for environment_win
+      - checkout_packages
       - environment_win
       - prepare_win
 
@@ -994,6 +998,7 @@ jobs:
     steps:
       - environment
       - checkout
+      - checkout_packages
       - prepare
       - run:
           name: Initialize docs
