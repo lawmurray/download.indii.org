@@ -870,19 +870,24 @@ jobs:
               printf "Codename: $CODENAME\nSuite: stable\nComponents: main\nArchitectures: source amd64\nSignWith: default\n" > $_/distributions
       - package_deb:
           dir: doxide
-      - package_deb:
-          dir: Birch/birch
-      - package_deb:
-          dir: Birch/membirch
-      - install_cuda_prereq
-      - package_deb:
-          dir: Birch/numbirch
-      - package_deb:
-          dir: Birch/libraries/Standard
-      - package_deb:
-          dir: Birch/libraries/Cairo
-      - package_deb:
-          dir: Birch/libraries/SQLite
+      - when:
+          condition:
+            not:
+              equal: [<< parameters.os >>, mantic]  # does not support CUDA
+          steps:
+          - package_deb:
+              dir: Birch/birch
+          - package_deb:
+              dir: Birch/membirch
+          - install_cuda_prereq
+          - package_deb:
+              dir: Birch/numbirch
+          - package_deb:
+              dir: Birch/libraries/Standard
+          - package_deb:
+              dir: Birch/libraries/Cairo
+          - package_deb:
+              dir: Birch/libraries/SQLite
       - run:
           name: Remove unnecessary files
           command: |
@@ -1064,7 +1069,10 @@ jobs:
                 echo "deb https://stage.indii.org/deb $CODENAME main" | tee /etc/apt/sources.list.d/indii.org.list
                 curl -fsSL https://stage.indii.org/deb/Release.key | gpg --dearmor | tee /etc/apt/trusted.gpg.d/indii.org.gpg > /dev/null
                 apt update --assume-yes
-                apt install --assume-yes --install-recommends doxide birch
+                apt install --assume-yes --install-recommends doxide
+                if [[ "$CODENAME" != "mantic" ]]; then
+                  apt install --assume-yes --install-recommends birch
+                fi
               fi
       - run:
           name: Test Doxide
@@ -1074,16 +1082,21 @@ jobs:
             doxide init
             cd ..
             rm -rf hello
-      - run:
-          name: Test Birch
-          command: |
-            mkdir hello
-            cd hello
-            birch init
-            birch build
-            birch hello
-            cd ..
-            rm -rf hello
+      - when:
+          condition:
+            not:
+              equal: [<< parameters.os >>, mantic]
+          steps:
+          - run:
+              name: Test Birch
+              command: |
+                mkdir hello
+                cd hello
+                birch init
+                birch build
+                birch hello
+                cd ..
+                rm -rf hello
 
   deploy:
     executor: default
@@ -1112,7 +1125,6 @@ workflows:
           matrix:
             parameters:
               os:
-                #- buster
                 - bullseye
                 - bookworm
                 - focal
