@@ -636,7 +636,7 @@ commands:
               if [[ '<< parameters.dir >>' =~ 'libraries/Standard' ]]; then
                 export JOBS=2  # high memory use in single thread
               elif [[ '<< parameters.dir >>' =~ 'numbirch' ]]; then
-                export JOBS=6
+                export JOBS=4
               else
                 export JOBS=8
               fi
@@ -671,7 +671,7 @@ commands:
               if [[ '<< parameters.dir >>' =~ 'libraries/Standard' ]]; then
                 export JOBS=2  # high memory use in single thread
               elif [[ '<< parameters.dir >>' =~ 'numbirch' ]]; then
-                export JOBS=6
+                export JOBS=4
               else
                 export JOBS=8
               fi
