@@ -115,6 +115,13 @@ executors:
     environment:
       CODENAME: fedora/38
 
+  fedora-39:
+    docker:
+      - image: registry.fedoraproject.org/fedora:39
+    resource_class: large
+    environment:
+      CODENAME: fedora/39
+
   mageia-8:
     docker:
       - image: mageia:8
@@ -1141,6 +1148,7 @@ workflows:
                 - fedora-36
                 - fedora-37
                 - fedora-38
+                - fedora-39
                 - mageia-8
 
       - mac
@@ -1178,6 +1186,7 @@ workflows:
                 - fedora-36
                 - fedora-37
                 - fedora-38
+                - fedora-39
                 - mageia-8
           requires:
             - stage
