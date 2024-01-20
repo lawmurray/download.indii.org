@@ -86,6 +86,17 @@ This software repository provides packages for [Doxide](https://doxide.org) and 
 
 ## :fontawesome-brands-fedora: Fedora
 
+??? info "Fedora 39 (x86_64)"
+    Add the repository:
+    ```
+    sudo dnf config-manager --add-repo https://download.indii.org/rpm/fedora/39/indii.org.repo
+    sudo dnf update
+    ```
+    Install packages:
+    ```
+    sudo dnf install doxide birch
+    ```
+
 ??? info "Fedora 38 (x86_64)"
     Add the repository:
     ```
@@ -141,19 +152,6 @@ This software repository provides packages for [Doxide](https://doxide.org) and 
     Install packages:
     ```
     sudo zypper install doxide birch
-    ```
-
-## :fontawesome-brands-linux: Mageia
-
-??? info "Mageia 8 (x86_64)"
-    Add the repository:
-    ```
-    sudo dnf config-manager --add-repo https://download.indii.org/rpm/mageia/8/indii.org.repo
-    sudo dnf update
-    ```
-    Install packages:
-    ```
-    sudo dnf install doxide birch
     ```
 
 ## :fontawesome-brands-apple: Mac
