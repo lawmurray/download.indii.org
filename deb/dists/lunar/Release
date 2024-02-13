@@ -1,0 +1,26 @@
+Suite: stable
+Codename: lunar
+Date: Tue, 13 Feb 2024 01:04:14 UTC
+Architectures: amd64
+Components: main
+MD5Sum:
+ 078a6b42d1aa0237d8444e7a33d80886 9768 main/binary-amd64/Packages
+ cb4aa84d9ccbae9578316fe64a3abb65 2918 main/binary-amd64/Packages.gz
+ 82a1ae90445e5284617f8a8cc3a53fa4 52 main/binary-amd64/Release
+ 72f61bfd7895fb0aec638a2968c36987 9238 main/source/Sources
+ 4894a135a6a1b2115193c70e993001b6 2789 main/source/Sources.gz
+ 2a323edc4e7693b3b1ac9f71443ad683 53 main/source/Release
+SHA1:
+ a832136951bfdb7ba1dc889f2c977fb023aab087 9768 main/binary-amd64/Packages
+ 8aae50de990c1bc8ce2915ed58998c9598c72e58 2918 main/binary-amd64/Packages.gz
+ 9b61d92e2c42866227d305db51276f4714da5cd9 52 main/binary-amd64/Release
+ 6c2e64c6746086247a2922d9738066047fc2e049 9238 main/source/Sources
+ f4354e0f727e68742be991086da6312f80e54b14 2789 main/source/Sources.gz
+ 22270126d2c06a44709ced469ca246a21f5b6c2e 53 main/source/Release
+SHA256:
+ 05e7d6d22698c1fe0309ac90063520fb4e5f9b95b05af231be834deef5d2e32b 9768 main/binary-amd64/Packages
+ b1f9b2c2051fd4970641a259252d73926f08e2ae016a7ddd4cfd1bba28b875f5 2918 main/binary-amd64/Packages.gz
+ 5d14a4f1b270a16b7797dfa013f0d0d3325c616762714c6e9a34295a4d9be351 52 main/binary-amd64/Release
+ fdd496a733d69db22ae276060c9b383ded7a687c1fae764ab2f6940e7ce4f463 9238 main/source/Sources
+ 174da29d0cf166e9ecf1490fc1121fc66716daa142bab2abe35c960a55a656c2 2789 main/source/Sources.gz
+ 33740b7ffc6ab6c9ce665b4b96de6606f3a3ace3f2cb36aec441602f84d664b3 53 main/source/Release

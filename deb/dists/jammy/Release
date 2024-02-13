@@ -1,0 +1,26 @@
+Suite: stable
+Codename: jammy
+Date: Tue, 13 Feb 2024 01:04:14 UTC
+Architectures: amd64
+Components: main
+MD5Sum:
+ 33b7d4e9d557c108d25e7cc46cb2c37b 9768 main/binary-amd64/Packages
+ 078198ddf85429bdad2bf469c402001f 2917 main/binary-amd64/Packages.gz
+ 82a1ae90445e5284617f8a8cc3a53fa4 52 main/binary-amd64/Release
+ 1366c96aed5ca7a0a0abcd80becc533a 9238 main/source/Sources
+ 887a033008f3611a2099b41a7cbba893 2789 main/source/Sources.gz
+ 2a323edc4e7693b3b1ac9f71443ad683 53 main/source/Release
+SHA1:
+ 51dcb548312cd84c257e3766328c0d7dcd43ed8d 9768 main/binary-amd64/Packages
+ d5823313956017d957bc9e31de24c766fcfc42e9 2917 main/binary-amd64/Packages.gz
+ 9b61d92e2c42866227d305db51276f4714da5cd9 52 main/binary-amd64/Release
+ b5b3072fec77409aab1c643a943a155c75bfc9b9 9238 main/source/Sources
+ 94e4994035878c14edeb9a6c5d843c685570ca80 2789 main/source/Sources.gz
+ 22270126d2c06a44709ced469ca246a21f5b6c2e 53 main/source/Release
+SHA256:
+ a6f1323621885a3bdb10ecf9df845dfdbc8cf8909fb4b921470c8b887876a37f 9768 main/binary-amd64/Packages
+ fa718e8ec7533d9f2914799fc85162f3452b49d7945309904b7f5893cef61c86 2917 main/binary-amd64/Packages.gz
+ 5d14a4f1b270a16b7797dfa013f0d0d3325c616762714c6e9a34295a4d9be351 52 main/binary-amd64/Release
+ 24ccf5fb7c9c0ccdd547ff86f37631654f06eaaf43070fc8303f636787b7eede 9238 main/source/Sources
+ a6058c37a1aafd0ec1cded136133ba28aacdf06174012ad2aeff973de99f8aee 2789 main/source/Sources.gz
+ 33740b7ffc6ab6c9ce665b4b96de6606f3a3ace3f2cb36aec441602f84d664b3 53 main/source/Release

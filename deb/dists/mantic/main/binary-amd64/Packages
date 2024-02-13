@@ -1,0 +1,22 @@
+Package: doxide
+Version: 0.4.4-1~mantic
+Architecture: amd64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 4037
+Depends: libc6 (>= 2.38), libgcc-s1 (>= 3.3.1), libstdc++6 (>= 13.1), libyaml-0-2
+Homepage: https://doxide.org
+Priority: optional
+Section: devel
+Filename: pool/main/d/doxide/doxide_0.4.4-1~mantic_amd64.deb
+Size: 466790
+SHA256: 1b2b39db20e054b08c76fc216ffaae58415348694af5c20a5993b822465c087f
+SHA1: 91682069a49b142272167afdbc3123db4e1cbf79
+MD5sum: 773712eea8ef6308fecb93e08af9bb73
+Description: modern documentation for modern C++
+ Doxide generates documentation for C++ source code. It is configured with
+ YAML, generates Markdown, and publishes HTML. Entities in the source code are
+ documented with special comments containing commands, as with the classic
+ tool Doxygen. The source code is parsed and documentation processed into
+ Markdown then HTML. Doxide aims at online documentation with a modern look
+ and responsive design for desktop and mobile devices.
+

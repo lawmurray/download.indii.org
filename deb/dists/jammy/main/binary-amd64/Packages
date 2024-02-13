@@ -1,0 +1,250 @@
+Package: birch
+Version: 2.1.4-1~jammy
+Architecture: amd64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 777
+Depends: libc6 (>= 2.34), libgcc-s1 (>= 3.3.1), libjemalloc2 (>= 5.0.0), libstdc++6 (>= 11), libyaml-0-2
+Recommends: g++, make, autoconf, automake, libtool, membirch-dev, numbirch-dev, birch-standard-dev
+Homepage: https://birch.sh
+Priority: optional
+Section: devel
+Filename: pool/main/b/birch/birch_2.1.4-1~jammy_amd64.deb
+Size: 234054
+SHA256: 94faea0da55082952158b6f9096388d9d05da9748baebb58b03800df0234b600
+SHA1: 35703d1ffcd16f800575f6cfcedc96f443588fa9
+MD5sum: 43dfdfbcfce331dc49fcc7cce54e6bea
+Description: universal probabilistic programming
+ Birch is a programming language for expressing probabilistic models and
+ performing Bayesian inference. It is used by statisticians, data scientists,
+ and machine learning engineers. Its features include automatic differentiation,
+ automatic marginalization, and automatic conditioning. These compose into
+ advanced Monte Carlo inference algorithms. The Birch language transpiles to
+ C++, with multithreading CPU support, GPU support, and fast copy-on-write
+ memory management.
+
+Package: birch-cairo-dev
+Source: birch-cairo
+Version: 2.1.4-1~jammy
+Architecture: amd64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 342
+Depends: libbirch-cairo-2.1.4 (= 2.1.4-1~jammy), birch-standard-dev (>= 2.1.4), libcairo2-dev, libfreetype6-dev
+Homepage: https://birch.sh
+Priority: optional
+Section: devel
+Filename: pool/main/b/birch-cairo/birch-cairo-dev_2.1.4-1~jammy_amd64.deb
+Size: 43354
+SHA256: 7a1cd0ccb8875abafd3ca5335bdcb2a47342c79ab4619d5f3e8771666e7eb15b
+SHA1: 1dcab6b76ea19422959126c7b7c3bdc586a15b26
+MD5sum: 9c19da0886af32611d48a638eaa41736
+Description: Development files for the Cairo wrapper library of Birch
+
+Package: birch-sqlite-dev
+Source: birch-sqlite
+Version: 2.1.4-1~jammy
+Architecture: amd64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 243
+Depends: libbirch-sqlite-2.1.4 (= 2.1.4-1~jammy), birch-standard-dev (>= 2.1.4), libsqlite3-dev
+Homepage: https://birch.sh
+Priority: optional
+Section: devel
+Filename: pool/main/b/birch-sqlite/birch-sqlite-dev_2.1.4-1~jammy_amd64.deb
+Size: 37008
+SHA256: 068b2b7acb6d81ac543d4e38135706d78052fe11fdff5b33ae448690c498c229
+SHA1: 2106af622ffb1d77cc05a3af6fa8c60831fd11b9
+MD5sum: 1a034824ea5000d68bc7f157c55a3cdd
+Description: Development files for the SQLite wrapper library of Birch
+
+Package: birch-standard-dev
+Source: birch-standard
+Version: 2.1.4-1~jammy
+Architecture: amd64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 22754
+Depends: libbirch-standard-2.1.4 (= 2.1.4-1~jammy), membirch-dev (>= 2.1.4), numbirch-dev (>= 2.1.4), libyaml-dev, libboost-math-dev
+Homepage: https://birch.sh
+Priority: optional
+Section: devel
+Filename: pool/main/b/birch-standard/birch-standard-dev_2.1.4-1~jammy_amd64.deb
+Size: 2203556
+SHA256: a93c5d2f72305012eaef226ce9ae5cab71899d5657c030e8f7cb2a20ea8064de
+SHA1: b04e4e4c00105be3ca23f8762a43c176faf81868
+MD5sum: 08833ed5a7e38f708ca8fe59c7b47732
+Description: Development files for the standard library of Birch
+
+Package: doxide
+Version: 0.4.4-1~jammy
+Architecture: amd64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 4033
+Depends: libc6 (>= 2.34), libgcc-s1 (>= 3.3.1), libstdc++6 (>= 11), libyaml-0-2
+Homepage: https://doxide.org
+Priority: optional
+Section: devel
+Filename: pool/main/d/doxide/doxide_0.4.4-1~jammy_amd64.deb
+Size: 470278
+SHA256: 6b2b1547cd115253abc89d37d0691e5bbaefded8264ebb23caf7f7d0e3bbae14
+SHA1: e570979931bee1caf10eecdd7e3640268e2e998f
+MD5sum: 6d21c8a494f44cde0fb1901f9ee8a549
+Description: modern documentation for modern C++
+ Doxide generates documentation for C++ source code. It is configured with
+ YAML, generates Markdown, and publishes HTML. Entities in the source code are
+ documented with special comments containing commands, as with the classic
+ tool Doxygen. The source code is parsed and documentation processed into
+ Markdown then HTML. Doxide aims at online documentation with a modern look
+ and responsive design for desktop and mobile devices.
+
+Package: libbirch-cairo-2.1.4
+Source: birch-cairo
+Version: 2.1.4-1~jammy
+Architecture: amd64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 154
+Depends: libbirch-standard-2.1.4 (>= 2.1.4), libc6 (>= 2.29), libcairo2 (>= 1.2.4), libgcc-s1 (>= 3.3.1), libmembirch-2.1.4, libstdc++6 (>= 9)
+Homepage: https://birch.sh
+Priority: optional
+Section: devel
+Filename: pool/main/b/birch-cairo/libbirch-cairo-2.1.4_2.1.4-1~jammy_amd64.deb
+Size: 34992
+SHA256: 290bd33948b9a0be9d08bec44ebf7e0403029aebba86b71d519526ed30f98743
+SHA1: a8a649f7092b6e09df38cfbc6fa4b5f225d4973e
+MD5sum: 70d073b117f82c71b0d1a3e5b2951956
+Description: Cairo wrapper library of the Birch probabilistic programming language
+
+Package: libbirch-sqlite-2.1.4
+Source: birch-sqlite
+Version: 2.1.4-1~jammy
+Architecture: amd64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 130
+Depends: libbirch-standard-2.1.4 (>= 2.1.4), libc6 (>= 2.29), libgcc-s1 (>= 3.3.1), libmembirch-2.1.4, libsqlite3-0 (>= 3.5.9), libstdc++6 (>= 9)
+Homepage: https://birch.sh
+Priority: optional
+Section: devel
+Filename: pool/main/b/birch-sqlite/libbirch-sqlite-2.1.4_2.1.4-1~jammy_amd64.deb
+Size: 29686
+SHA256: cd4b0964dda9836a0b15a67766b31f1119efbd8750571643b9ef577869db1dcb
+SHA1: 756c392235181a08c36afac8314ed143b186448a
+MD5sum: 37758fa797093a2661f6f2710807040a
+Description: SQLite wrapper library of the Birch probabilistic programming language
+
+Package: libbirch-standard-2.1.4
+Source: birch-standard
+Version: 2.1.4-1~jammy
+Architecture: amd64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 5823
+Depends: libc6 (>= 2.29), libgcc-s1 (>= 3.3.1), libgomp1 (>= 6), libmembirch-2.1.4, libnumbirch-2.1.4, libstdc++6 (>= 11), libyaml-0-2
+Homepage: https://birch.sh
+Priority: optional
+Section: devel
+Filename: pool/main/b/birch-standard/libbirch-standard-2.1.4_2.1.4-1~jammy_amd64.deb
+Size: 1366258
+SHA256: 3e98411ee7b8219180127f6425f217a33970a9c291fc9cb40f617fe1915bcc64
+SHA1: 646cafac70eb2682b24f2fb9cc9c41b70fc95ccb
+MD5sum: ce59a3793e2902550a23e746f5ce9c4a
+Description: Standard library of the Birch probabilistic programming language
+
+Package: libmembirch-2.1.4
+Source: membirch
+Version: 2.1.4-1~jammy
+Architecture: amd64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 39
+Depends: libc6 (>= 2.14), libgcc-s1 (>= 3.3.1), libgomp1 (>= 6), libstdc++6 (>= 5)
+Homepage: https://birch.sh
+Priority: optional
+Section: devel
+Filename: pool/main/m/membirch/libmembirch-2.1.4_2.1.4-1~jammy_amd64.deb
+Size: 10426
+SHA256: c220c4a0760bd79c05c51a3b73ba4c0903650e97bed6ef883664bb20bda3f7c7
+SHA1: 0b92f1b96647fb1f5461bea2d0364b06c15ee655
+MD5sum: 6edc05289cb40d86e2cfc67416b15efc
+Description: C++ library of smart pointer types for object-level copy-on-write
+
+Package: libnumbirch-2.1.4
+Source: numbirch
+Version: 2.1.4-1~jammy
+Architecture: amd64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 18850
+Depends: libc6 (>= 2.29), libgcc-s1 (>= 3.0), libgomp1 (>= 4.9), libstdc++6 (>= 5.2)
+Homepage: https://birch.sh
+Priority: optional
+Section: devel
+Filename: pool/main/n/numbirch/libnumbirch-2.1.4_2.1.4-1~jammy_amd64.deb
+Size: 3187402
+SHA256: 3f5950f9e0bf236db206053d761b57b6ceb3b4d14c6501da9c9ca6cae4988e5e
+SHA1: 2106a98a0c60387a43d838a2c61d7332339915f2
+MD5sum: 24f18624ea89c67705ff75783ecc802a
+Description: Numerical kernels and copy-on-write arrays
+
+Package: libnumbirch-cuda-2.1.4
+Source: numbirch
+Version: 2.1.4-1~jammy
+Architecture: amd64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 91190
+Depends: libc6 (>= 2.34), libgcc-s1 (>= 3.4), libgomp1 (>= 4.9), libstdc++6 (>= 5.2)
+Homepage: https://birch.sh
+Priority: optional
+Section: devel
+Filename: pool/main/n/numbirch/libnumbirch-cuda-2.1.4_2.1.4-1~jammy_amd64.deb
+Size: 11369280
+SHA256: 502923d262d01bf220ff1d50fcfa8e39d37de7ffa03dbd34ff02844794abc179
+SHA1: f7b74a248e0f62a99e01e1bdf3bcbc3c23daf76b
+MD5sum: 5ab4350ff94937131c7f83477c88b073
+Description: Numerical kernels and copy-on-write arrays with CUDA backend
+
+Package: membirch-dev
+Source: membirch
+Version: 2.1.4-1~jammy
+Architecture: amd64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 141
+Depends: libmembirch-2.1.4 (= 2.1.4-1~jammy)
+Homepage: https://birch.sh
+Priority: optional
+Section: devel
+Filename: pool/main/m/membirch/membirch-dev_2.1.4-1~jammy_amd64.deb
+Size: 23030
+SHA256: f2c268d833830cbd1834c38f53604af3acc86c9f6b78a4b6b61c1fdb9c80a1d9
+SHA1: 8983a8de5b2877ec8325fa50d300174a091dd2f8
+MD5sum: ccaea8a1479d0b7d63e26cca6cb31c17
+Description: Development files for MemBirch
+
+Package: numbirch-cuda-dev
+Source: numbirch
+Version: 2.1.4-1~jammy
+Architecture: amd64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 119168
+Depends: libnumbirch-cuda-2.1.4 (= 2.1.4-1~jammy)
+Homepage: https://birch.sh
+Priority: optional
+Section: devel
+Filename: pool/main/n/numbirch/numbirch-cuda-dev_2.1.4-1~jammy_amd64.deb
+Size: 11059950
+SHA256: f90825fe3f70f1abfaefe91ac97e3c2826649a21077c43feb6e919ffd07a7653
+SHA1: 7604dde5d8ef47912cc580254681969f8242e4a4
+MD5sum: 50f6789d29f0e4b4007179fc999f3de8
+Description: Development files for NumBirch with CUDA backend
+
+Package: numbirch-dev
+Source: numbirch
+Version: 2.1.4-1~jammy
+Architecture: amd64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 42823
+Depends: libnumbirch-2.1.4 (= 2.1.4-1~jammy)
+Homepage: https://birch.sh
+Priority: optional
+Section: devel
+Filename: pool/main/n/numbirch/numbirch-dev_2.1.4-1~jammy_amd64.deb
+Size: 2792518
+SHA256: 054945f766d6494ef878b08e820596a986a55d161d39a2343839660bddb46921
+SHA1: b79175e471d524b91cad247d5a40158a628cd3c1
+MD5sum: b1e8ca9f399b5662e10bc9cf7faf8e9e
+Description: Development files for NumBirch
+

@@ -1,0 +1,26 @@
+Suite: stable
+Codename: bullseye
+Date: Tue, 13 Feb 2024 01:03:01 UTC
+Architectures: amd64
+Components: main
+MD5Sum:
+ 400303b162a606e11e4f791d9e96841f 9861 main/binary-amd64/Packages
+ 040fbee517649fae4a88d9dba3bdca2d 2919 main/binary-amd64/Packages.gz
+ 82a1ae90445e5284617f8a8cc3a53fa4 52 main/binary-amd64/Release
+ 756200a347cf8ad71d402acae12b24ee 9385 main/source/Sources
+ e43e557861e3b1315c407b68d6c8eff2 2800 main/source/Sources.gz
+ 2a323edc4e7693b3b1ac9f71443ad683 53 main/source/Release
+SHA1:
+ 354c100933c74bdc96abf74942cfca1efc026088 9861 main/binary-amd64/Packages
+ 94eece7f7771f340d4a6084260b3e5a4b3cc0658 2919 main/binary-amd64/Packages.gz
+ 9b61d92e2c42866227d305db51276f4714da5cd9 52 main/binary-amd64/Release
+ 315b413a98fea5189b34c882bd4e3b54b8410f29 9385 main/source/Sources
+ 517dca489c61df2c96e03c30aaf561b4db7e3167 2800 main/source/Sources.gz
+ 22270126d2c06a44709ced469ca246a21f5b6c2e 53 main/source/Release
+SHA256:
+ dc614816ee79cae06bdeab0805d7cc7ebbd8d94d24da399d45d806ed5c70546e 9861 main/binary-amd64/Packages
+ 18638318863a48594f082b35698d28fe6e76bd680d8074c287e6aa2100c77289 2919 main/binary-amd64/Packages.gz
+ 5d14a4f1b270a16b7797dfa013f0d0d3325c616762714c6e9a34295a4d9be351 52 main/binary-amd64/Release
+ e6ed1138c41602bd71dde0252c8a159eccedd56f4d947f994dd6c666d5f3982e 9385 main/source/Sources
+ 6db5b7458ace79416a7ab58e2b03cee5ed5d1322b7d8a13d8227e2eed83101d4 2800 main/source/Sources.gz
+ 33740b7ffc6ab6c9ce665b4b96de6606f3a3ace3f2cb36aec441602f84d664b3 53 main/source/Release
