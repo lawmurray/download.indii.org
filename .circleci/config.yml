@@ -50,6 +50,14 @@ executors:
       CODENAME: jammy
       DEBIAN_FRONTEND: noninteractive
 
+  noble:
+    docker:
+      - image: ubuntu:noble
+    resource_class: large
+    environment:
+      CODENAME: noble
+      DEBIAN_FRONTEND: noninteractive
+
   mantic:
     docker:
       - image: ubuntu:mantic
@@ -121,6 +129,13 @@ executors:
     resource_class: large
     environment:
       CODENAME: fedora/39
+
+  fedora-40:
+    docker:
+      - image: registry.fedoraproject.org/fedora:40
+    resource_class: large
+    environment:
+      CODENAME: fedora/40
 
   mac:
     macos:
@@ -870,24 +885,20 @@ jobs:
               printf "Codename: $CODENAME\nSuite: stable\nComponents: main\nArchitectures: source amd64\nSignWith: default\n" > $_/distributions
       - package_deb:
           dir: doxide
-      - when:
-          condition:
-            not:
-              equal: [<< parameters.os >>, mantic]  # does not support CUDA
-          steps:
-          - package_deb:
-              dir: Birch/birch
-          - package_deb:
-              dir: Birch/membirch
-          - install_cuda_prereq
-          - package_deb:
-              dir: Birch/numbirch
-          - package_deb:
-              dir: Birch/libraries/Standard
-          - package_deb:
-              dir: Birch/libraries/Cairo
-          - package_deb:
-              dir: Birch/libraries/SQLite
+      - steps:
+        - package_deb:
+            dir: Birch/birch
+        - package_deb:
+            dir: Birch/membirch
+        - install_cuda_prereq
+        - package_deb:
+            dir: Birch/numbirch
+        - package_deb:
+            dir: Birch/libraries/Standard
+        - package_deb:
+            dir: Birch/libraries/Cairo
+        - package_deb:
+            dir: Birch/libraries/SQLite
       - run:
           name: Remove unnecessary files
           command: |
@@ -1070,9 +1081,7 @@ jobs:
                 curl -fsSL https://stage.indii.org/deb/Release.key | gpg --dearmor | tee /etc/apt/trusted.gpg.d/indii.org.gpg > /dev/null
                 apt update --assume-yes
                 apt install --assume-yes --install-recommends doxide
-                if [[ "$CODENAME" != "mantic" ]]; then
-                  apt install --assume-yes --install-recommends birch
-                fi
+                apt install --assume-yes --install-recommends birch
               fi
       - run:
           name: Test Doxide
@@ -1083,9 +1092,6 @@ jobs:
             cd ..
             rm -rf hello
       - when:
-          condition:
-            not:
-              equal: [<< parameters.os >>, mantic]
           steps:
           - run:
               name: Test Birch
@@ -1131,6 +1137,7 @@ workflows:
                 - jammy
                 - lunar
                 - mantic
+                - noble
 
       - rpm:
           matrix:
@@ -1142,6 +1149,7 @@ workflows:
                 - fedora-37
                 - fedora-38
                 - fedora-39
+                - fedora-40
 
       - mac
       - win
@@ -1173,12 +1181,14 @@ workflows:
                 - jammy
                 - lunar
                 - mantic
+                - noble
                 - opensuse-tumbleweed
                 - fedora-35
                 - fedora-36
                 - fedora-37
                 - fedora-38
                 - fedora-39
+                - fedora-40
           requires:
             - stage
 
