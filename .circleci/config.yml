@@ -885,20 +885,19 @@ jobs:
               printf "Codename: $CODENAME\nSuite: stable\nComponents: main\nArchitectures: source amd64\nSignWith: default\n" > $_/distributions
       - package_deb:
           dir: doxide
-      - steps:
-        - package_deb:
-            dir: Birch/birch
-        - package_deb:
-            dir: Birch/membirch
-        - install_cuda_prereq
-        - package_deb:
-            dir: Birch/numbirch
-        - package_deb:
-            dir: Birch/libraries/Standard
-        - package_deb:
-            dir: Birch/libraries/Cairo
-        - package_deb:
-            dir: Birch/libraries/SQLite
+      - package_deb:
+          dir: Birch/birch
+      - package_deb:
+          dir: Birch/membirch
+      - install_cuda_prereq
+      - package_deb:
+          dir: Birch/numbirch
+      - package_deb:
+          dir: Birch/libraries/Standard
+      - package_deb:
+          dir: Birch/libraries/Cairo
+      - package_deb:
+          dir: Birch/libraries/SQLite
       - run:
           name: Remove unnecessary files
           command: |
@@ -1091,18 +1090,16 @@ jobs:
             doxide init
             cd ..
             rm -rf hello
-      - when:
-          steps:
-          - run:
-              name: Test Birch
-              command: |
-                mkdir hello
-                cd hello
-                birch init
-                birch build
-                birch hello
-                cd ..
-                rm -rf hello
+      - run:
+          name: Test Birch
+          command: |
+            mkdir hello
+            cd hello
+            birch init
+            birch build
+            birch hello
+            cd ..
+            rm -rf hello
 
   deploy:
     executor: default
