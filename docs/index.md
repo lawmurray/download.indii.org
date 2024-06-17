@@ -6,7 +6,7 @@ hide:
 
 # download.indii.org
 
-This software repository provides packages for [Doxide](https://doxide.org) and [Birch](https://birch.sh). Find your operating system below for instructions on adding the repository and installing the software.
+This software repository provides packages for [Doxide](https://doxide.org) and [Birch](https://birch-lang.org). Find your operating system below for instructions on adding the repository and installing the software.
 
 ## :fontawesome-brands-ubuntu: Ubuntu
 

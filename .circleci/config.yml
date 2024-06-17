@@ -826,7 +826,7 @@ commands:
   deploy_docs:
     parameters:
       subdomain:
-        description: Subdomain of repository, e.g. docs.birch.sh
+        description: Subdomain of repository, e.g. docs.birch-lang.org
         type: string
     steps:
       - run:
@@ -1113,7 +1113,7 @@ jobs:
       - deploy_mac:
           repo: homebrew-all
       - deploy_docs:
-          subdomain: docs.birch.sh
+          subdomain: docs.birch-lang.org
       - destroy:
           repo: stage.indii.org
           branch: gh-pages
