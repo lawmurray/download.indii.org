@@ -747,7 +747,8 @@ commands:
               cmake ..
               cmake --build . --config Release
               cmake --build . --config Release --target package
-              cp Release/<< parameters.dir >>.exe << parameters.dir >>-installer.exe $HOME/win/.
+              cp Release/<< parameters.dir >>.exe $HOME/win/.
+              cp << parameters.dir >>-installer.exe  $HOME/win/.
 
       - run:
           name: Checksum << parameters.dir >>
