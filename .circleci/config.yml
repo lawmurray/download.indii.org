@@ -867,12 +867,12 @@ commands:
       - run:
           name: Deploy Chocolatey package
           command: |
-              $version=$(Get-Content -Path $HOME/win/version.txt)
+              cd $HOME/win
+              $version=$(Get-Content -Path version.txt)
               $choco_version=$(choco search --limit-output --exact doxide).Substring(7)
               echo "Current version is $version, Chocolatey version is $choco_version"
               if ($version -ne $choco_version -And $CHOCO_APIKEY -ne '') {
                 echo "Updating"
-                cd $HOME/win
                 choco apikey --key $CHOCO_APIKEY --source https://push.chocolatey.org/
                 choco push << parameters.package >>.portable.$version.nupkg --source "https://push.chocolatey.org/"
                 choco push << parameters.package >>.install.$version.nupkg --source "https://push.chocolatey.org/"
@@ -1196,11 +1196,12 @@ jobs:
                   cd hello
                   doxide init
                   cd ..
-                  rm hello -r -Force
+                  rm hello 
                   choco uninstall $Package
               }
 
               cd $HOME/win
+              $version=$(Get-Content -Path version.txt)
               Test-Package -Package doxide.portable -Version $version
               Test-Package -Package doxide.install -Version $version
               Test-Package -Package doxide -Version $version
