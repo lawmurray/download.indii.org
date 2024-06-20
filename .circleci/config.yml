@@ -427,7 +427,6 @@ commands:
               git config --global user.email "birch-machine@indii.org"
 
   environment_win:
-    environment:
     steps:
       - run:
           name: Install dependencies
@@ -513,11 +512,18 @@ commands:
       - run:
           name: Update version number for << parameters.dir >>
           command: |
+              function Find-Replace {
+                  param($Path, $Find, $Replace)
+                  $contents = Get-Content -Path $Path
+                  $contents = $contents -replace $Find, $Replace
+                  $contents | Set-Content -Path $Path
+              }
               cd << parameters.dir >>
               $version=$(git describe --tags --abbrev=0).Substring(1)
-              $contents = Get-Content -Path CMakeLists.txt
-              $contents = $contents -replace '0.0.0', $version
-              $contents | Set-Content -Path CMakeLists.txt
+              Find-Replace CMakeLists.txt '0.0.0' $version
+              Find-Replace choco\<< parameters.dir >>.portable\<< parameters.dir >>.portable.nuspec '0.0.0' $version
+              Find-Replace choco\<< parameters.dir >>.install\<< parameters.dir >>.install.nuspec '0.0.0' $version
+              Find-Replace choco\<< parameters.dir >>\<< parameters.dir >>.nuspec '0.0.0' $version
 
   prepare:
     steps:
@@ -733,7 +739,7 @@ commands:
         type: string
     steps:
       - run:
-          name: Installer for << parameters.dir >>
+          name: Build << parameters.dir >>
           command: |
               cd << parameters.dir >>
               mkdir build
@@ -741,13 +747,49 @@ commands:
               cmake ..
               cmake --build . --config Release
               cmake --build . --config Release --target package
-              cp *.exe $HOME\win\.
-              cp Release\*.exe $HOME\win\.
-              cd $HOME\win
-              checksum -t sha256 doxide.exe > doxide.exe.sha256
-              checksum -t sha256 doxide-installer.exe > doxide-installer.exe.sha256
+              cp Release\<< parameters.dir >>.exe << parameters.dir >>-installer.exe $HOME\win\.
 
-  deploy:
+      - run:
+          name: Checksum << parameters.dir >>
+          command: |
+              cd $HOME\win
+              checksum -t sha256 << parameters.dir >>.exe > << parameters.dir >>.exe.sha256
+              checksum -t sha256 << parameters.dir >>-installer.exe > << parameters.dir >>-installer.exe.sha256
+
+      - run:
+          name: Package << parameters.dir >>
+          command: |
+              function Find-Replace {
+                  param($Path, $Find, $Replace)
+                  $contents = Get-Content -Path $Path
+                  $contents = $contents -replace $Find, $Replace
+                  $contents | Set-Content -Path $Path
+              }
+
+              cd << parameters.dir >>
+              $version=$(git describe --tags --abbrev=0).Substring(1)
+              cd choco
+              
+              cd << parameters.dir >>.portable
+              cp $HOME\win\<< parameters.dir >>.exe tools\.
+              Find-Replace -Path "tools\chocolateyinstall.ps1" ABCDEF0123456789 $(Get-Content -Path "$HOME\win\<< parameters.dir >>.exe.sha256")
+              choco pack --version $version
+              cp << parameters.dir >>.portable.$version.nupkg $HOME\win\.
+              cd ..
+
+              cd << parameters.dir >>.install
+              cp $HOME\win\<< parameters.dir >>-installer.exe tools\.
+              Find-Replace -Path "tools\chocolateyinstall.ps1" ABCDEF0123456789 $(Get-Content -Path "$HOME\win\<< parameters.dir >>-installer.exe.sha256")
+              choco pack --version $version
+              cp << parameters.dir >>.install.$version.nupkg $HOME\win\.
+              cd ..
+
+              cd << parameters.dir >>
+              choco pack --version $version
+              cp << parameters.dir >>.$version.nupkg $HOME\win\.
+              cd ..
+
+  deploy_repo:
     parameters:
       subdomain:
         description: Subdomain of repository, e.g. download.indii.org
@@ -798,29 +840,50 @@ commands:
                 --data '{"purge_everything":true}'
               sleep 60
 
-  deploy_mac:
-      parameters:
-        repo:
-          description: GitHub repo of repository, e.g. homebrew-all
-          type: string
-      steps:
-        - run:
-            name: Deploy << parameters.repo >>
-            command: |
-                if [[ -n "$GITHUB_USERNAME" && -n "$GITHUB_PASSWORD" ]]; then
-                  mkdir << parameters.repo >>
-                  cd << parameters.repo >>
-                  cp -r $HOME/brew/* .
-                  for file in *.rb; do
-                    cat $file | sed -E "s/homebrew-[A-Z0-9a-z]+/<< parameters.repo >>/g" > $file.sponge
-                    mv $file.sponge $file
-                  done
-                  git init
-                  git add .
-                  git commit -m "Overwrite."
-                  git remote add origin https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/lawmurray/<< parameters.repo >>.git
-                  git push origin master -f
-                fi
+  deploy_brew:
+    parameters:
+      repo:
+        description: GitHub repo of repository, e.g. homebrew-all
+        type: string
+    steps:
+      - run:
+          name: Deploy << parameters.repo >>
+          command: |
+              if [[ -n "$GITHUB_USERNAME" && -n "$GITHUB_PASSWORD" ]]; then
+                mkdir << parameters.repo >>
+                cd << parameters.repo >>
+                cp -r $HOME/brew/* .
+                for file in *.rb; do
+                  cat $file | sed -E "s/homebrew-[A-Z0-9a-z]+/<< parameters.repo >>/g" > $file.sponge
+                  mv $file.sponge $file
+                done
+                git init
+                git add .
+                git commit -m "Overwrite."
+                git remote add origin https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/lawmurray/<< parameters.repo >>.git
+                git push origin master -f
+              fi
+
+  deploy_choco:
+    parameters:
+      package:
+        description: Name of the package
+        type: string
+    steps:
+      - run:
+          name: Deploy Chocolatey package
+          command: |
+              $version=$(Get-Content -Path $HOME\win\version.txt)
+              $choco_version=$(choco search --limit-output --exact doxide).Substring(7)
+              echo "Current version is $version, Chocolatey version is $choco_version"
+              if ($version -ne $choco_version -And $CHOCO_APIKEY -ne '') {
+                echo "Updating"
+                cd $HOME\win
+                choco apikey --key $CHOCO_APIKEY --source https://push.chocolatey.org/
+                choco push << parameters.package >>.portable.$version.nupkg --source "https://push.chocolatey.org/"
+                choco push << parameters.package >>.install.$version.nupkg --source "https://push.chocolatey.org/"
+                choco push << parameters.package >>.$version.nupkg --source "https://push.chocolatey.org/"
+              }
 
   deploy_docs:
     parameters:
@@ -979,7 +1042,7 @@ jobs:
           dir: Birch/libraries/SQLite
 
       # stage now
-      - deploy_mac:
+      - deploy_brew:
           repo: homebrew-stage
 
       - persist_to_workspace:
@@ -1042,10 +1105,10 @@ jobs:
       - environment
       - attach_workspace:
           at: ..
-      - deploy:
+      - deploy_repo:
           subdomain: stage.indii.org
 
-  test:
+  test_linux:
     parameters: 
       os:
         type: string
@@ -1066,11 +1129,6 @@ jobs:
                 dnf config-manager --add-repo https://stage.indii.org/rpm/$CODENAME/indii.org.repo
                 dnf update --assumeyes
                 dnf install --assumeyes doxide birch
-              elif [[ "$CODENAME" =~ "mac" ]]; then
-                brew tap lawmurray/stage
-                brew update
-                brew upgrade
-                brew install doxide birch
               else
                 apt update --assume-yes
                 apt upgrade --assume-yes
@@ -1100,25 +1158,102 @@ jobs:
             cd ..
             rm -rf hello
 
-  deploy:
+  test_mac:
+    executor: mac
+    steps:
+      # want clean slate to test installation, so do not run environment here
+      - end_if_pull_request
+      - run:
+          name: Test install
+          command: |
+              brew tap lawmurray/stage
+              brew update
+              brew upgrade
+              brew install doxide birch
+      - run:
+          name: Test Doxide
+          command: |
+            mkdir hello
+            cd hello
+            doxide init
+            cd ..
+            rm -rf hello
+      - run:
+          name: Test Birch
+          command: |
+            mkdir hello
+            cd hello
+            birch init
+            birch build
+            birch hello
+            cd ..
+            rm -rf hello
+
+  test_win:
+    executor: win
+    steps:
+      # want clean slate to test installation, so do not run environment here
+      - end_if_pull_request
+      - attach_workspace:
+          at: ..
+      - run:
+          name: Test Doxide
+          command: |
+              function Test-Package {
+                  param($Package, $Version)
+                  Set-Location -Path $Package
+                  choco install $Package --version $Version --source .
+                  mkdir hello
+                  cd hello
+                  doxide init
+                  cd ..
+                  rm -rf hello
+                  choco uninstall $Package
+                  Set-Location -Path ..
+              }
+
+              cd $HOME/win
+              Test-Package -Package doxide.portable -Version $version
+              Test-Package -Package doxide.install -Version $version
+              Test-Package -Package doxide -Version $version
+
+  deploy_linux:
     executor: default
     steps:
       - end_if_pull_request
       - environment
       - attach_workspace:
           at: ..
-      - deploy:
+      - deploy_repo:
           subdomain: download.indii.org
-      - deploy_mac:
-          repo: homebrew-all
       - deploy_docs:
           subdomain: docs.birch-lang.org
       - destroy:
           repo: stage.indii.org
           branch: gh-pages
+
+  deploy_mac:
+    executor: mac
+    steps:
+      - end_if_pull_request
+      - environment
+      - attach_workspace:
+          at: ..
+      - deploy_brew:
+          repo: homebrew-all
       - destroy:
           repo: homebrew-stage
           branch: master
+
+  deploy_win:
+    executor: win
+    steps:
+      - end_if_pull_request
+      - environment_win
+      - attach_workspace:
+          at: ..
+      - deploy_choco:
+          package: doxide
 
 workflows:
   all:
@@ -1151,24 +1286,13 @@ workflows:
       - win
       - docs
 
-      - test:
-          matrix:
-            alias: test_mac
-            parameters:
-              os:
-                - mac
-          requires:
-            - mac
-
       - stage:
           requires:
             - deb
             - rpm
-            - win
 
-      - test:
+      - test_linux:
           matrix:
-            alias: test_linux
             parameters:
               os:
                 - bullseye
@@ -1188,13 +1312,30 @@ workflows:
           requires:
             - stage
 
+      - test_mac:
+          requires:
+            - mac
+
+      - test_win:
+          requires:
+            - win
+
       - hold:
           type: approval
           requires:
-            - test_mac
             - test_linux
+            - test_mac
+            - test_win
             - docs
 
-      - deploy:
+      - deploy_linux:
+          requires:
+            - hold
+
+      - deploy_mac:
+          requires:
+            - hold
+
+      - deploy_win:
           requires:
             - hold
