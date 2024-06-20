@@ -1191,13 +1191,13 @@ jobs:
           command: |
               function Test-Package {
                   param($Package, $Version)
-                  choco install $Package --version $Version --source .
+                  choco install -y $Package --version $Version --source .
                   mkdir hello
                   cd hello
                   doxide init
                   cd ..
                   rm hello 
-                  choco uninstall $Package
+                  choco uninstall -y $Package
               }
 
               cd $HOME/win
