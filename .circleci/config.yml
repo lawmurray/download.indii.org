@@ -1196,7 +1196,7 @@ jobs:
                   cd hello
                   doxide init
                   cd ..
-                  rm hello 
+                  rm hello -Recurse -Force
                   choco uninstall -y $Package
               }
 
