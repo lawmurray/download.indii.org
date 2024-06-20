@@ -1191,7 +1191,6 @@ jobs:
           command: |
               function Test-Package {
                   param($Package, $Version)
-                  Set-Location -Path $Package
                   choco install $Package --version $Version --source .
                   mkdir hello
                   cd hello
@@ -1199,7 +1198,6 @@ jobs:
                   cd ..
                   rm -rf hello
                   choco uninstall $Package
-                  Set-Location -Path ..
               }
 
               cd $HOME/win
