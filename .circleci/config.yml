@@ -432,10 +432,10 @@ commands:
           name: Install dependencies
           command: |
             choco install -y cmake.portable nsis.portable sudo checksum
-            cd doxide\contrib\libyaml
+            cd doxide/contrib/libyaml
             mkdir build
             cd build
-            cmake .. -DCMAKE_INSTALL_PREFIX=c:\ProgramData\chocolatey
+            cmake .. -DCMAKE_INSTALL_PREFIX=c:/ProgramData/chocolatey
             cmake --build . --config Release
             sudo cmake --install . --config Release
 
@@ -521,9 +521,9 @@ commands:
               cd << parameters.dir >>
               $version=$(git describe --tags --abbrev=0).Substring(1)
               Find-Replace CMakeLists.txt '0.0.0' $version
-              Find-Replace choco\<< parameters.dir >>.portable\<< parameters.dir >>.portable.nuspec '0.0.0' $version
-              Find-Replace choco\<< parameters.dir >>.install\<< parameters.dir >>.install.nuspec '0.0.0' $version
-              Find-Replace choco\<< parameters.dir >>\<< parameters.dir >>.nuspec '0.0.0' $version
+              Find-Replace choco/<< parameters.dir >>.portable/<< parameters.dir >>.portable.nuspec '0.0.0' $version
+              Find-Replace choco/<< parameters.dir >>.install/<< parameters.dir >>.install.nuspec '0.0.0' $version
+              Find-Replace choco/<< parameters.dir >>/<< parameters.dir >>.nuspec '0.0.0' $version
 
   prepare:
     steps:
@@ -747,12 +747,12 @@ commands:
               cmake ..
               cmake --build . --config Release
               cmake --build . --config Release --target package
-              cp Release\<< parameters.dir >>.exe << parameters.dir >>-installer.exe $HOME\win\.
+              cp Release/<< parameters.dir >>.exe << parameters.dir >>-installer.exe $HOME/win/.
 
       - run:
           name: Checksum << parameters.dir >>
           command: |
-              cd $HOME\win
+              cd $HOME/win
               checksum -t sha256 << parameters.dir >>.exe > << parameters.dir >>.exe.sha256
               checksum -t sha256 << parameters.dir >>-installer.exe > << parameters.dir >>-installer.exe.sha256
 
@@ -771,22 +771,22 @@ commands:
               cd choco
               
               cd << parameters.dir >>.portable
-              cp $HOME\win\<< parameters.dir >>.exe tools\.
-              Find-Replace -Path "tools\chocolateyinstall.ps1" ABCDEF0123456789 $(Get-Content -Path "$HOME\win\<< parameters.dir >>.exe.sha256")
+              cp $HOME/win/<< parameters.dir >>.exe tools/.
+              Find-Replace -Path "tools/chocolateyinstall.ps1" ABCDEF0123456789 $(Get-Content -Path "$HOME/win/<< parameters.dir >>.exe.sha256")
               choco pack --version $version
-              cp << parameters.dir >>.portable.$version.nupkg $HOME\win\.
+              cp << parameters.dir >>.portable.$version.nupkg $HOME/win/.
               cd ..
 
               cd << parameters.dir >>.install
-              cp $HOME\win\<< parameters.dir >>-installer.exe tools\.
-              Find-Replace -Path "tools\chocolateyinstall.ps1" ABCDEF0123456789 $(Get-Content -Path "$HOME\win\<< parameters.dir >>-installer.exe.sha256")
+              cp $HOME/win/<< parameters.dir >>-installer.exe tools/.
+              Find-Replace -Path "tools/chocolateyinstall.ps1" ABCDEF0123456789 $(Get-Content -Path "$HOME/win/<< parameters.dir >>-installer.exe.sha256")
               choco pack --version $version
-              cp << parameters.dir >>.install.$version.nupkg $HOME\win\.
+              cp << parameters.dir >>.install.$version.nupkg $HOME/win/.
               cd ..
 
               cd << parameters.dir >>
               choco pack --version $version
-              cp << parameters.dir >>.$version.nupkg $HOME\win\.
+              cp << parameters.dir >>.$version.nupkg $HOME/win/.
               cd ..
 
   deploy_repo:
@@ -873,12 +873,12 @@ commands:
       - run:
           name: Deploy Chocolatey package
           command: |
-              $version=$(Get-Content -Path $HOME\win\version.txt)
+              $version=$(Get-Content -Path $HOME/win/version.txt)
               $choco_version=$(choco search --limit-output --exact doxide).Substring(7)
               echo "Current version is $version, Chocolatey version is $choco_version"
               if ($version -ne $choco_version -And $CHOCO_APIKEY -ne '') {
                 echo "Updating"
-                cd $HOME\win
+                cd $HOME/win
                 choco apikey --key $CHOCO_APIKEY --source https://push.chocolatey.org/
                 choco push << parameters.package >>.portable.$version.nupkg --source "https://push.chocolatey.org/"
                 choco push << parameters.package >>.install.$version.nupkg --source "https://push.chocolatey.org/"
