@@ -445,15 +445,6 @@ commands:
           name: Install prerequisites for NumBirch CUDA backend
           command: ./install_cuda_prereq
 
-  end_if_pull_request:
-    steps:
-      - run: 
-         name: End early if pull request
-         command: |
-            if [[ -n "$CIRCLE_PR_NUMBER" ]]; then
-              circleci step halt
-            fi
-
   checkout_packages:
     description: Checkout code from Git
     steps:
@@ -1102,7 +1093,6 @@ jobs:
   stage:
     executor: default
     steps:
-      - end_if_pull_request
       - environment
       - attach_workspace:
           at: ..
@@ -1116,7 +1106,6 @@ jobs:
     executor: << parameters.os >>
     steps:
       # want clean slate to test installation, so do not run environment here
-      - end_if_pull_request
       - run:
           name: Test install
           command: |
@@ -1163,7 +1152,6 @@ jobs:
     executor: mac
     steps:
       # want clean slate to test installation, so do not run environment here
-      - end_if_pull_request
       - run:
           name: Test install
           command: |
@@ -1194,7 +1182,6 @@ jobs:
     executor: win
     steps:
       # want clean slate to test installation, so do not run environment here
-      - end_if_pull_request
       - attach_workspace:
           at: ..
       - run:
@@ -1221,7 +1208,6 @@ jobs:
   deploy_linux:
     executor: default
     steps:
-      - end_if_pull_request
       - environment
       - attach_workspace:
           at: ..
@@ -1236,7 +1222,6 @@ jobs:
   deploy_mac:
     executor: mac
     steps:
-      - end_if_pull_request
       - environment
       - attach_workspace:
           at: ..
@@ -1249,7 +1234,6 @@ jobs:
   deploy_win:
     executor: win
     steps:
-      - end_if_pull_request
       - environment_win
       - attach_workspace:
           at: ..
