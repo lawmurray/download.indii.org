@@ -760,6 +760,8 @@ commands:
 
               cd << parameters.dir >>
               $version=$(git describe --tags --abbrev=0).Substring(1)
+              echo $version > $HOME/win/version.txt
+
               cd choco
               
               cd << parameters.dir >>.portable
