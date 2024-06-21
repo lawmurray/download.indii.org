@@ -873,7 +873,7 @@ commands:
               echo "Current version is $version, Chocolatey version is $choco_version"
               if ($version -ne $choco_version -And $CHOCO_APIKEY -ne '') {
                 echo "Updating"
-                choco apikey add --key $CHOCO_APIKEY --source https://push.chocolatey.org/
+                choco apikey add --key $env:CHOCO_APIKEY --source https://push.chocolatey.org/
                 choco push << parameters.package >>.portable.$version.nupkg --source "https://push.chocolatey.org/"
                 choco push << parameters.package >>.install.$version.nupkg --source "https://push.chocolatey.org/"
                 choco push << parameters.package >>.$version.nupkg --source "https://push.chocolatey.org/"
