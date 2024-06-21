@@ -1,0 +1,26 @@
+Suite: stable
+Codename: focal
+Date: Fri, 21 Jun 2024 06:39:49 UTC
+Architectures: amd64
+Components: main
+MD5Sum:
+ 125fb0164ee9a68629d47d4d28c3d0d8 9759 main/binary-amd64/Packages
+ 85c7f14de1dd4862d7cdf576ef364e78 2909 main/binary-amd64/Packages.gz
+ 82a1ae90445e5284617f8a8cc3a53fa4 52 main/binary-amd64/Release
+ 8bc286d5070e8949cb821f7a72ffe77f 9250 main/source/Sources
+ 4dc1b5e3d90ad7453bbedcd01b4869b4 2790 main/source/Sources.gz
+ 2a323edc4e7693b3b1ac9f71443ad683 53 main/source/Release
+SHA1:
+ dfcfec8c03e31ad10a03b787636449ab5f3fbe6e 9759 main/binary-amd64/Packages
+ b40f4fd69d7ed55c7d0b318ebd5a1a11914b2019 2909 main/binary-amd64/Packages.gz
+ 9b61d92e2c42866227d305db51276f4714da5cd9 52 main/binary-amd64/Release
+ 50f708b1f750fd88ea083c8494f6ee6d6518b668 9250 main/source/Sources
+ bf3b213097ed1d1fdf67452bfcf88b147d3f1ea1 2790 main/source/Sources.gz
+ 22270126d2c06a44709ced469ca246a21f5b6c2e 53 main/source/Release
+SHA256:
+ a62c29b466212f3063c41aeca6d2e0c006e701238dc99defa8644c1b57280489 9759 main/binary-amd64/Packages
+ 5a77afa8a955c49fd8bec1fa8c740a118650f53bd8e042c209f566d402fe6e9e 2909 main/binary-amd64/Packages.gz
+ 5d14a4f1b270a16b7797dfa013f0d0d3325c616762714c6e9a34295a4d9be351 52 main/binary-amd64/Release
+ 362503c4d59caa346280472d776310772c64c34f06e5b1868798fa12d59fadc4 9250 main/source/Sources
+ 4f7f40586ef7b9f2dcf36f2f5c0cd7b9421a8c1be4f95242b611c4a3d838cbd0 2790 main/source/Sources.gz
+ 33740b7ffc6ab6c9ce665b4b96de6606f3a3ace3f2cb36aec441602f84d664b3 53 main/source/Release
