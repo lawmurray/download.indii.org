@@ -1035,10 +1035,6 @@ jobs:
       - package_mac:
           dir: Birch/libraries/SQLite
 
-      # stage now
-      - deploy_brew:
-          repo: homebrew-stage
-
       - persist_to_workspace:
           root: ..
           paths:
@@ -1100,6 +1096,8 @@ jobs:
           at: ..
       - deploy_repo:
           subdomain: stage.indii.org
+      - deploy_brew:
+          repo: homebrew-stage
 
   test_linux:
     parameters: 
@@ -1276,6 +1274,7 @@ workflows:
           requires:
             - deb
             - rpm
+            - mac
             - win
 
       - test_linux:
@@ -1301,11 +1300,11 @@ workflows:
 
       - test_mac:
           requires:
-            - mac
+            - stage
 
       - test_win:
           requires:
-            - win
+            - stage
 
       - hold:
           type: approval
