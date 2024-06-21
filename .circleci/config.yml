@@ -807,7 +807,7 @@ commands:
                 cd site
                 mkdir rpm && cp -r $HOME/rpm/* rpm/.
                 mkdir deb && cp -r $HOME/deb/*/* deb/.  # merge Debian repos
-                mkdir win && cp -r $HOME/win/* win/.
+                mkdir win && cp -r $HOME/win/*.exe $HOME/win/*.exe.sha256 win/.
 
                 # finalize apt repo (add key)
                 gpg --export --armor > deb/Release.key
@@ -1276,6 +1276,7 @@ workflows:
           requires:
             - deb
             - rpm
+            - win
 
       - test_linux:
           matrix:
