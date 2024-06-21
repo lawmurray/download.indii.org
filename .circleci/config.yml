@@ -1180,6 +1180,32 @@ jobs:
             cd ..
             rm -rf hello
 
+  test_win:
+    executor: win
+    steps:
+      # want clean slate to test installation, so do not run environment here
+      - attach_workspace:
+          at: ..
+      - run:
+          name: Test Doxide
+          command: |
+              function Test-Package {
+                  param($Package)
+                  choco install -y $Package --source .
+                  mkdir hello
+                  cd hello
+                  doxide init
+                  cd ..
+                  rm hello -Recurse -Force
+                  choco uninstall -y $Package
+              }
+
+              cd $HOME/win
+              Test-Package -Package doxide.portable
+              #Test-Package -Package doxide.install
+              # ^ hanging
+              Test-Package -Package doxide
+
   deploy_linux:
     executor: default
     steps:
@@ -1276,12 +1302,16 @@ workflows:
           requires:
             - mac
 
+      - test_win:
+          requires:
+            - win
+
       - hold:
           type: approval
           requires:
             - test_linux
             - test_mac
-            - win
+            - test_win
             - docs
 
       - deploy_linux:
