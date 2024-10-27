@@ -329,10 +329,7 @@ commands:
                   icu
                 pacman -Sc --noconfirm
               else  # Debian variant
-                apt update --assume-yes
-                apt upgrade --assume-yes
-                apt install software-properties-common --assume-yes
-                apt-add-repository non-free --yes || echo
+                sed -i 's/^Components: main$/& contrib non-free non-free-firmware/' /etc/apt/sources.list.d/debian.sources || echo
                 apt update --assume-yes
                 apt upgrade --assume-yes
                 apt install --assume-yes --no-install-recommends \
