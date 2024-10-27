@@ -332,7 +332,7 @@ commands:
                 apt update --assume-yes
                 apt upgrade --assume-yes
                 apt install software-properties-common --assume-yes
-                apt-add-repository non-free --assume-yes || echo
+                apt-add-repository non-free || echo
                 apt update --assume-yes
                 apt upgrade --assume-yes
                 apt install --assume-yes --no-install-recommends \
