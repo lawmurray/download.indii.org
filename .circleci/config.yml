@@ -87,34 +87,6 @@ executors:
     environment:
       CODENAME: opensuse/tumbleweed
 
-  fedora-35:
-    docker:
-      - image: registry.fedoraproject.org/fedora:35
-    resource_class: large
-    environment:
-      CODENAME: fedora/35
-
-  fedora-36:
-    docker:
-      - image: registry.fedoraproject.org/fedora:36
-    resource_class: large
-    environment:
-      CODENAME: fedora/36
-
-  fedora-37:
-    docker:
-      - image: registry.fedoraproject.org/fedora:37
-    resource_class: large
-    environment:
-      CODENAME: fedora/37
-
-  fedora-38:
-    docker:
-      - image: registry.fedoraproject.org/fedora:38
-    resource_class: large
-    environment:
-      CODENAME: fedora/38
-
   fedora-39:
     docker:
       - image: registry.fedoraproject.org/fedora:39
@@ -1251,10 +1223,6 @@ workflows:
             parameters:
               os:
                 - opensuse-tumbleweed
-                - fedora-35
-                - fedora-36
-                - fedora-37
-                - fedora-38
                 - fedora-39
                 - fedora-40
 
@@ -1280,10 +1248,6 @@ workflows:
                 - noble
                 - oracular
                 - opensuse-tumbleweed
-                - fedora-35
-                - fedora-36
-                - fedora-37
-                - fedora-38
                 - fedora-39
                 - fedora-40
           requires:
