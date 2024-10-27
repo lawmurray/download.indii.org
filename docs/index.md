@@ -72,18 +72,6 @@ This software repository provides packages for [Doxide](https://doxide.org) and 
     sudo apt install doxide birch
     ```
 
-??? info "Debian 11 Bullseye (amd64)"
-    Add the repository:
-    ```
-    echo 'deb http://download.indii.org/deb bullseye main' | sudo tee /etc/apt/sources.list.d/indii.org.list
-    curl -fsSL https://download.indii.org/deb/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/indii.org.gpg > /dev/null
-    sudo apt update
-    ```
-    Install packages:
-    ```
-    sudo apt install doxide birch
-    ```
-
 ## :fontawesome-brands-fedora: Fedora
 
 ??? info "Fedora 40 (x86_64)"

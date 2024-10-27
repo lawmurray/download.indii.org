@@ -18,14 +18,6 @@ executors:
       CODENAME: buster
       DEBIAN_FRONTEND: noninteractive
 
-  bullseye:
-    docker:
-      - image: debian:bullseye
-    resource_class: large
-    environment:
-      CODENAME: bullseye
-      DEBIAN_FRONTEND: noninteractive
-
   bookworm:
     docker:
       - image: debian:bookworm
@@ -1214,7 +1206,6 @@ workflows:
           matrix:
             parameters:
               os:
-                - bullseye
                 - bookworm
                 - focal
                 - jammy
@@ -1243,7 +1234,6 @@ workflows:
           matrix:
             parameters:
               os:
-                - bullseye
                 - bookworm
                 - focal
                 - jammy
