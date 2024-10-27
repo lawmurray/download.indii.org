@@ -153,6 +153,7 @@ commands:
                   g++ \
                   gdb \
                   lcov \
+                  nvidia-cuda-toolkit \
                   libjemalloc-dev \
                   libeigen3-dev \
                   libyaml-dev \
