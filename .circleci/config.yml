@@ -58,22 +58,14 @@ executors:
       CODENAME: noble
       DEBIAN_FRONTEND: noninteractive
 
-  mantic:
+  oracular:
     docker:
-      - image: ubuntu:mantic
+      - image: ubuntu:oracular
     resource_class: large
     environment:
-      CODENAME: mantic
+      CODENAME: oracular
       DEBIAN_FRONTEND: noninteractive
-
-  lunar:
-    docker:
-      - image: ubuntu:lunar
-    resource_class: large
-    environment:
-      CODENAME: lunar
-      DEBIAN_FRONTEND: noninteractive
-
+    
   opensuse-leap-15-4:
     docker:
       - image: registry.opensuse.org/opensuse/leap:15.4
@@ -1252,10 +1244,8 @@ workflows:
                 - bookworm
                 - focal
                 - jammy
-                - lunar
-                - mantic
                 - noble
-
+                - oracular
       - rpm:
           matrix:
             parameters:
@@ -1287,9 +1277,8 @@ workflows:
                 - bookworm
                 - focal
                 - jammy
-                - lunar
-                - mantic
                 - noble
+                - oracular
                 - opensuse-tumbleweed
                 - fedora-35
                 - fedora-36
