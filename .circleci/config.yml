@@ -153,7 +153,6 @@ commands:
                   g++ \
                   gdb \
                   lcov \
-                  nvidia-cuda-toolkit \
                   libjemalloc-dev \
                   libeigen3-dev \
                   libyaml-dev \
@@ -352,6 +351,7 @@ commands:
                   bison \
                   g++ \
                   gdb \
+                  nvidia-cuda-toolkit \
                   libjemalloc-dev \
                   libeigen3-dev \
                   libyaml-dev \
