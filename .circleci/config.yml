@@ -329,6 +329,9 @@ commands:
                   icu
                 pacman -Sc --noconfirm
               else  # Debian variant
+                apt update --assume-yes
+                apt upgrade --assume-yes
+                apt install software-properties-common --assume-yes
                 apt-add-repository non-free --assume-yes || echo
                 apt update --assume-yes
                 apt upgrade --assume-yes
