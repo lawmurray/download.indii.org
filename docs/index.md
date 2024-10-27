@@ -10,34 +10,22 @@ This software repository provides packages for [Doxide](https://doxide.org) and 
 
 ## :fontawesome-brands-ubuntu: Ubuntu
 
+??? info "Ubuntu 24.10 Oracular Oriole (amd64)"
+    Add the repository:
+    ```
+    echo 'deb http://download.indii.org/deb oracular main' | sudo tee /etc/apt/sources.list.d/indii.org.list
+    curl -fsSL https://download.indii.org/deb/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/indii.org.gpg > /dev/null
+    sudo apt update
+    ```
+    Install packages:
+    ```
+    sudo apt install doxide birch
+    ```
+
 ??? info "Ubuntu 24.04 Noble Numbat (amd64)"
     Add the repository:
     ```
     echo 'deb http://download.indii.org/deb noble main' | sudo tee /etc/apt/sources.list.d/indii.org.list
-    curl -fsSL https://download.indii.org/deb/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/indii.org.gpg > /dev/null
-    sudo apt update
-    ```
-    Install packages:
-    ```
-    sudo apt install doxide birch
-    ```
-
-??? info "Ubuntu 23.10 Mantic Minotaur (amd64)"
-    Add the repository:
-    ```
-    echo 'deb http://download.indii.org/deb mantic main' | sudo tee /etc/apt/sources.list.d/indii.org.list
-    curl -fsSL https://download.indii.org/deb/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/indii.org.gpg > /dev/null
-    sudo apt update
-    ```
-    Install packages:
-    ```
-    sudo apt install doxide birch
-    ```
-
-??? info "Ubuntu 23.04 Lunar Lobster (amd64)"
-    Add the repository:
-    ```
-    echo 'deb http://download.indii.org/deb lunar main' | sudo tee /etc/apt/sources.list.d/indii.org.list
     curl -fsSL https://download.indii.org/deb/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/indii.org.gpg > /dev/null
     sudo apt update
     ```
@@ -113,50 +101,6 @@ This software repository provides packages for [Doxide](https://doxide.org) and 
     Add the repository:
     ```
     sudo dnf config-manager --add-repo https://download.indii.org/rpm/fedora/39/indii.org.repo
-    sudo dnf update
-    ```
-    Install packages:
-    ```
-    sudo dnf install doxide birch
-    ```
-
-??? info "Fedora 38 (x86_64)"
-    Add the repository:
-    ```
-    sudo dnf config-manager --add-repo https://download.indii.org/rpm/fedora/38/indii.org.repo
-    sudo dnf update
-    ```
-    Install packages:
-    ```
-    sudo dnf install doxide birch
-    ```
-
-??? info "Fedora 37 (x86_64)"
-    Add the repository:
-    ```
-    sudo dnf config-manager --add-repo https://download.indii.org/rpm/fedora/37/indii.org.repo
-    sudo dnf update
-    ```
-    Install packages:
-    ```
-    sudo dnf install doxide birch
-    ```
-
-??? info "Fedora 36 (x86_64)"
-    Add the repository:
-    ```
-    sudo dnf config-manager --add-repo https://download.indii.org/rpm/fedora/36/indii.org.repo
-    sudo dnf update
-    ```
-    Install packages:
-    ```
-    sudo dnf install doxide birch
-    ```
-
-??? info "Fedora 35 (x86_64)"
-    Add the repository:
-    ```
-    sudo dnf config-manager --add-repo https://download.indii.org/rpm/fedora/35/indii.org.repo
     sudo dnf update
     ```
     Install packages:
