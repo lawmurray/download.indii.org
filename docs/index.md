@@ -34,30 +34,6 @@ This software repository provides packages for [Doxide](https://doxide.org) and 
     sudo apt install doxide birch
     ```
 
-??? info "Ubuntu 22.04 Jammy Jellyfish (amd64)"
-    Add the repository:
-    ```
-    echo 'deb http://download.indii.org/deb jammy main' | sudo tee /etc/apt/sources.list.d/indii.org.list
-    curl -fsSL https://download.indii.org/deb/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/indii.org.gpg > /dev/null
-    sudo apt update
-    ```
-    Install packages:
-    ```
-    sudo apt install doxide birch
-    ```
-
-??? info "Ubuntu 20.04 Focal Fossa (amd64)"
-    Add the repository:
-    ```
-    echo 'deb http://download.indii.org/deb focal main' | sudo tee /etc/apt/sources.list.d/indii.org.list
-    curl -fsSL https://download.indii.org/deb/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/indii.org.gpg > /dev/null
-    sudo apt update
-    ```
-    Install packages:
-    ```
-    sudo apt install doxide birch
-    ```
-
 ## :simple-debian: Debian
 
 ??? info "Debian 12 Bookworm (amd64)"

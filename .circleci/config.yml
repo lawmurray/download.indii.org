@@ -10,36 +10,12 @@ executors:
       DEBIAN_FRONTEND: noninteractive
       MAKEFLAGS: -j8
 
-  buster:
-    docker:
-      - image: debian:buster
-    resource_class: large
-    environment:
-      CODENAME: buster
-      DEBIAN_FRONTEND: noninteractive
-
   bookworm:
     docker:
       - image: debian:bookworm
     resource_class: large
     environment:
       CODENAME: bookworm
-      DEBIAN_FRONTEND: noninteractive
-
-  focal:
-    docker:
-      - image: ubuntu:focal
-    resource_class: large
-    environment:
-      CODENAME: focal
-      DEBIAN_FRONTEND: noninteractive
-
-  jammy:
-    docker:
-      - image: ubuntu:jammy
-    resource_class: large
-    environment:
-      CODENAME: jammy
       DEBIAN_FRONTEND: noninteractive
 
   noble:
@@ -1207,8 +1183,6 @@ workflows:
             parameters:
               os:
                 - bookworm
-                - focal
-                - jammy
                 - noble
                 - oracular
       - rpm:
@@ -1235,8 +1209,6 @@ workflows:
             parameters:
               os:
                 - bookworm
-                - focal
-                - jammy
                 - noble
                 - oracular
                 - opensuse-tumbleweed
