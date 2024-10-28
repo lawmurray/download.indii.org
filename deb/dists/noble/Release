@@ -1,0 +1,26 @@
+Suite: stable
+Codename: noble
+Date: Mon, 28 Oct 2024 02:28:06 UTC
+Architectures: amd64
+Components: main
+MD5Sum:
+ 61693f6332970a602f10bdc9b707d2bd 9878 main/binary-amd64/Packages
+ 366c44da92d2490df30f872524703061 2940 main/binary-amd64/Packages.gz
+ 82a1ae90445e5284617f8a8cc3a53fa4 52 main/binary-amd64/Release
+ 3366824068cf5086dd4b28b5e69ed6f6 9307 main/source/Sources
+ b7cde29d4f72cf606ccc44d55b073373 2826 main/source/Sources.gz
+ 2a323edc4e7693b3b1ac9f71443ad683 53 main/source/Release
+SHA1:
+ 5c445af2e2e4bbcde97f43b8d05f1d6d1dbe58f8 9878 main/binary-amd64/Packages
+ ce3fa962dc74d414ad6b69796cbf6c9787a929af 2940 main/binary-amd64/Packages.gz
+ 9b61d92e2c42866227d305db51276f4714da5cd9 52 main/binary-amd64/Release
+ 887e5b84ccbbf59262c371498a0d74c6042c8405 9307 main/source/Sources
+ d833ce0234e9990ac0080aa94b6a342c3c576aa6 2826 main/source/Sources.gz
+ 22270126d2c06a44709ced469ca246a21f5b6c2e 53 main/source/Release
+SHA256:
+ 90eeedace580403b4d4c1b2b837c33b73c5aac2d27898c4c0ca36b82ee7554c4 9878 main/binary-amd64/Packages
+ 9f9e456bc55dcb30afbcfd8d7b6861e4913e3832d4de3cfb9584e7a639173ebf 2940 main/binary-amd64/Packages.gz
+ 5d14a4f1b270a16b7797dfa013f0d0d3325c616762714c6e9a34295a4d9be351 52 main/binary-amd64/Release
+ dc00146d55eef1372040a2e8db2e8db1302be2af99c2f7b21b62384f0803e5c7 9307 main/source/Sources
+ 4f9a30d7ab6962624e1bbfe010620ee4cdaa3838ac9320a9e0b86ba00d8d8e79 2826 main/source/Sources.gz
+ 33740b7ffc6ab6c9ce665b4b96de6606f3a3ace3f2cb36aec441602f84d664b3 53 main/source/Release

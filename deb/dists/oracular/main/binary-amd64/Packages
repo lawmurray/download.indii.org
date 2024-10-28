@@ -1,0 +1,250 @@
+Package: birch
+Version: 2.1.6-1~oracular
+Architecture: amd64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 817
+Depends: libc6 (>= 2.38), libgcc-s1 (>= 3.3.1), libjemalloc2 (>= 5.0.0), libstdc++6 (>= 13.1), libyaml-0-2
+Recommends: g++, make, autoconf, automake, libtool, membirch-dev, numbirch-dev, birch-standard-dev
+Homepage: https://birch-lang.org
+Priority: optional
+Section: devel
+Filename: pool/main/b/birch/birch_2.1.6-1~oracular_amd64.deb
+Size: 243930
+SHA256: 7e52c763aad1d148231217dc98e16ee90a65a8f871e2b495e8c742ca923777ad
+SHA1: 43d9b85917ef1ac3af6a55bf6a72f110d82308b7
+MD5sum: 244490244ccd58ee5fad82de1f83cee6
+Description: universal probabilistic programming
+ Birch is a programming language for expressing probabilistic models and
+ performing Bayesian inference. It is used by statisticians, data scientists,
+ and machine learning engineers. Its features include automatic differentiation,
+ automatic marginalization, and automatic conditioning. These compose into
+ advanced Monte Carlo inference algorithms. The Birch language transpiles to
+ C++, with multithreading CPU support, GPU support, and fast copy-on-write
+ memory management.
+
+Package: birch-cairo-dev
+Source: birch-cairo
+Version: 2.1.6-1~oracular
+Architecture: amd64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 346
+Depends: libbirch-cairo-2.1.6 (= 2.1.6-1~oracular), birch-standard-dev (>= 2.1.6), libcairo2-dev, libfreetype6-dev
+Homepage: https://birch-lang.org
+Priority: optional
+Section: devel
+Filename: pool/main/b/birch-cairo/birch-cairo-dev_2.1.6-1~oracular_amd64.deb
+Size: 42200
+SHA256: 28c854598e4793df26d0aba6bf2373462494262a126d1751b877f4f9ace693f1
+SHA1: 7bd614baeed7e2d0f1d399bbe6ab0085510753d8
+MD5sum: bc640e64b74545ffb6718873b3b2b577
+Description: Development files for the Cairo wrapper library of Birch
+
+Package: birch-sqlite-dev
+Source: birch-sqlite
+Version: 2.1.6-1~oracular
+Architecture: amd64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 248
+Depends: libbirch-sqlite-2.1.6 (= 2.1.6-1~oracular), birch-standard-dev (>= 2.1.6), libsqlite3-dev
+Homepage: https://birch-lang.org
+Priority: optional
+Section: devel
+Filename: pool/main/b/birch-sqlite/birch-sqlite-dev_2.1.6-1~oracular_amd64.deb
+Size: 36740
+SHA256: 910853e795042860971fd80c7cb549ded14fe52efc8512b34cc9a93474724832
+SHA1: 2ee78ac83044d0645155fe2c2bdf48246e48d1d8
+MD5sum: 32233ed282dce79e94352accf0b58b7e
+Description: Development files for the SQLite wrapper library of Birch
+
+Package: birch-standard-dev
+Source: birch-standard
+Version: 2.1.6-1~oracular
+Architecture: amd64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 22396
+Depends: libbirch-standard-2.1.6 (= 2.1.6-1~oracular), membirch-dev (>= 2.1.6), numbirch-dev (>= 2.1.6), libyaml-dev, libboost-math-dev
+Homepage: https://birch-lang.org
+Priority: optional
+Section: devel
+Filename: pool/main/b/birch-standard/birch-standard-dev_2.1.6-1~oracular_amd64.deb
+Size: 2085490
+SHA256: b4e158377ba4a072b3c87dd450c01295c7a4b27b12a31ee07dc5dd0260ea36d2
+SHA1: 3d94174b270ea85263c7a32a9c02f936f4f77c38
+MD5sum: 7143a14602f708b12e367a072dfb0226
+Description: Development files for the standard library of Birch
+
+Package: doxide
+Version: 0.5.0-1~oracular
+Architecture: amd64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 7732
+Depends: libc6 (>= 2.38), libgcc-s1 (>= 3.3.1), libstdc++6 (>= 14), libyaml-0-2
+Homepage: https://doxide.org
+Priority: optional
+Section: devel
+Filename: pool/main/d/doxide/doxide_0.5.0-1~oracular_amd64.deb
+Size: 660694
+SHA256: f5f5415de6c4a331f0f13796e394fd1bf6bda8082b687cc60b5be8e8bd611c4d
+SHA1: a213c1a69541280498ea2b2342b7bc62746f5a52
+MD5sum: aa48979ce452d466eb2c3f3fea422966
+Description: modern documentation for modern C++
+ Doxide generates documentation for C++ source code. It is configured with
+ YAML, generates Markdown, and publishes HTML. Entities in the source code are
+ documented with special comments containing commands, as with the classic
+ tool Doxygen. The source code is parsed and documentation processed into
+ Markdown then HTML. Doxide aims at online documentation with a modern look
+ and responsive design for desktop and mobile devices.
+
+Package: libbirch-cairo-2.1.6
+Source: birch-cairo
+Version: 2.1.6-1~oracular
+Architecture: amd64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 156
+Depends: libbirch-standard-2.1.6 (>= 2.1.6), libc6 (>= 2.29), libcairo2 (>= 1.2.4), libgcc-s1 (>= 3.3.1), libmembirch-2.1.6, libstdc++6 (>= 9)
+Homepage: https://birch-lang.org
+Priority: optional
+Section: devel
+Filename: pool/main/b/birch-cairo/libbirch-cairo-2.1.6_2.1.6-1~oracular_amd64.deb
+Size: 35554
+SHA256: d94a45ca74a30521998f47e39de667689f6f8a7e3a91c12cbb8aa6371b34ff0b
+SHA1: 93acbe8903736e4d736f70be99f0f2d5a224f620
+MD5sum: d92f2d0adacbe179085b6070c26cf20f
+Description: Cairo wrapper library of the Birch probabilistic programming language
+
+Package: libbirch-sqlite-2.1.6
+Source: birch-sqlite
+Version: 2.1.6-1~oracular
+Architecture: amd64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 126
+Depends: libbirch-standard-2.1.6 (>= 2.1.6), libc6 (>= 2.29), libgcc-s1 (>= 3.3.1), libmembirch-2.1.6, libsqlite3-0 (>= 3.5.9), libstdc++6 (>= 9)
+Homepage: https://birch-lang.org
+Priority: optional
+Section: devel
+Filename: pool/main/b/birch-sqlite/libbirch-sqlite-2.1.6_2.1.6-1~oracular_amd64.deb
+Size: 30752
+SHA256: f5553df3b0f183488921cf69dcf61f7bdb801e404ad379e691dc3f9180b29799
+SHA1: 5eb5780c59e9ab098b810e308c1857f13cba55ed
+MD5sum: 8aa96ebfd997f307b56181819c315026
+Description: SQLite wrapper library of the Birch probabilistic programming language
+
+Package: libbirch-standard-2.1.6
+Source: birch-standard
+Version: 2.1.6-1~oracular
+Architecture: amd64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 5743
+Depends: libc6 (>= 2.38), libgcc-s1 (>= 3.3.1), libgomp1 (>= 6), libmembirch-2.1.6, libnumbirch-2.1.6, libstdc++6 (>= 14), libyaml-0-2
+Homepage: https://birch-lang.org
+Priority: optional
+Section: devel
+Filename: pool/main/b/birch-standard/libbirch-standard-2.1.6_2.1.6-1~oracular_amd64.deb
+Size: 1307358
+SHA256: 20ff889a1568d5d76c31f238b3b75ea53acf7d1cc441e232ea9d7a9a49b2daf7
+SHA1: 8fa6fc2b84d2a94640b1a82fb879792f945544a6
+MD5sum: 42ac41f8155a5e9bf134e3bacc2dfd39
+Description: Standard library of the Birch probabilistic programming language
+
+Package: libmembirch-2.1.6
+Source: membirch
+Version: 2.1.6-1~oracular
+Architecture: amd64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 39
+Depends: libc6 (>= 2.14), libgcc-s1 (>= 3.3.1), libgomp1 (>= 6), libstdc++6 (>= 5)
+Homepage: https://birch-lang.org
+Priority: optional
+Section: devel
+Filename: pool/main/m/membirch/libmembirch-2.1.6_2.1.6-1~oracular_amd64.deb
+Size: 10664
+SHA256: a70a8f17ac36fe2b6bc4add3fb3d7fc7385dbec75f35d54190108b2c36435eff
+SHA1: c9d32cc67340fae5d31e967ad2fdf81be39950ff
+MD5sum: e57ba5f226186e45c7a5f80bdd58d0bf
+Description: C++ library of smart pointer types for object-level copy-on-write
+
+Package: libnumbirch-2.1.6
+Source: numbirch
+Version: 2.1.6-1~oracular
+Architecture: amd64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 19014
+Depends: libc6 (>= 2.29), libgcc-s1 (>= 3.0), libgomp1 (>= 4.9), libstdc++6 (>= 14)
+Homepage: https://birch-lang.org
+Priority: optional
+Section: devel
+Filename: pool/main/n/numbirch/libnumbirch-2.1.6_2.1.6-1~oracular_amd64.deb
+Size: 2960162
+SHA256: e983775bae07b60560b5dae0a691a35b1a78181d2c5ad0cb98a8c1ea23b62590
+SHA1: 3c17add268ef44305f88dbc1dc9fcf7e981f1077
+MD5sum: 7a6de1786e3115dd35538ea567b4ff4f
+Description: Numerical kernels and copy-on-write arrays
+
+Package: libnumbirch-cuda-2.1.6
+Source: numbirch
+Version: 2.1.6-1~oracular
+Architecture: amd64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 90674
+Depends: libc6 (>= 2.34), libcublas12, libcusolver11, libgcc-s1 (>= 3.4), libgomp1 (>= 4.9), libstdc++6 (>= 5.2)
+Homepage: https://birch-lang.org
+Priority: optional
+Section: devel
+Filename: pool/main/n/numbirch/libnumbirch-cuda-2.1.6_2.1.6-1~oracular_amd64.deb
+Size: 11178162
+SHA256: c80aecf9ee7f5f79d8d223be9d26120bb8d5ee2ad87b6046c99fab6a3ab87c31
+SHA1: 1b1925a12f51ed165740b1848057c0dcbe3f299a
+MD5sum: 8756343eeee435f328ff55b3e80a591d
+Description: Numerical kernels and copy-on-write arrays with CUDA backend
+
+Package: membirch-dev
+Source: membirch
+Version: 2.1.6-1~oracular
+Architecture: amd64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 142
+Depends: libmembirch-2.1.6 (= 2.1.6-1~oracular)
+Homepage: https://birch-lang.org
+Priority: optional
+Section: devel
+Filename: pool/main/m/membirch/membirch-dev_2.1.6-1~oracular_amd64.deb
+Size: 22784
+SHA256: fee8eb8b40ee60c59ee4675f4a3e33f27ee1149a81fbf3d4cc90260ce4300a94
+SHA1: e3fb72264a6d61ad44151faacb52c78d91eeeb7f
+MD5sum: a42cffcd034aab169071c359879071e5
+Description: Development files for MemBirch
+
+Package: numbirch-cuda-dev
+Source: numbirch
+Version: 2.1.6-1~oracular
+Architecture: amd64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 118972
+Depends: libnumbirch-cuda-2.1.6 (= 2.1.6-1~oracular)
+Homepage: https://birch-lang.org
+Priority: optional
+Section: devel
+Filename: pool/main/n/numbirch/numbirch-cuda-dev_2.1.6-1~oracular_amd64.deb
+Size: 10863826
+SHA256: 0564f36f82c98734f7d9911cf7fa6cf3d7246b920f6ef4bdd6d14dfba0150574
+SHA1: a189b02a23860d33038a6f0730b64338bc14363f
+MD5sum: 7af2f4092d29209c73d5ec323cef5408
+Description: Development files for NumBirch with CUDA backend
+
+Package: numbirch-dev
+Source: numbirch
+Version: 2.1.6-1~oracular
+Architecture: amd64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 41448
+Depends: libnumbirch-2.1.6 (= 2.1.6-1~oracular)
+Homepage: https://birch-lang.org
+Priority: optional
+Section: devel
+Filename: pool/main/n/numbirch/numbirch-dev_2.1.6-1~oracular_amd64.deb
+Size: 2580910
+SHA256: e2094f4745ee795e07b311943bd93bfbcfa25d163d56d28936eb73b7274121d6
+SHA1: 3ac435a1592a5dae4562b606c9522fd68f7068fe
+MD5sum: 5b4713f4c088e895845677fd834d34a8
+Description: Development files for NumBirch
+
