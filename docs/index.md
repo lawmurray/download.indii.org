@@ -48,6 +48,17 @@ This software repository provides packages for [Doxide](https://doxide.org) and 
     sudo apt install doxide birch
     ```
 
+??? abstract "Fedora 41 (x86_64)"
+    Add the repository:
+    ```
+    sudo dnf config-manager --add-repo https://download.indii.org/rpm/fedora/41/indii.org.repo
+    sudo dnf update
+    ```
+    Install packages:
+    ```
+    sudo dnf install doxide birch
+    ```
+
 ??? abstract "Fedora 40 (x86_64)"
     Add the repository:
     ```

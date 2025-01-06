@@ -69,6 +69,13 @@ executors:
     environment:
       CODENAME: fedora/40
 
+  fedora-41:
+    docker:
+      - image: registry.fedoraproject.org/fedora:41
+    resource_class: large
+    environment:
+      CODENAME: fedora/41
+
   mac:
     macos:
       xcode: 16.0.0
@@ -1192,6 +1199,7 @@ workflows:
                 - opensuse-tumbleweed
                 - fedora-39
                 - fedora-40
+                - fedora-41
 
       - mac
       - win
@@ -1214,6 +1222,7 @@ workflows:
                 - opensuse-tumbleweed
                 - fedora-39
                 - fedora-40
+                - fedora-41
           requires:
             - stage
 
