@@ -1,4 +1,4 @@
-site_name: download.indii.org
+site_name: Indii.org Software Repository
 site_description: Software repository for Doxide and Birch, with packages for major Linux distributions as well as Homebrew packages for macOS.
 theme:
   name: material
@@ -9,19 +9,26 @@ theme:
   palette:
     # Palette toggle for light mode
     - scheme: default
-      primary: black
-      accent: black
+      primary: white
+      accent: indigo
       toggle:
         icon: material/brightness-7 
         name: Switch to dark mode
 
     # Palette toggle for dark mode
     - scheme: slate
-      primary: black
-      accent: black
+      primary: blue-grey
+      accent: indigo
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
+
+  icon:
+    admonition:
+      warning: simple/ubuntu
+      bug: simple/debian
+      abstract: simple/fedora
+      question: simple/opensuse
 
 markdown_extensions:
   - def_list
@@ -34,3 +41,4 @@ markdown_extensions:
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
 
 plugins: []  # disable search
+

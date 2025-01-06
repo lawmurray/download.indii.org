@@ -2,15 +2,17 @@
 hide:
   - navigation
   - path
+  - toc
+  - menu
 ---
 
-# download.indii.org
+# Indii.org Software Repository
+
+## :fontawesome-brands-linux: Linux
 
 This software repository provides packages for [Doxide](https://doxide.org) and [Birch](https://birch-lang.org). Find your operating system below for instructions on adding the repository and installing the software.
 
-## :fontawesome-brands-ubuntu: Ubuntu
-
-??? info "Ubuntu 24.10 Oracular Oriole (amd64)"
+??? warning "Ubuntu 24.10 Oracular Oriole (amd64)"
     Add the repository:
     ```
     echo 'deb http://download.indii.org/deb oracular main' | sudo tee /etc/apt/sources.list.d/indii.org.list
@@ -22,7 +24,7 @@ This software repository provides packages for [Doxide](https://doxide.org) and 
     sudo apt install doxide birch
     ```
 
-??? info "Ubuntu 24.04 Noble Numbat (amd64)"
+??? warning "Ubuntu 24.04 Noble Numbat (amd64)"
     Add the repository:
     ```
     echo 'deb http://download.indii.org/deb noble main' | sudo tee /etc/apt/sources.list.d/indii.org.list
@@ -34,9 +36,7 @@ This software repository provides packages for [Doxide](https://doxide.org) and 
     sudo apt install doxide birch
     ```
 
-## :simple-debian: Debian
-
-??? info "Debian 12 Bookworm (amd64)"
+??? bug "Debian 12 Bookworm (amd64)"
     Add the repository:
     ```
     echo 'deb http://download.indii.org/deb bookworm main' | sudo tee /etc/apt/sources.list.d/indii.org.list
@@ -48,9 +48,7 @@ This software repository provides packages for [Doxide](https://doxide.org) and 
     sudo apt install doxide birch
     ```
 
-## :fontawesome-brands-fedora: Fedora
-
-??? info "Fedora 40 (x86_64)"
+??? abstract "Fedora 40 (x86_64)"
     Add the repository:
     ```
     sudo dnf config-manager --add-repo https://download.indii.org/rpm/fedora/40/indii.org.repo
@@ -61,7 +59,7 @@ This software repository provides packages for [Doxide](https://doxide.org) and 
     sudo dnf install doxide birch
     ```
 
-??? info "Fedora 39 (x86_64)"
+??? abstract "Fedora 39 (x86_64)"
     Add the repository:
     ```
     sudo dnf config-manager --add-repo https://download.indii.org/rpm/fedora/39/indii.org.repo
@@ -72,9 +70,7 @@ This software repository provides packages for [Doxide](https://doxide.org) and 
     sudo dnf install doxide birch
     ```
 
-## :simple-opensuse: openSUSE
-
-??? info "openSUSE Tumbleweed (x86_64)"
+??? question "openSUSE Tumbleweed (x86_64)"
     Add the repository:
     ```
     sudo zypper addrepo https://download.indii.org/rpm/opensuse/tumbleweed/indii.org.repo
