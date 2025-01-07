@@ -1,0 +1,26 @@
+Suite: stable
+Codename: oracular
+Date: Tue, 07 Jan 2025 06:30:19 UTC
+Architectures: amd64
+Components: main
+MD5Sum:
+ de3d72d33163f7c1421e21d8801e977e 9977 main/binary-amd64/Packages
+ 3331be5f19cbec6c8a48ac3a6d474e4e 2949 main/binary-amd64/Packages.gz
+ 82a1ae90445e5284617f8a8cc3a53fa4 52 main/binary-amd64/Release
+ 4ab8fc4afe74b7b08557a9900ef890bb 9454 main/source/Sources
+ 33363f5a2600b744d63424bc6fcfe3a6 2812 main/source/Sources.gz
+ 2a323edc4e7693b3b1ac9f71443ad683 53 main/source/Release
+SHA1:
+ 959c709b319cb958a0f57de0145800e3efc4bb49 9977 main/binary-amd64/Packages
+ 4d4a57f23c7c65146bc8cdff83b1c2ee56425e83 2949 main/binary-amd64/Packages.gz
+ 9b61d92e2c42866227d305db51276f4714da5cd9 52 main/binary-amd64/Release
+ 3652c3e3b9a86cebd891d492fd923162c871634f 9454 main/source/Sources
+ dae41a4efa8e72e5e788828ac62f801dc9a4c656 2812 main/source/Sources.gz
+ 22270126d2c06a44709ced469ca246a21f5b6c2e 53 main/source/Release
+SHA256:
+ 5f316717e2fc81b4943950bc9fdb9f6fc5209abfe70e57144e0133d2a16dba26 9977 main/binary-amd64/Packages
+ b9a6f44162b6fd777ad2309e36e56f6fd3096ea6826fc862479b556a64447453 2949 main/binary-amd64/Packages.gz
+ 5d14a4f1b270a16b7797dfa013f0d0d3325c616762714c6e9a34295a4d9be351 52 main/binary-amd64/Release
+ 9e824d771acd50fbf692045b18ee03e89558f64dfe2185904f2c010fb4a3e171 9454 main/source/Sources
+ 6fe46acb1e922bbbaf50398f7ac207d062881057980b3cad8c4e7ba7d452a71e 2812 main/source/Sources.gz
+ 33740b7ffc6ab6c9ce665b4b96de6606f3a3ace3f2cb36aec441602f84d664b3 53 main/source/Release
