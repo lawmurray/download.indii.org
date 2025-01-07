@@ -757,7 +757,7 @@ commands:
 
                 # finalize rpm repos (add .repo file to each)
                 for codename in $(ls rpm/*/*/repodata/repomd.xml rpm/*/*/*/repodata/repomd.xml | sed -E 's|^rpm/||' | sed -E 's|/repodata/repomd.xml$||'); do
-                  printf "[indii.org]\nname=indii.org\ntype=rpm-md\nbaseurl=https://<< parameters.subdomain >>/rpm/$codename\ngpgcheck=1\ngpgkey=https://<< parameters.subdomain >>/rpm/$codename/repodata/repomd.xml.key\nenabled=1\nautorefresh=1\n" > rpm/$codename/indii.org.repo
+                  printf "[indii.org]\nname=indii.org\ntype=rpm-md\nbaseurl=https://<< parameters.subdomain >>/rpm/$codename\ngpgcheck=1\ngpgkey=https://<< parameters.subdomain >>/rpm/$codename/repodata/repomd.xml.key\nenabled=1\n" > rpm/$codename/indii.org.repo
                 done
 
                 # publish
