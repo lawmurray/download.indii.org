@@ -1060,7 +1060,7 @@ jobs:
                 zypper --gpg-auto-import-keys refresh
                 zypper --non-interactive update
                 zypper --non-interactive install --recommends doxide birch
-              elif [[ "$CODENAME" =~ "fedora-41" ]]; then
+              elif [[ "$CODENAME" =~ "fedora/41" ]]; then
                 dnf install --assumeyes dnf-plugins-core
                 dnf config-manager addrepo --from-repofile=https://stage.indii.org/rpm/$CODENAME/indii.org.repo
                 dnf update --assumeyes
