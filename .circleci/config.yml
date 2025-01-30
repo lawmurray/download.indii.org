@@ -1,14 +1,6 @@
 version: 2.1
 
 executors:
-  default:
-    machine:
-      image: ubuntu-2204:current
-    resource_class: medium
-    environment:
-      CODENAME: default
-      DEBIAN_FRONTEND: noninteractive
-      MAKEFLAGS: -j8
 
   bookworm:
     docker:
@@ -33,7 +25,7 @@ executors:
     environment:
       CODENAME: oracular
       DEBIAN_FRONTEND: noninteractive
-    
+
   opensuse-leap-15-4:
     docker:
       - image: registry.opensuse.org/opensuse/leap:15.4
@@ -102,53 +94,7 @@ commands:
       - run:
           name: Install dependencies
           command: |
-              if [ "$CODENAME" = "default" ]; then
-                sudo apt update --assume-yes
-                sudo apt upgrade --assume-yes
-                sudo apt install --assume-yes --no-install-recommends \
-                  git \
-                  ssh \
-                  gpg \
-                  gpg-agent \
-                  tar \
-                  gzip \
-                  xz-utils \
-                  curl \
-                  time \
-                  ca-certificates \
-                  binutils \
-                  elfutils \
-                  make \
-                  autoconf \
-                  automake \
-                  libtool \
-                  cmake \
-                  flex \
-                  bison \
-                  g++ \
-                  gdb \
-                  lcov \
-                  libjemalloc-dev \
-                  libeigen3-dev \
-                  libyaml-dev \
-                  libboost-math-dev \
-                  libsqlite3-dev \
-                  libcairo2-dev \
-                  libicu-dev \
-                  build-essential \
-                  apt-utils \
-                  dpkg \
-                  dpkg-dev \
-                  devscripts \
-                  debhelper \
-                  fakeroot \
-                  lintian \
-                  reprepro \
-                  python3 \
-                  python3-pip
-                pip3 install mkdocs mkdocs-material
-                sudo rm -rf /var/lib/apt/lists/*
-              elif [[ "$CODENAME" =~ "mac" ]]; then
+              if [[ "$CODENAME" =~ "mac" ]]; then
                 brew update
                 brew install \
                     git \
@@ -203,10 +149,9 @@ commands:
                   rpm-build \
                   rpm-config-SUSE \
                   createrepo_c
-                zypper clean --all
               elif [[ "$CODENAME" =~ "fedora" ]]; then
-                yum -y update
-                yum -y install \
+                dnf -y update
+                dnf -y install \
                   git \
                   openssh \
                   gpg \
@@ -239,7 +184,6 @@ commands:
                   rpm-sign \
                   redhat-rpm-config \
                   createrepo_c
-                yum clean all
               else  # Debian variant
                 sed -i 's/^Components: main$/& contrib non-free non-free-firmware/' /etc/apt/sources.list.d/debian.sources || echo
                 apt update --assume-yes
@@ -251,6 +195,7 @@ commands:
                   gpg-agent \
                   tar \
                   gzip \
+                  xz-utils \
                   curl \
                   ca-certificates \
                   binutils \
@@ -264,7 +209,7 @@ commands:
                   bison \
                   g++ \
                   gdb \
-                  nvidia-cuda-toolkit \
+                  lcov \
                   libjemalloc-dev \
                   libeigen3-dev \
                   libyaml-dev \
@@ -280,8 +225,10 @@ commands:
                   debhelper \
                   fakeroot \
                   lintian \
-                  reprepro
-                rm -rf /var/lib/apt/lists/*
+                  reprepro \
+                  python3 \
+                  python3-pip
+                pip3 install mkdocs mkdocs-material
               fi
       - run:
           name: Environment variables
@@ -908,7 +855,7 @@ jobs:
             - win
 
   stage:
-    executor: default
+    executor: noble
     steps:
       - environment
       - attach_workspace:
@@ -1029,7 +976,7 @@ jobs:
               Test-Package -Package doxide
 
   deploy_linux:
-    executor: default
+    executor: noble
     steps:
       - environment
       - attach_workspace:
