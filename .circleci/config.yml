@@ -208,6 +208,7 @@ commands:
                   flex \
                   bison \
                   g++ \
+                  nvidia-cuda-toolkit \
                   gdb \
                   lcov \
                   libjemalloc-dev \
