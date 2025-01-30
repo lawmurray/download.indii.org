@@ -226,9 +226,9 @@ commands:
                   fakeroot \
                   lintian \
                   reprepro \
-                  python3 \
-                  python3-pip
-                pip3 install mkdocs mkdocs-material
+                  mkdocs \
+                  mkdocs-material \
+                  mkdocs-material-extensions
               fi
       - run:
           name: Environment variables
