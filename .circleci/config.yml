@@ -240,69 +240,6 @@ commands:
                   redhat-rpm-config \
                   createrepo_c
                 yum clean all
-              elif [[ "$CODENAME" =~ "mageia" ]]; then
-                urpmi --auto-update
-                urpmi --force --no-recommends \
-                  git \
-                  openssh \
-                  gnupg2 \
-                  distribution-gpg-keys \
-                  tar \
-                  gzip \
-                  bzip2 \
-                  xz \
-                  zstd \
-                  curl \
-                  ca-certificates \
-                  make \
-                  autoconf \
-                  automake \
-                  libtool \
-                  cmake \
-                  flex \
-                  bison \
-                  gcc-c++ \
-                  yaml-devel \
-                  jemalloc-devel \
-                  boost-devel \
-                  eigen3-devel \
-                  cairo-devel \
-                  sqlite3-devel \
-                  libicu-devel \
-                  rpm \
-                  rpmlint \
-                  rpm-build \
-                  rpm-sign \
-                  rpm-mageia-setup \
-                  rpm-mageia-setup-build \
-                  createrepo_c
-              elif [[ "$CODENAME" =~ "arch" ]]; then
-                pacman -Syu --noconfirm --needed \
-                  git \
-                  openssh \
-                  tar \
-                  gzip \
-                  curl \
-                  ca-certificates \
-                  binutils \
-                  elfutils \
-                  make \
-                  autoconf \
-                  automake \
-                  libtool \
-                  cmake \
-                  flex \
-                  bison \
-                  gcc \
-                  gdb \
-                  jemalloc \
-                  libyaml \
-                  boost \
-                  eigen \
-                  cairo \
-                  sqlite \
-                  icu
-                pacman -Sc --noconfirm
               else  # Debian variant
                 sed -i 's/^Components: main$/& contrib non-free non-free-firmware/' /etc/apt/sources.list.d/debian.sources || echo
                 apt update --assume-yes
