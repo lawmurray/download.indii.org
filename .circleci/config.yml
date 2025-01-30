@@ -413,7 +413,7 @@ commands:
       - version:
           dir: Birch/libraries/SQLite
 
-      # build birch, needed for source_birch and docs_birch
+      # build birch, needed for source_birch
       - build_cpp:
           dir: Birch/birch
 
@@ -499,21 +499,6 @@ commands:
               ./bootstrap
               ./configure --prefix="$HOME" $CONFIGURE_FLAGS || (cat config.log && exit 1)
               make install
-
-  docs_birch:
-    description: Document Birch package
-    parameters:
-      dir:
-        description: Directory containing the package, without Birch/ prefix
-        type: string
-    steps:
-      - run:
-          name: Document Birch/<< parameters.dir >>
-          command: |
-              cd Birch/<< parameters.dir >>
-              birch docs
-              mkdir -p $HOME/docs/docs/<< parameters.dir >>
-              cp -r docs/* $_/.
 
   package_deb:
     parameters:
@@ -762,27 +747,6 @@ commands:
                 choco push << parameters.package >>.$version.nupkg --source "https://push.chocolatey.org/"
               }
 
-  deploy_docs:
-    parameters:
-      subdomain:
-        description: Subdomain of repository, e.g. docs.birch-lang.org
-        type: string
-    steps:
-      - run:
-          name: Deploy << parameters.subdomain >>
-          command: |
-              if [[ -n "$GITHUB_USERNAME" && -n "$GITHUB_PASSWORD" ]]; then
-                pip3 install mkdocs mkdocs-material
-                cd $HOME/docs
-                mkdocs build
-                cd site
-                git init -b gh-pages
-                git add .
-                git commit -m "Overwrite."
-                git remote add origin https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/lawmurray/<< parameters.subdomain >>.git
-                git push origin gh-pages -f
-              fi
-
   destroy:
     parameters:
       repo:
@@ -943,34 +907,6 @@ jobs:
           paths:
             - win
 
-  docs:
-    executor: default
-    steps:
-      - environment
-      - checkout
-      - checkout_packages
-      - prepare
-      - run:
-          name: Initialize docs
-          command: |
-              mkdir -p $HOME/docs/docs
-      - docs_birch:
-          dir: libraries/Standard
-      - docs_birch:
-          dir: libraries/Cairo
-      - docs_birch:
-          dir: libraries/SQLite
-      - run:
-          name: Finalize docs
-          command: |
-              cp Birch/mkdocs.yml $HOME/docs/.
-              cp Birch/README.md $HOME/docs/docs/index.md
-
-      - persist_to_workspace:
-          root: ..
-          paths:
-            - docs
-
   stage:
     executor: default
     steps:
@@ -1100,8 +1036,6 @@ jobs:
           at: ..
       - deploy_repo:
           subdomain: download.indii.org
-      - deploy_docs:
-          subdomain: docs.birch-lang.org
       - destroy:
           repo: stage.indii.org
           branch: gh-pages
@@ -1148,7 +1082,6 @@ workflows:
 
       - mac
       - win
-      - docs
 
       - stage:
           requires:
@@ -1185,7 +1118,6 @@ workflows:
             - test_linux
             - test_mac
             - test_win
-            - docs
 
       - deploy_linux:
           requires:
