@@ -402,7 +402,7 @@ commands:
               done
               for file in debian/changelog debian/control debian/*.install debian/*.links; do
                 if [[ -e $file ]]; then
-                  cat $file | sed -E "s|$VERSION-1|$VERSION-1~$CODENAME|g" | sed -E "s|0\.0\.0-1|$VERSION-1~$CODENAME|g" | sed -E "s/0\.0\.0/$VERSION/g" | sed -E "s/0_0_0/$VERSION_SAFE/g" > $file.sponge
+                  cat $file | sed -E "s|0\.0\.0-1|$VERSION-1~$CODENAME|g" | sed -E "s/0\.0\.0/$VERSION/g" | sed -E "s/0_0_0/$VERSION_SAFE/g" > $file.sponge
                   mv $file.sponge $file
                   NEWNAME=$(echo $file | sed -E "s/0\.0\.0/$VERSION/g")
                   if [[ "$NEWNAME" != "$file" ]]; then
@@ -410,11 +410,6 @@ commands:
                   fi
                 fi
               done
-      - run:
-          name: Commit locally  # needed for meson dist
-          command: |
-              git add -u
-              git commit -m "Updated version."
 
   version_win:
     description: Update version number
@@ -514,22 +509,8 @@ commands:
               ./configure --disable-checks --prefix="$HOME" $CONFIGURE_FLAGS || (cat config.log && exit 1)
               make dist
 
-  source_meson:
-    description: Archive source for Meson project
-    parameters:
-      dir:
-        description: Directory containing the project
-        type: string
-    steps:
-      - run:
-          name: Archive source for << parameters.dir >>
-          command: |
-              cd << parameters.dir >>/build
-              meson dist --formats gztar
-              mv meson-dist/*.tar.xz ..
-
-  source_cmake:
-    description: Archive source for CMake project
+  source:
+    description: Archive source
     parameters:
       dir:
         description: Directory containing the project
@@ -541,10 +522,11 @@ commands:
               cd << parameters.dir >>
               TARNAME=$(echo << parameters.dir >> | sed -E 's|^.*/||')
               VERSION=$(git describe --tags --abbrev=0 | sed -E 's/^v//')
-              mkdir $TARNAME-$VERSION
-              cp -r src contrib CMakeLists.txt README.md LICENSE $TARNAME-$VERSION/.
+              cd ..
+              mv $TARNAME $TARNAME-$VERSION
               tar czf $TARNAME-$VERSION.tar.gz $TARNAME-$VERSION
-              rm -rf $TARNAME-$VERSION
+              mv $TARNAME-$VERSION $TARNAME
+              mv $TARNAME-$VERSION.tar.gz $TARNAME/.
 
   build_cpp:
     description: Build a C++ package
@@ -584,6 +566,13 @@ commands:
               tar xzf ${TARNAME}_$VERSION.orig.tar.gz
               cp -r debian $TARNAME-$VERSION/.
               cd $TARNAME-$VERSION
+              rm -rf debian/changelog
+              debchange --create \
+                  --package $TARNAME \ 
+                  --newversion $VERSION-1 \
+                  --distribution $CODENAME \
+                  --controlmaint \
+                  "Packaged for download.indii.org."              
               debuild -eDEB_BUILD_OPTIONS=noddebs -j$JOBS
       - run:
           name: Install Debian package << parameters.dir >>
