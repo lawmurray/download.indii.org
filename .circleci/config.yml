@@ -193,6 +193,7 @@ commands:
                   gcc \
                   gcc-c++ \
                   blueprint-compiler \
+                  desktop-file-utils \
                   libyaml-devel \
                   jemalloc-devel \
                   boost-devel \
@@ -232,6 +233,7 @@ commands:
                   gcc \
                   gcc-c++ \
                   blueprint-compiler \
+                  desktop-file-utils \
                   libyaml-devel \
                   jemalloc-devel \
                   boost-devel \
@@ -276,6 +278,7 @@ commands:
                   g++ \
                   nvidia-cuda-toolkit \
                   blueprint-compiler \
+                  desktop-file-utils \
                   gdb \
                   libjemalloc-dev \
                   libeigen3-dev \
