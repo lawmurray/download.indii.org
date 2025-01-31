@@ -222,7 +222,9 @@ commands:
                   meson \
                   flex \
                   bison \
+                  gcc \
                   gcc-c++ \
+                  blueprint-compiler \
                   libyaml-devel \
                   jemalloc-devel \
                   boost-devel \
@@ -259,7 +261,9 @@ commands:
                   meson \
                   flex \
                   bison \
+                  gcc \
                   gcc-c++ \
+                  blueprint-compiler \
                   libyaml-devel \
                   jemalloc-devel \
                   boost-devel \
@@ -300,8 +304,10 @@ commands:
                   meson \
                   flex \
                   bison \
+                  gcc \
                   g++ \
                   nvidia-cuda-toolkit \
+                  blueprint-compiler \
                   gdb \
                   libjemalloc-dev \
                   libeigen3-dev \
