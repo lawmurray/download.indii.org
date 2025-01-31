@@ -617,7 +617,7 @@ commands:
               TARNAME=$(ls *-$VERSION.tar.gz | grep -Eo '^[a-z\-]+[a-z]')
               mkdir -p $HOME/rpmbuild/SOURCES
               mv $TARNAME-$VERSION.tar.gz $_/.
-              rpmbuild --define="_topdir $HOME/rpmbuild" --define="_smp_mflags -j$JOBS" --define="debug_package %{nil}" -ba $TARNAME.spec
+              rpmbuild --target $ARCH --define="_topdir $HOME/rpmbuild" --define="_smp_mflags -j$JOBS" --define="debug_package %{nil}" -ba $TARNAME.spec
       - run:
           name: Sign RPM package << parameters.dir >>
           command: |
