@@ -77,6 +77,81 @@ executors:
       CODENAME: fedora/41
       ARCH: x86_64
 
+  bookworm-arm:
+    docker:
+      - image: debian:bookworm
+    resource_class: large
+    environment:
+      CODENAME: bookworm
+      ARCH: arm64
+      DEBIAN_FRONTEND: noninteractive
+
+  noble-arm:
+    docker:
+      - image: ubuntu:noble
+    resource_class: large
+    environment:
+      CODENAME: noble
+      ARCH: arm64
+      DEBIAN_FRONTEND: noninteractive
+
+  oracular-arm:
+    docker:
+      - image: ubuntu:oracular
+    resource_class: large
+    environment:
+      CODENAME: oracular
+      ARCH: arm64
+      DEBIAN_FRONTEND: noninteractive
+
+  opensuse-leap-15-5-arm:
+    docker:
+      - image: registry.opensuse.org/opensuse/leap:15.5
+    resource_class: large
+    environment:
+      CODENAME: opensuse/leap/15.5
+      ARCH: arm64
+
+  opensuse-leap-15-6-arm:
+    docker:
+      - image: registry.opensuse.org/opensuse/leap:15.6
+    resource_class: large
+    environment:
+      CODENAME: opensuse/leap/15.6
+      ARCH: arm64
+    
+  opensuse-tumbleweed-arm:
+    docker:
+      - image: registry.opensuse.org/opensuse/tumbleweed
+    resource_class: large
+    environment:
+      CODENAME: opensuse/tumbleweed
+      ARCH: arm64
+
+  fedora-39-arm:
+    docker:
+      - image: registry.fedoraproject.org/fedora:39
+    resource_class: large
+    environment:
+      CODENAME: fedora/39
+      ARCH: arm64
+
+  fedora-40-arm:
+    docker:
+      - image: registry.fedoraproject.org/fedora:40
+    resource_class: large
+    environment:
+      CODENAME: fedora/40
+      ARCH: arm64
+
+  fedora-41-arm:
+    docker:
+      - image: registry.fedoraproject.org/fedora:41
+    resource_class: large
+    environment:
+      CODENAME: fedora/41
+      ARCH: arm64
+    
   mac:
     macos:
       xcode: 16.0.0
@@ -742,7 +817,7 @@ jobs:
           name: Initialize repository
           command: |
               mkdir -p $HOME/deb/$CODENAME/conf
-              printf "Codename: $CODENAME\nSuite: stable\nComponents: main\nArchitectures: source amd64\nSignWith: default\n" > $_/distributions
+              printf "Codename: $CODENAME\nSuite: stable\nComponents: main\nArchitectures: source $ARCH\nSignWith: default\n" > $_/distributions
       - package_deb:
           dir: doxide
       - package_deb:
@@ -1028,6 +1103,9 @@ workflows:
                 - bookworm
                 - noble
                 - oracular
+                - bookworm-arm
+                - noble-arm
+                - oracular-arm
       - rpm:
           matrix:
             parameters:
@@ -1038,6 +1116,12 @@ workflows:
                 - fedora-39
                 - fedora-40
                 - fedora-41
+                - opensuse-leap-15-5-arm
+                - opensuse-leap-15-6-arm
+                - opensuse-tumbleweed-arm
+                - fedora-39-arm
+                - fedora-40-arm
+                - fedora-41-arm
 
       - mac
       - win
@@ -1062,6 +1146,15 @@ workflows:
                 - fedora-39
                 - fedora-40
                 - fedora-41
+                - bookworm-arm
+                - noble-arm
+                - oracular-arm
+                - opensuse-leap-15-5-arm
+                - opensuse-leap-15-6-arm
+                - opensuse-tumbleweed-arm
+                - fedora-39-arm
+                - fedora-40-arm
+                - fedora-41-arm
           requires:
             - stage
 
