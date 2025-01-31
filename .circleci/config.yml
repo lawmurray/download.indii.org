@@ -169,7 +169,7 @@ commands:
                 echo "export PATH=/opt/homebrew/opt/gnu-time/libexec/gnubin:/opt/homebrew/opt/flex/bin:/opt/homebrew/opt/bison/bin:\$PATH" >> $BASH_ENV
               elif [[ "$CODENAME" =~ "opensuse" ]]; then
                 zypper --non-interactive update
-                zypper --non-interactive install --no-recommends \
+                zypper --non-interactive install \
                   git \
                   openssh \
                   gpg \
@@ -252,7 +252,7 @@ commands:
                 sed -i 's/^Components: main$/& contrib non-free non-free-firmware/' /etc/apt/sources.list.d/debian.sources || echo
                 apt update --assume-yes
                 apt upgrade --assume-yes
-                apt install --assume-yes --no-install-recommends \
+                apt install --assume-yes \
                   git \
                   ssh \
                   gpg \
