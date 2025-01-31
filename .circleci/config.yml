@@ -860,21 +860,30 @@ jobs:
               gpg --export --armor > public.key
               rpm --import public.key
               rm public.key
-      - package_rpm:
-          dir: doxide
-      - package_rpm:
-          dir: Birch/birch
-      - package_rpm:
-          dir: Birch/membirch
-      - install_cuda_prereq
-      - package_rpm:
-          dir: Birch/numbirch
-      - package_rpm:
-          dir: Birch/libraries/Standard
-      - package_rpm:
-          dir: Birch/libraries/Cairo
-      - package_rpm:
-          dir: Birch/libraries/SQLite
+      - when:
+          condition:
+            not:
+              or:
+                - equal: [ << parameters.os >>, opensuse-leap-15-5 ]
+                - equal: [ << parameters.os >>, opensuse-leap-15-6 ]
+                - equal: [ << parameters.os >>, opensuse-leap-15-5-arm ]
+                - equal: [ << parameters.os >>, opensuse-leap-15-6-arm ]
+          steps:
+            - package_rpm:
+                dir: doxide              
+            - package_rpm:
+                dir: Birch/birch
+            - package_rpm:
+                dir: Birch/membirch
+            - install_cuda_prereq
+            - package_rpm:
+                dir: Birch/numbirch
+            - package_rpm:
+                dir: Birch/libraries/Standard
+            - package_rpm:
+                dir: Birch/libraries/Cairo
+            - package_rpm:
+                dir: Birch/libraries/SQLite
       - run:
           name: Finalize repository
           command: |
@@ -886,7 +895,7 @@ jobs:
           root: ..
           paths:
             - rpm
-
+          
   mac:
     executor: mac
     steps:
