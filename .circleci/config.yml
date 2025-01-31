@@ -403,7 +403,7 @@ commands:
               done
               for file in debian/changelog debian/control debian/*.install debian/*.links; do
                 if [[ -e $file ]]; then
-                  cat $file | sed -E "s|0\.0\.0-1|$VERSION-1~$CODENAME|g" | sed -E "s/0\.0\.0/$VERSION/g" | sed -E "s/0_0_0/$VERSION_SAFE/g" > $file.sponge
+                  cat $file | sed -E "s|$VERSION-1|$VERSION-1~$CODENAME|g" | sed -E "s|0\.0\.0-1|$VERSION-1~$CODENAME|g" | sed -E "s/0\.0\.0/$VERSION/g" | sed -E "s/0_0_0/$VERSION_SAFE/g" > $file.sponge
                   mv $file.sponge $file
                   NEWNAME=$(echo $file | sed -E "s/0\.0\.0/$VERSION/g")
                   if [[ "$NEWNAME" != "$file" ]]; then
@@ -411,6 +411,10 @@ commands:
                   fi
                 fi
               done
+      - run:
+          name: Commit locally  # needed for meson dist
+          command: |
+              git commit -m "Updated version."
 
   version_win:
     description: Update version number
@@ -510,11 +514,25 @@ commands:
               ./configure --disable-checks --prefix="$HOME" $CONFIGURE_FLAGS || (cat config.log && exit 1)
               make dist
 
-  source_cmake:
-    description: Archive source for CMake package
+  source_meson:
+    description: Archive source for Meson project
     parameters:
       dir:
-        description: Directory containing the package
+        description: Directory containing the project
+        type: string
+    steps:
+      - run:
+          name: Archive source for << parameters.dir >>
+          command: |
+              cd << parameters.dir >>/build
+              meson dist --formats gztar
+              mv meson-dist/*.tar.xz ..
+
+  source_cmake:
+    description: Archive source for CMake project
+    parameters:
+      dir:
+        description: Directory containing the project
         type: string
     steps:
       - run:
