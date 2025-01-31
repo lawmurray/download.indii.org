@@ -8,6 +8,7 @@ executors:
     resource_class: large
     environment:
       CODENAME: bookworm
+      ARCH: amd64
       DEBIAN_FRONTEND: noninteractive
 
   noble:
@@ -16,6 +17,7 @@ executors:
     resource_class: large
     environment:
       CODENAME: noble
+      ARCH: amd64
       DEBIAN_FRONTEND: noninteractive
 
   oracular:
@@ -24,6 +26,7 @@ executors:
     resource_class: large
     environment:
       CODENAME: oracular
+      ARCH: amd64
       DEBIAN_FRONTEND: noninteractive
 
   opensuse-leap-15-5:
@@ -32,6 +35,7 @@ executors:
     resource_class: large
     environment:
       CODENAME: opensuse/leap/15.5
+      ARCH: x86_64
 
   opensuse-leap-15-6:
     docker:
@@ -39,6 +43,7 @@ executors:
     resource_class: large
     environment:
       CODENAME: opensuse/leap/15.6
+      ARCH: x86_64
     
   opensuse-tumbleweed:
     docker:
@@ -46,6 +51,7 @@ executors:
     resource_class: large
     environment:
       CODENAME: opensuse/tumbleweed
+      ARCH: x86_64
 
   fedora-39:
     docker:
@@ -53,6 +59,7 @@ executors:
     resource_class: large
     environment:
       CODENAME: fedora/39
+      ARCH: x86_64
 
   fedora-40:
     docker:
@@ -60,6 +67,7 @@ executors:
     resource_class: large
     environment:
       CODENAME: fedora/40
+      ARCH: x86_64
 
   fedora-41:
     docker:
@@ -67,6 +75,7 @@ executors:
     resource_class: large
     environment:
       CODENAME: fedora/41
+      ARCH: x86_64
 
   mac:
     macos:
@@ -508,15 +517,15 @@ commands:
       - run:
           name: Sign RPM package << parameters.dir >>
           command: |
-              rpmsign --addsign $HOME/rpmbuild/RPMS/x86_64/*.rpm
+              rpmsign --addsign $HOME/rpmbuild/RPMS/$ARCH/*.rpm
       - run:
           name: Install RPM package << parameters.dir >>
           command: |
-              rpm --install --nodeps $HOME/rpmbuild/RPMS/x86_64/*.rpm  # establish dependencies as we go
+              rpm --install --nodeps $HOME/rpmbuild/RPMS/$ARCH/*.rpm  # establish dependencies as we go
       - run:
           name: Deploy RPM package << parameters.dir >>
           command: |
-              mv $HOME/rpmbuild/RPMS/x86_64/*.rpm $HOME/rpm/$CODENAME/x86_64/.
+              mv $HOME/rpmbuild/RPMS/$ARCH/*.rpm $HOME/rpm/$CODENAME/$ARCH/.
               mv $HOME/rpmbuild/SRPMS/*.rpm $HOME/rpm/$CODENAME/src/.
 
   package_mac:
@@ -772,7 +781,7 @@ jobs:
       - run:
           name: Initialize repository
           command: |
-              mkdir -p $HOME/rpm/$CODENAME/{x86_64,src}
+              mkdir -p $HOME/rpm/$CODENAME/{$ARCH,src}
               gpg --export --armor > public.key
               rpm --import public.key
               rm public.key
