@@ -292,6 +292,7 @@ commands:
                   dpkg \
                   dpkg-dev \
                   devscripts \
+                  libdistro-info-perl \
                   debhelper \
                   fakeroot \
                   lintian \
@@ -553,11 +554,11 @@ commands:
               cd $TARNAME-$VERSION
               rm -rf debian/changelog
               debchange --create \
-                  --package $TARNAME \ 
+                  --package $TARNAME \
                   --newversion $VERSION-1 \
                   --distribution $CODENAME \
                   --controlmaint \
-                  "Packaged for download.indii.org."              
+                  "Packaged for download.indii.org."
               debuild -eDEB_BUILD_OPTIONS=noddebs -j$JOBS
       - run:
           name: Install Debian package << parameters.dir >>
