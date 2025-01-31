@@ -414,6 +414,7 @@ commands:
       - run:
           name: Commit locally  # needed for meson dist
           command: |
+              git add -u
               git commit -m "Updated version."
 
   version_win:
