@@ -26,13 +26,6 @@ executors:
       CODENAME: oracular
       DEBIAN_FRONTEND: noninteractive
 
-  opensuse-leap-15-4:
-    docker:
-      - image: registry.opensuse.org/opensuse/leap:15.4
-    resource_class: large
-    environment:
-      CODENAME: opensuse/leap/15.4
-
   opensuse-leap-15-5:
     docker:
       - image: registry.opensuse.org/opensuse/leap:15.5
@@ -40,6 +33,13 @@ executors:
     environment:
       CODENAME: opensuse/leap/15.5
 
+  opensuse-leap-15-6:
+    docker:
+      - image: registry.opensuse.org/opensuse/leap:15.6
+    resource_class: large
+    environment:
+      CODENAME: opensuse/leap/15.6
+    
   opensuse-tumbleweed:
     docker:
       - image: registry.opensuse.org/opensuse/tumbleweed
@@ -1023,6 +1023,8 @@ workflows:
           matrix:
             parameters:
               os:
+                - opensuse-leap-15-5
+                - opensuse-leap-15-6
                 - opensuse-tumbleweed
                 - fedora-39
                 - fedora-40
@@ -1045,6 +1047,8 @@ workflows:
                 - bookworm
                 - noble
                 - oracular
+                - opensuse-leap-15-5
+                - opensuse-leap-15-6
                 - opensuse-tumbleweed
                 - fedora-39
                 - fedora-40
