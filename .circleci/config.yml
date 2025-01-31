@@ -178,7 +178,6 @@ commands:
                   gcc-c++ \
                   blueprint-compiler \
                   gettext \
-                  appstream \
                   desktop-file-utils \
                   libyaml-devel \
                   jemalloc-devel \
@@ -220,7 +219,6 @@ commands:
                   gcc-c++ \
                   blueprint-compiler \
                   gettext \
-                  appstream \
                   desktop-file-utils \
                   libyaml-devel \
                   jemalloc-devel \
@@ -267,7 +265,6 @@ commands:
                   nvidia-cuda-toolkit \
                   blueprint-compiler \
                   gettext \
-                  appstream \
                   desktop-file-utils \
                   gdb \
                   libjemalloc-dev \
