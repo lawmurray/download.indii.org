@@ -86,7 +86,7 @@ executors:
     resource_class: arm.large
     environment:
       CODENAME: opensuse/tumbleweed
-      ARCH: arm64
+      ARCH: aarch64
 
   fedora-40-arm:
     docker:
@@ -94,7 +94,7 @@ executors:
     resource_class: arm.large
     environment:
       CODENAME: fedora/40
-      ARCH: arm64
+      ARCH: aarch64
 
   fedora-41-arm:
     docker:
@@ -102,7 +102,7 @@ executors:
     resource_class: arm.large
     environment:
       CODENAME: fedora/41
-      ARCH: arm64
+      ARCH: aarch64
     
   mac:
     macos:
@@ -378,7 +378,7 @@ commands:
               done
               for file in debian/changelog debian/control debian/*.install debian/*.links; do
                 if [[ -e $file ]]; then
-                  cat $file | sed -E "s|0\.0\.0-1|$VERSION-1~$CODENAME|g" | sed -E "s/0\.0\.0/$VERSION/g" | sed -E "s/0_0_0/$VERSION_SAFE/g" > $file.sponge
+                  cat $file | sed -E "s/0\.0\.0/$VERSION/g" | sed -E "s/0_0_0/$VERSION_SAFE/g" > $file.sponge
                   mv $file.sponge $file
                   NEWNAME=$(echo $file | sed -E "s/0\.0\.0/$VERSION/g")
                   if [[ "$NEWNAME" != "$file" ]]; then
