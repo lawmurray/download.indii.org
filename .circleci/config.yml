@@ -28,22 +28,6 @@ executors:
       CODENAME: oracular
       ARCH: amd64
       DEBIAN_FRONTEND: noninteractive
-
-  opensuse-leap-15-5:
-    docker:
-      - image: registry.opensuse.org/opensuse/leap:15.5
-    resource_class: large
-    environment:
-      CODENAME: opensuse/leap/15.5
-      ARCH: x86_64
-
-  opensuse-leap-15-6:
-    docker:
-      - image: registry.opensuse.org/opensuse/leap:15.6
-    resource_class: large
-    environment:
-      CODENAME: opensuse/leap/15.6
-      ARCH: x86_64
     
   opensuse-tumbleweed:
     docker:
@@ -103,22 +87,6 @@ executors:
       CODENAME: oracular
       ARCH: arm64
       DEBIAN_FRONTEND: noninteractive
-
-  opensuse-leap-15-5-arm:
-    docker:
-      - image: registry.opensuse.org/opensuse/leap:15.5
-    resource_class: large
-    environment:
-      CODENAME: opensuse/leap/15.5
-      ARCH: arm64
-
-  opensuse-leap-15-6-arm:
-    docker:
-      - image: registry.opensuse.org/opensuse/leap:15.6
-    resource_class: large
-    environment:
-      CODENAME: opensuse/leap/15.6
-      ARCH: arm64
     
   opensuse-tumbleweed-arm:
     docker:
@@ -899,30 +867,21 @@ jobs:
               rm public.key
       - package_rpm:
           dir: mendingwall
-      - when:
-          condition:
-            not:
-              or:
-                - equal: [ << parameters.os >>, opensuse-leap-15-5 ]
-                - equal: [ << parameters.os >>, opensuse-leap-15-6 ]
-                - equal: [ << parameters.os >>, opensuse-leap-15-5-arm ]
-                - equal: [ << parameters.os >>, opensuse-leap-15-6-arm ]
-          steps:
-            - package_rpm:
-                dir: doxide
-            - package_rpm:
-                dir: Birch/birch
-            - package_rpm:
-                dir: Birch/membirch
-            - install_cuda_prereq
-            - package_rpm:
-                dir: Birch/numbirch
-            - package_rpm:
-                dir: Birch/libraries/Standard
-            - package_rpm:
-                dir: Birch/libraries/Cairo
-            - package_rpm:
-                dir: Birch/libraries/SQLite
+      - package_rpm:
+          dir: doxide
+      - package_rpm:
+          dir: Birch/birch
+      - package_rpm:
+          dir: Birch/membirch
+      - install_cuda_prereq
+      - package_rpm:
+          dir: Birch/numbirch
+      - package_rpm:
+          dir: Birch/libraries/Standard
+      - package_rpm:
+          dir: Birch/libraries/Cairo
+      - package_rpm:
+          dir: Birch/libraries/SQLite
       - run:
           name: Finalize repository
           command: |
@@ -1008,16 +967,11 @@ jobs:
       - run:
           name: Test install
           command: |
-              if [[ "$CODENAME" =~ "opensuse-tumbleweed" ]]; then
+              if [[ "$CODENAME" =~ "opensuse" ]]; then
                 zypper --gpg-auto-import-keys addrepo https://stage.indii.org/rpm/$CODENAME/indii.org.repo
                 zypper --gpg-auto-import-keys refresh
                 zypper --non-interactive update
                 zypper --non-interactive install --recommends mendingwall doxide birch
-              if [[ "$CODENAME" =~ "opensuse-leap" ]]; then
-                zypper --gpg-auto-import-keys addrepo https://stage.indii.org/rpm/$CODENAME/indii.org.repo
-                zypper --gpg-auto-import-keys refresh
-                zypper --non-interactive update
-                zypper --non-interactive install --recommends mendingwall
               elif [[ "$CODENAME" =~ "fedora/41" ]]; then
                 dnf install --assumeyes dnf-plugins-core
                 dnf config-manager addrepo --from-repofile=https://stage.indii.org/rpm/$CODENAME/indii.org.repo
@@ -1044,33 +998,24 @@ jobs:
           command: |
             mendingwall -h
             mendingwalld -h
-      - when:
-          condition:
-            not:
-              or:
-                - equal: [ << parameters.os >>, opensuse-leap-15-5 ]
-                - equal: [ << parameters.os >>, opensuse-leap-15-6 ]
-                - equal: [ << parameters.os >>, opensuse-leap-15-5-arm ]
-                - equal: [ << parameters.os >>, opensuse-leap-15-6-arm ]
-          steps:
-            - run:
-                name: Test Doxide
-                command: |
-                  mkdir hello
-                  cd hello
-                  doxide init
-                  cd ..
-                  rm -rf hello
-            - run:
-                name: Test Birch
-                command: |
-                  mkdir hello
-                  cd hello
-                  birch init
-                  birch build
-                  birch hello
-                  cd ..
-                  rm -rf hello
+      - run:
+          name: Test Doxide
+          command: |
+            mkdir hello
+            cd hello
+            doxide init
+            cd ..
+            rm -rf hello
+      - run:
+          name: Test Birch
+          command: |
+            mkdir hello
+            cd hello
+            birch init
+            birch build
+            birch hello
+            cd ..
+            rm -rf hello
 
   test_mac:
     executor: mac
@@ -1178,14 +1123,10 @@ workflows:
           matrix:
             parameters:
               os:
-                - opensuse-leap-15-5
-                - opensuse-leap-15-6
                 - opensuse-tumbleweed
                 - fedora-39
                 - fedora-40
                 - fedora-41
-                - opensuse-leap-15-5-arm
-                - opensuse-leap-15-6-arm
                 - opensuse-tumbleweed-arm
                 - fedora-39-arm
                 - fedora-40-arm
@@ -1208,8 +1149,6 @@ workflows:
                 - bookworm
                 - noble
                 - oracular
-                - opensuse-leap-15-5
-                - opensuse-leap-15-6
                 - opensuse-tumbleweed
                 - fedora-39
                 - fedora-40
@@ -1217,8 +1156,6 @@ workflows:
                 - bookworm-arm
                 - noble-arm
                 - oracular-arm
-                - opensuse-leap-15-5-arm
-                - opensuse-leap-15-6-arm
                 - opensuse-tumbleweed-arm
                 - fedora-39-arm
                 - fedora-40-arm
