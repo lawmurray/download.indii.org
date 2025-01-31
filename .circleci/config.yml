@@ -262,7 +262,6 @@ commands:
                   bison \
                   gcc \
                   g++ \
-                  nvidia-cuda-toolkit \
                   blueprint-compiler \
                   gettext \
                   desktop-file-utils \
@@ -325,12 +324,6 @@ commands:
             cmake .. -DCMAKE_INSTALL_PREFIX=c:/ProgramData/chocolatey
             cmake --build . --config Release
             sudo cmake --install . --config Release
-
-  install_cuda_prereq:
-    steps:
-      - run:
-          name: Install prerequisites for NumBirch CUDA backend
-          command: ./install_cuda_prereq
 
   checkout_packages:
     description: Checkout code from Git
@@ -820,7 +813,6 @@ jobs:
           dir: Birch/birch
       - package_deb:
           dir: Birch/membirch
-      - install_cuda_prereq
       - package_deb:
           dir: Birch/numbirch
       - package_deb:
@@ -864,7 +856,6 @@ jobs:
           dir: Birch/birch
       - package_rpm:
           dir: Birch/membirch
-      - install_cuda_prereq
       - package_rpm:
           dir: Birch/numbirch
       - package_rpm:
