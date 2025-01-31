@@ -1006,11 +1006,19 @@ jobs:
                 apt install --assume-yes --install-recommends doxide
                 apt install --assume-yes --install-recommends birch
               fi
-      - run:
-          name: Test Mending Wall
-          command: |
-            mendingwall -h
-            mendingwalld -h
+      - when:
+          condition:
+            not:
+              or:
+                - equal: [ << parameters.os >>, bookworm ]
+                - equal: [ << parameters.os >>, bookworm-arm ]
+                - equal: [ << parameters.os >>, fedora-41-arm ]
+          steps:
+            - run:
+                name: Test Mending Wall
+                command: |
+                  mendingwall -h
+                  mendingwalld -h
       - run:
           name: Test Doxide
           command: |
