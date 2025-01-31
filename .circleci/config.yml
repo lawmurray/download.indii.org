@@ -11,6 +11,15 @@ executors:
       ARCH: amd64
       DEBIAN_FRONTEND: noninteractive
 
+  trixie:
+    docker:
+      - image: debian:trixie
+    resource_class: large
+    environment:
+      CODENAME: trixie
+      ARCH: amd64
+      DEBIAN_FRONTEND: noninteractive
+
   noble:
     docker:
       - image: ubuntu:noble
@@ -59,6 +68,15 @@ executors:
     resource_class: arm.large
     environment:
       CODENAME: bookworm
+      ARCH: arm64
+      DEBIAN_FRONTEND: noninteractive
+
+  trixie-arm:
+    docker:
+      - image: debian:trixie
+    resource_class: arm.large
+    environment:
+      CODENAME: trixie
       ARCH: arm64
       DEBIAN_FRONTEND: noninteractive
 
@@ -1096,9 +1114,11 @@ workflows:
             parameters:
               os:
                 - bookworm
+                - trixie
                 - noble
                 - oracular
                 - bookworm-arm
+                - trixie-arm
                 - noble-arm
                 - oracular-arm
       - rpm:
@@ -1127,12 +1147,14 @@ workflows:
             parameters:
               os:
                 - bookworm
+                - trixie
                 - noble
                 - oracular
                 - opensuse-tumbleweed
                 - fedora-40
                 - fedora-41
                 - bookworm-arm
+                - trixie-arm
                 - noble-arm
                 - oracular-arm
                 - opensuse-tumbleweed-arm
