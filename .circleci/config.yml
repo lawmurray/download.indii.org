@@ -322,7 +322,6 @@ commands:
               echo "export CPLUS_INCLUDE_PATH=\$HOME/include:/usr/local/cuda/include:\$CPLUS_INCLUDE_PATH" >> $BASH_ENV
               echo "export LD_LIBRARY_PATH=\$HOME/lib64:\$HOME/lib:/usr/local/cuda/lib64/stubs:/usr/local/cuda/lib/stubs:\$LD_LIBRARY_PATH" >> $BASH_ENV
               echo "export LIBRARY_PATH=\$HOME/lib64:\$HOME/lib:/usr/local/cuda/lib64/stubs:/usr/local/cuda/lib/stubs:\$LIBRARY_PATH" >> $BASH_ENV
-              echo "export FORMAT=', \"real\": %e, \"user\": %U, \"system\": %S, \"memory\": %M, \"involuntary\": %c, \"voluntary\": %w'" >> $BASH_ENV
       - run:
           name: GPG keys
           command: |
@@ -463,9 +462,9 @@ commands:
       - build_cpp:
           dir: Birch/birch
 
-      - source_meson:
+      - source:
           dir: mendingwall
-      - source_cmake:
+      - source:
           dir: doxide
       - source_cpp:
           dir: Birch/birch
