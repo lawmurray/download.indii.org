@@ -68,17 +68,6 @@ This repository provides packages of [Doxide](https://doxide.org) and [Birch](ht
     sudo dnf install doxide birch
     ```
 
-??? abstract "Fedora 39 (x86_64)"
-    Add the repository:
-    ```
-    sudo dnf config-manager --add-repo https://download.indii.org/rpm/fedora/39/indii.org.repo
-    sudo dnf update
-    ```
-    Install packages:
-    ```
-    sudo dnf install doxide birch
-    ```
-
 ??? question "openSUSE Tumbleweed (x86_64)"
     Add the repository:
     ```
