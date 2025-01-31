@@ -823,8 +823,15 @@ jobs:
           command: |
               mkdir -p $HOME/deb/$CODENAME/conf
               printf "Codename: $CODENAME\nSuite: stable\nComponents: main\nArchitectures: source $ARCH\nSignWith: default\n" > $_/distributions
-      - package_deb:
-          dir: mendingwall
+      - when:
+          condition:
+            not:
+              or:
+                - equal: [ << parameters.os >>, bookworm ]
+                - equal: [ << parameters.os >>, bookworm-arm ]
+          steps:
+            - package_deb:
+                dir: mendingwall
       - package_deb:
           dir: doxide
       - package_deb:
@@ -870,9 +877,7 @@ jobs:
           condition:
             not:
               or:
-                - equal: [<< parameters.os >>, fedora-41-arm]
-                - equal: [<< parameters.os >>, bookworm]
-                - equal: [<< parameters.os >>, bookworm-arm]
+                - equal: [ << parameters.os >>, fedora-41-arm ]
           steps:
           - package_rpm:
               dir: mendingwall
