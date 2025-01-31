@@ -361,6 +361,13 @@ commands:
     description: Checkout code from Git
     steps:
       - run:
+          name: Checkout Mending Wall latest tag
+          command: |
+              git clone https://github.com/lawmurray/mendingwall.git
+              cd mendingwall
+              git checkout $(git describe --tags --abbrev=0)
+              git submodule update --init --recursive --depth 1
+      - run:
           name: Checkout Doxide latest tag
           command: |
               git clone https://github.com/lawmurray/doxide.git
@@ -431,6 +438,8 @@ commands:
   prepare:
     steps:
       - version:
+          dir: mendingwall
+      - version:
           dir: doxide
       - version:
           dir: Birch/birch
@@ -449,6 +458,8 @@ commands:
       - build_cpp:
           dir: Birch/birch
 
+      - source_meson:
+          dir: mendingwall
       - source_cmake:
           dir: doxide
       - source_cpp:
@@ -819,6 +830,8 @@ jobs:
               mkdir -p $HOME/deb/$CODENAME/conf
               printf "Codename: $CODENAME\nSuite: stable\nComponents: main\nArchitectures: source $ARCH\nSignWith: default\n" > $_/distributions
       - package_deb:
+          dir: mendingwall
+      - package_deb:
           dir: doxide
       - package_deb:
           dir: Birch/birch
@@ -860,6 +873,8 @@ jobs:
               gpg --export --armor > public.key
               rpm --import public.key
               rm public.key
+      - package_rpm:
+          dir: mendingwall
       - when:
           condition:
             not:
@@ -870,7 +885,7 @@ jobs:
                 - equal: [ << parameters.os >>, opensuse-leap-15-6-arm ]
           steps:
             - package_rpm:
-                dir: doxide              
+                dir: doxide
             - package_rpm:
                 dir: Birch/birch
             - package_rpm:
@@ -969,21 +984,26 @@ jobs:
       - run:
           name: Test install
           command: |
-              if [[ "$CODENAME" =~ "opensuse" ]]; then
+              if [[ "$CODENAME" =~ "opensuse-tumbleweed" ]]; then
                 zypper --gpg-auto-import-keys addrepo https://stage.indii.org/rpm/$CODENAME/indii.org.repo
                 zypper --gpg-auto-import-keys refresh
                 zypper --non-interactive update
-                zypper --non-interactive install --recommends doxide birch
+                zypper --non-interactive install --recommends mendingwall doxide birch
+              if [[ "$CODENAME" =~ "opensuse-leap" ]]; then
+                zypper --gpg-auto-import-keys addrepo https://stage.indii.org/rpm/$CODENAME/indii.org.repo
+                zypper --gpg-auto-import-keys refresh
+                zypper --non-interactive update
+                zypper --non-interactive install --recommends mendingwall
               elif [[ "$CODENAME" =~ "fedora/41" ]]; then
                 dnf install --assumeyes dnf-plugins-core
                 dnf config-manager addrepo --from-repofile=https://stage.indii.org/rpm/$CODENAME/indii.org.repo
                 dnf update --assumeyes
-                dnf install --assumeyes doxide birch
-              elif [[ "$CODENAME" =~ "fedora" || "$CODENAME" =~ "mageia" ]]; then
+                dnf install --assumeyes mendingwall doxide birch
+              elif [[ "$CODENAME" =~ "fedora" ]]; then
                 dnf install --assumeyes dnf-plugins-core
                 dnf config-manager --add-repo https://stage.indii.org/rpm/$CODENAME/indii.org.repo
                 dnf update --assumeyes
-                dnf install --assumeyes doxide birch
+                dnf install --assumeyes mendingwall doxide birch
               else
                 apt update --assume-yes
                 apt upgrade --assume-yes
@@ -991,27 +1011,42 @@ jobs:
                 echo "deb https://stage.indii.org/deb $CODENAME main" | tee /etc/apt/sources.list.d/indii.org.list
                 curl -fsSL https://stage.indii.org/deb/Release.key | gpg --dearmor | tee /etc/apt/trusted.gpg.d/indii.org.gpg > /dev/null
                 apt update --assume-yes
+                apt install --assume-yes --install-recommends mendingwall
                 apt install --assume-yes --install-recommends doxide
                 apt install --assume-yes --install-recommends birch
               fi
       - run:
-          name: Test Doxide
+          name: Test Mending Wall
           command: |
-            mkdir hello
-            cd hello
-            doxide init
-            cd ..
-            rm -rf hello
-      - run:
-          name: Test Birch
-          command: |
-            mkdir hello
-            cd hello
-            birch init
-            birch build
-            birch hello
-            cd ..
-            rm -rf hello
+            mendingwall -h
+            mendingwalld -h
+      - when:
+          condition:
+            not:
+              or:
+                - equal: [ << parameters.os >>, opensuse-leap-15-5 ]
+                - equal: [ << parameters.os >>, opensuse-leap-15-6 ]
+                - equal: [ << parameters.os >>, opensuse-leap-15-5-arm ]
+                - equal: [ << parameters.os >>, opensuse-leap-15-6-arm ]
+          steps:
+            - run:
+                name: Test Doxide
+                command: |
+                  mkdir hello
+                  cd hello
+                  doxide init
+                  cd ..
+                  rm -rf hello
+            - run:
+                name: Test Birch
+                command: |
+                  mkdir hello
+                  cd hello
+                  birch init
+                  birch build
+                  birch hello
+                  cd ..
+                  rm -rf hello
 
   test_mac:
     executor: mac
