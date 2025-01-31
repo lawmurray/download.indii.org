@@ -866,8 +866,16 @@ jobs:
               gpg --export --armor > public.key
               rpm --import public.key
               rm public.key
-      - package_rpm:
-          dir: mendingwall
+      - when:
+          condition:
+            not:
+              or:
+                - equal: [<< parameters.os >>, fedora-41-arm]
+                - equal: [<< parameters.os >>, bookworm]
+                - equal: [<< parameters.os >>, bookworm-arm]
+          steps:
+          - package_rpm:
+              dir: mendingwall
       - package_rpm:
           dir: doxide
       - package_rpm:

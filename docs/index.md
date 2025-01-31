@@ -8,75 +8,89 @@ hide:
 
 # Indii.org Software Repository
 
-This repository provides packages of [Doxide](https://doxide.org) and [Birch](https://birch-lang.org) for various Linux distributions. Select a distribution below for instructions to use.
+This repository provides Linux packages of [Mending Wall](https://mendingwall.indii.org), [Doxide](https://doxide.org) and [Birch](https://birch-lang.org). All packages are available for both x86-64 (AMD64) and AArch64 (ARM64) unless noted.
 
-??? warning "Ubuntu 24.10 Oracular Oriole (amd64)"
+??? warning "Ubuntu 24.10 Oracular Oriole"
     Add the repository:
     ```
     echo 'deb http://download.indii.org/deb oracular main' | sudo tee /etc/apt/sources.list.d/indii.org.list
     curl -fsSL https://download.indii.org/deb/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/indii.org.gpg > /dev/null
     sudo apt update
     ```
-    Install packages:
+    Install desired packages, e.g.:
     ```
-    sudo apt install doxide birch
+    sudo apt install mendingwall doxide birch
     ```
 
-??? warning "Ubuntu 24.04 Noble Numbat (amd64)"
+??? warning "Ubuntu 24.04 Noble Numbat"
     Add the repository:
     ```
     echo 'deb http://download.indii.org/deb noble main' | sudo tee /etc/apt/sources.list.d/indii.org.list
     curl -fsSL https://download.indii.org/deb/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/indii.org.gpg > /dev/null
     sudo apt update
     ```
-    Install packages:
+    Install desired packages, e.g.:
     ```
-    sudo apt install doxide birch
+    sudo apt install mendingwall doxide birch
     ```
 
-??? bug "Debian 12 Bookworm (amd64)"
+??? bug "Debian 13 Trixie"
     Add the repository:
     ```
     echo 'deb http://download.indii.org/deb bookworm main' | sudo tee /etc/apt/sources.list.d/indii.org.list
     curl -fsSL https://download.indii.org/deb/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/indii.org.gpg > /dev/null
     sudo apt update
     ```
-    Install packages:
+    Install desired packages, e.g.:
     ```
-    sudo apt install doxide birch
+    sudo apt install mendingwall doxide birch
     ```
 
-??? abstract "Fedora 41 (x86_64)"
+??? bug "Debian 12 Bookworm"
+    Add the repository:
+    ```
+    echo 'deb http://download.indii.org/deb bookworm main' | sudo tee /etc/apt/sources.list.d/indii.org.list
+    curl -fsSL https://download.indii.org/deb/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/indii.org.gpg > /dev/null
+    sudo apt update
+    ```
+    Install desired packages, e.g.:
+    ```
+    sudo apt install mendingwall doxide birch
+    ```
+    Mending Wall is unavailable as a newer version of libadwaita is required. It is available on Debian 13.
+
+??? abstract "Fedora 41"
     Add the repository:
     ```
     sudo dnf config-manager addrepo --from-repofile=https://download.indii.org/rpm/fedora/41/indii.org.repo
     sudo dnf update
     ```
-    Install packages:
+    Install desired packages, e.g.:
     ```
-    sudo dnf install doxide birch
+    sudo dnf install mendingwall doxide birch
     ```
+    Mending Wall is currently unavailable for AArch64 due to a [build error](https://github.com/lawmurray/mendingwall/issues/8).
 
-??? abstract "Fedora 40 (x86_64)"
+??? abstract "Fedora 40"
     Add the repository:
     ```
     sudo dnf config-manager --add-repo https://download.indii.org/rpm/fedora/40/indii.org.repo
     sudo dnf update
     ```
-    Install packages:
+    Install desired packages, e.g.:
     ```
-    sudo dnf install doxide birch
+    sudo dnf install mendingwall doxide birch
     ```
 
-??? question "openSUSE Tumbleweed (x86_64)"
+??? question "openSUSE Tumbleweed"
     Add the repository:
     ```
     sudo zypper addrepo https://download.indii.org/rpm/opensuse/tumbleweed/indii.org.repo
     sudo zypper refresh
     ```
-    Install packages:
+    Install desired packages, e.g.:
     ```
-    sudo zypper install doxide birch
+    sudo zypper install mendingwall doxide birch
     ```
 
 ## About
