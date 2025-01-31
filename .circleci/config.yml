@@ -219,6 +219,7 @@ commands:
                   automake \
                   libtool \
                   cmake \
+                  meson \
                   flex \
                   bison \
                   gcc-c++ \
@@ -229,6 +230,9 @@ commands:
                   cairo-devel \
                   sqlite3-devel \
                   libicu-devel \
+                  glib2-devel \
+                  gtk4-devel \
+                  libadwaita-devel \
                   rpmlint \
                   rpm-build \
                   rpm-config-SUSE \
@@ -252,6 +256,7 @@ commands:
                   automake \
                   libtool \
                   cmake \
+                  meson \
                   flex \
                   bison \
                   gcc-c++ \
@@ -262,6 +267,9 @@ commands:
                   cairo-devel \
                   sqlite-devel \
                   libicu-devel \
+                  glib2-devel \
+                  gtk4-devel \
+                  libadwaita-devel \
                   rpm \
                   rpmlint \
                   rpm-build \
@@ -289,12 +297,12 @@ commands:
                   automake \
                   libtool \
                   cmake \
+                  meson \
                   flex \
                   bison \
                   g++ \
                   nvidia-cuda-toolkit \
                   gdb \
-                  lcov \
                   libjemalloc-dev \
                   libeigen3-dev \
                   libyaml-dev \
@@ -302,6 +310,9 @@ commands:
                   libsqlite3-dev \
                   libcairo2-dev \
                   libicu-dev \
+                  libgtk-4-dev \
+                  libglib2.0-dev \
+                  libadwaita-1-dev \
                   build-essential \
                   apt-utils \
                   dpkg \
