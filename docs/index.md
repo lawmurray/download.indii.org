@@ -6,11 +6,12 @@ hide:
   - menu
 ---
 
-# Indii.org Software Repository
+# Linux package repository for indii.org
 
-This repository provides Linux packages of [Mending Wall](https://mendingwall.indii.org), [Doxide](https://doxide.org) and [Birch](https://birch-lang.org). All packages are available for both x86-64 (AMD64) and AArch64 (ARM64) unless noted.
+This repository is maintained by Lawrence Murray ([:material-github:](https://github.com/lawmurray){target="_blank"} [:material-mastodon:](https://fosstodon.org/@lawmurray){target="_blank"} [:material-web:](https://indii.org){target="_blank"} [:material-email:](mailto:lawrence@indii.org){target="_blank"}). It provides Linux packages of [Mending Wall](https://mendingwall.indii.org), [Doxide](https://doxide.org) and [Birch](https://birch-lang.org). All packages are available for both x86-64 (AMD64) and AArch64 (ARM64) unless otherwise noted.
 
-??? warning "Ubuntu 24.10 Oracular Oriole"
+
+??? ubuntu "Ubuntu 24.10 Oracular Oriole"
     Add the repository:
     ```
     echo 'deb http://download.indii.org/deb oracular main' | sudo tee /etc/apt/sources.list.d/indii.org.list
@@ -22,7 +23,7 @@ This repository provides Linux packages of [Mending Wall](https://mendingwall.in
     sudo apt install mendingwall doxide birch
     ```
 
-??? warning "Ubuntu 24.04 Noble Numbat"
+??? ubuntu "Ubuntu 24.04 Noble Numbat"
     Add the repository:
     ```
     echo 'deb http://download.indii.org/deb noble main' | sudo tee /etc/apt/sources.list.d/indii.org.list
@@ -34,7 +35,7 @@ This repository provides Linux packages of [Mending Wall](https://mendingwall.in
     sudo apt install mendingwall doxide birch
     ```
 
-??? bug "Debian 13 Trixie"
+??? debian "Debian 13 Trixie"
     Add the repository:
     ```
     echo 'deb http://download.indii.org/deb bookworm main' | sudo tee /etc/apt/sources.list.d/indii.org.list
@@ -46,7 +47,7 @@ This repository provides Linux packages of [Mending Wall](https://mendingwall.in
     sudo apt install mendingwall doxide birch
     ```
 
-??? bug "Debian 12 Bookworm"
+??? debian "Debian 12 Bookworm"
     Add the repository:
     ```
     echo 'deb http://download.indii.org/deb bookworm main' | sudo tee /etc/apt/sources.list.d/indii.org.list
@@ -59,7 +60,7 @@ This repository provides Linux packages of [Mending Wall](https://mendingwall.in
     ```
     Mending Wall is unavailable as a newer version of libadwaita is required. It is available on Debian 13.
 
-??? abstract "Fedora 41"
+??? fedora "Fedora 41"
     Add the repository:
     ```
     sudo dnf config-manager addrepo --from-repofile=https://download.indii.org/rpm/fedora/41/indii.org.repo
@@ -71,7 +72,7 @@ This repository provides Linux packages of [Mending Wall](https://mendingwall.in
     ```
     Mending Wall is currently unavailable for AArch64 due to a [build error](https://github.com/lawmurray/mendingwall/issues/8).
 
-??? abstract "Fedora 40"
+??? fedora "Fedora 40"
     Add the repository:
     ```
     sudo dnf config-manager --add-repo https://download.indii.org/rpm/fedora/40/indii.org.repo
@@ -82,7 +83,7 @@ This repository provides Linux packages of [Mending Wall](https://mendingwall.in
     sudo dnf install mendingwall doxide birch
     ```
 
-??? question "openSUSE Tumbleweed"
+??? opensuse "openSUSE Tumbleweed"
     Add the repository:
     ```
     sudo zypper addrepo https://download.indii.org/rpm/opensuse/tumbleweed/indii.org.repo
@@ -92,8 +93,3 @@ This repository provides Linux packages of [Mending Wall](https://mendingwall.in
     ```
     sudo zypper install mendingwall doxide birch
     ```
-
-## About
-
-This repository is maintained by Lawrence Murray ([:material-github:](https://github.com/lawmurray){target="_blank"} [:material-mastodon:](https://fosstodon.org/@lawmurray){target="_blank"} [:material-web:](https://indii.org){target="_blank"} [:material-email:](mailto:lawrence@indii.org){target="_blank"}) for software that he develops. It is rebuilt by an automated pipeline on [CircleCI](https://circleci.com) when new versions are released.
-
