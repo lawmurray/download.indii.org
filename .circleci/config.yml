@@ -64,7 +64,7 @@ executors:
   bookworm-arm:
     docker:
       - image: debian:bookworm
-    resource_class: large
+    resource_class: arm.large
     environment:
       CODENAME: bookworm
       ARCH: arm64
@@ -73,7 +73,7 @@ executors:
   noble-arm:
     docker:
       - image: ubuntu:noble
-    resource_class: large
+    resource_class: arm.large
     environment:
       CODENAME: noble
       ARCH: arm64
@@ -82,7 +82,7 @@ executors:
   oracular-arm:
     docker:
       - image: ubuntu:oracular
-    resource_class: large
+    resource_class: arm.large
     environment:
       CODENAME: oracular
       ARCH: arm64
@@ -91,7 +91,7 @@ executors:
   opensuse-tumbleweed-arm:
     docker:
       - image: registry.opensuse.org/opensuse/tumbleweed
-    resource_class: large
+    resource_class: arm.large
     environment:
       CODENAME: opensuse/tumbleweed
       ARCH: arm64
@@ -99,7 +99,7 @@ executors:
   fedora-39-arm:
     docker:
       - image: registry.fedoraproject.org/fedora:39
-    resource_class: large
+    resource_class: arm.large
     environment:
       CODENAME: fedora/39
       ARCH: arm64
@@ -107,7 +107,7 @@ executors:
   fedora-40-arm:
     docker:
       - image: registry.fedoraproject.org/fedora:40
-    resource_class: large
+    resource_class: arm.large
     environment:
       CODENAME: fedora/40
       ARCH: arm64
@@ -115,7 +115,7 @@ executors:
   fedora-41-arm:
     docker:
       - image: registry.fedoraproject.org/fedora:41
-    resource_class: large
+    resource_class: arm.large
     environment:
       CODENAME: fedora/41
       ARCH: arm64
