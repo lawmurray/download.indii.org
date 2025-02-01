@@ -484,7 +484,7 @@ commands:
               rm -rf debian/changelog
               debchange --create \
                   --package $TARNAME \
-                  --newversion $VERSION-1~$CODENAME \
+                  --newversion $VERSION-1 \
                   --distribution $CODENAME \
                   --controlmaint \
                   "Packaged for download.indii.org."
