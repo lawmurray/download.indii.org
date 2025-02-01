@@ -315,6 +315,7 @@ commands:
               echo "export CPLUS_INCLUDE_PATH=\$HOME/include:/usr/local/cuda/include:\$CPLUS_INCLUDE_PATH" >> $BASH_ENV
               echo "export LD_LIBRARY_PATH=\$HOME/lib64:\$HOME/lib:/usr/local/cuda/lib64/stubs:/usr/local/cuda/lib/stubs:\$LD_LIBRARY_PATH" >> $BASH_ENV
               echo "export LIBRARY_PATH=\$HOME/lib64:\$HOME/lib:/usr/local/cuda/lib64/stubs:/usr/local/cuda/lib/stubs:\$LIBRARY_PATH" >> $BASH_ENV
+              echo "export JOBS=4" >> $BASH_ENV
       - run:
           name: GPG keys
           command: |
@@ -377,11 +378,7 @@ commands:
                   mv $file.sponge $file
                 fi
               done
-              for file in \
-                  debian/changelog \
-                  debian/control \
-                  debian/*.install \
-                  debian/*.links
+              for file in debian/*
               do
                 if [[ -e $file ]]; then
                   cat $file | sed -E "s/0\.0\.0/$VERSION/g" | sed -E "s/0_0_0/$VERSION_SAFE/g" > $file.sponge
@@ -467,13 +464,6 @@ commands:
       - run:
           name: Build Debian package << parameters.dir >>
           command: |
-              if [[ '<< parameters.dir >>' =~ 'libraries/Standard' ]]; then
-                export JOBS=4
-              elif [[ '<< parameters.dir >>' =~ 'numbirch' ]]; then
-                export JOBS=4
-              else
-                export JOBS=8
-              fi
               cd << parameters.dir >>
               VERSION=$(git describe --tags --abbrev=0 | sed -E 's/^v//')
               TARNAME=$(ls *-$VERSION.tar.gz | grep -Eo '^[a-z\-]+[a-z]')
@@ -488,6 +478,13 @@ commands:
                   --distribution $CODENAME \
                   --controlmaint \
                   "Packaged for download.indii.org."
+              for file in debian/*; do
+                if [[ -e $file ]]; then
+                  # add ~$CODENAME to end of version so unique across distributions
+                  cat $file | sed -E "s|$VERSION-1|$VERSION-1~$CODENAME|g" > $file.sponge
+                  mv $file.sponge $file
+                fi
+              done
               debuild -eDEB_BUILD_OPTIONS=noddebs -j$JOBS
       - run:
           name: Install Debian package << parameters.dir >>
@@ -511,10 +508,6 @@ commands:
           command: |
               if [[ '<< parameters.dir >>' =~ 'libraries/Standard' ]]; then
                 export JOBS=2
-              elif [[ '<< parameters.dir >>' =~ 'numbirch' ]]; then
-                export JOBS=4
-              else
-                export JOBS=8
               fi
               cd << parameters.dir >>
               cp *.tar.gz $HOME/rpmbuild/SOURCES/.
