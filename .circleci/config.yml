@@ -714,7 +714,7 @@ commands:
                 cd site
                 cp -r $HOME/rpm .
                 cp -r $HOME/deb .
-                cp -r $HOME/win .
+                mkdir win && cp -r $HOME/win/*.exe $HOME/win/*.exe.sha256 win/.
 
                 # publish
                 git init -b gh-pages
