@@ -167,7 +167,8 @@ commands:
                     libyaml \
                     boost \
                     sqlite \
-                    cairo
+                    cairo \
+                    rpm
                 echo "export PATH=/opt/homebrew/opt/gnu-time/libexec/gnubin:/opt/homebrew/opt/flex/bin:/opt/homebrew/opt/bison/bin:\$PATH" >> $BASH_ENV
               elif [[ "$CODENAME" =~ "opensuse" ]]; then
                 zypper --non-interactive update
