@@ -485,8 +485,8 @@ commands:
                   "Packaged for download.indii.org."
               for file in debian/*; do
                 if [[ -f $file ]]; then
-                  # add ~$CODENAME to end of version so unique across distributions
-                  cat $file | sed -E "s|$VERSION-1|$VERSION-1~$CODENAME|g" > $file.sponge
+                  # add ~$CODENAME~$ARCH to end of version so unique across distributions
+                  cat $file | sed -E "s|$VERSION-1|$VERSION-1~$CODENAME~$ARCH|g" > $file.sponge
                   mv $file.sponge $file
                 fi
               done
