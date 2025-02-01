@@ -581,7 +581,7 @@ commands:
           name: Build RPM package << parameters.dir >>
           command: |
               if [[ '<< parameters.dir >>' =~ 'libraries/Standard' ]]; then
-                export JOBS=2  # high memory use in single thread
+                export JOBS=4
               elif [[ '<< parameters.dir >>' =~ 'numbirch' ]]; then
                 export JOBS=4
               else
