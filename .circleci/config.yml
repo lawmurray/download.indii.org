@@ -497,10 +497,11 @@ commands:
               cd << parameters.dir >>
               apt-get install -y ./*.deb  # must specify ./ to find packages
       - run:
-          name: Add Debian package << parameters.dir >> to repository
+          name: Move Debian package << parameters.dir >> to directory
           command: |
               cd << parameters.dir >>
-              reprepro -b $HOME/deb --ignore=wrongdistribution include $CODENAME *.changes
+              mkdir -p $HOME/deb/$CODENAME/$ARCH
+              mv *.deb $HOME/deb/$CODENAME/$ARCH/.
 
   package_rpm:
     parameters:
@@ -515,6 +516,7 @@ commands:
                 export JOBS=2
               fi
               cd << parameters.dir >>
+              mkdir -p $HOME/rpmbuild/SOURCES
               cp *.tar.gz $HOME/rpmbuild/SOURCES/.
               rpmbuild --target $ARCH --define="_topdir $HOME/rpmbuild" --define="_smp_mflags -j$JOBS" --define="debug_package %{nil}" -ba *.spec
       - run:
@@ -526,8 +528,9 @@ commands:
           command: |
               rpm --install --nodeps $HOME/rpmbuild/RPMS/$ARCH/*.rpm
       - run:
-          name: Add RPM package << parameters.dir >> to repository
+          name: Move RPM package << parameters.dir >> to directory
           command: |
+              mkdir -p $HOME/rpm/$CODENAME/$ARCH
               mv $HOME/rpmbuild/RPMS/$ARCH/*.rpm $HOME/rpm/$CODENAME/$ARCH/.
               mv $HOME/rpmbuild/SRPMS/*.rpm $HOME/rpm/$CODENAME/src/.
 
@@ -546,6 +549,7 @@ commands:
               SHA256=($(sha256sum $TARNAME-$VERSION.tar.gz))
               cat $TARNAME.rb | sed -E "s/sha256 \"[0-9a-f]+\"/sha256 \"$SHA256\"/g" > $TARNAME.rb.sponge
               mv $TARNAME.rb.sponge $TARNAME.rb
+              mkdir -p $HOME/brew
               mv $TARNAME-$VERSION.tar.gz $TARNAME.rb $HOME/brew/.
 
   package_win:
@@ -563,16 +567,15 @@ commands:
               cmake ..
               cmake --build . --config Release
               cmake --build . --config Release --target package
+              mkdir -p $HOME/win
               cp Release/<< parameters.dir >>.exe $HOME/win/.
               cp << parameters.dir >>-installer.exe  $HOME/win/.
-
       - run:
           name: Checksum << parameters.dir >>
           command: |
               cd $HOME/win
               checksum -t sha256 << parameters.dir >>.exe > << parameters.dir >>.exe.sha256
               checksum -t sha256 << parameters.dir >>-installer.exe > << parameters.dir >>-installer.exe.sha256
-
       - run:
           name: Package << parameters.dir >>
           command: |
@@ -743,24 +746,6 @@ jobs:
               git clone https://github.com/lawmurray/Birch.git
               cd Birch
               git checkout $(git describe --tags --abbrev=0)
-      - run:
-          name: Initialize Debian repository
-          command: |
-              mkdir $HOME/deb
-              cp -r conf $HOME/deb/.
-              gpg --export --armor > $HOME/deb/Release.key
-      - run:
-          name: Initialize RPM repository
-          command: |
-              mkdir -p $HOME/rpmbuild/SOURCES
-      - run:
-          name: Initialize Homebrew repository
-          command: |
-              mkdir -p $HOME/brew
-      - run:
-          name: Initialize Windows repository
-          command: |
-              mkdir -p $HOME/win
       - version:
           dir: mendingwall
       - version:
@@ -846,10 +831,6 @@ jobs:
       - environment
       - attach_workspace:
           at: ..
-      - run:
-          name: Initialize RPM repository
-          command: |
-              mkdir -p $HOME/rpm/$CODENAME/{$ARCH,src}
       - when:
           condition:
             not:
@@ -872,18 +853,6 @@ jobs:
           dir: Birch/libraries/Cairo
       - package_rpm:
           dir: Birch/libraries/SQLite
-      - run:
-          name: Finalize RPM repository
-          command: |
-              cd $HOME/rpm/$CODENAME
-              rm -rf repodata
-              createrepo .
-              gpg --detach-sign --armor repodata/repomd.xml
-              gpg --export --armor > repodata/repomd.xml.key
-              printf "[indii.org]\nname=indii.org\ntype=rpm-md\nbaseurl=https://download.indii.org/rpm/$CODENAME\ngpgcheck=1\ngpgkey=https://download.indii.org/rpm/$CODENAME/repodata/repomd.xml.key\nenabled=1\n" > indii.org.repo
-              if [[ "$CODENAME" =~ "opensuse" ]]; then
-                printf "autorefresh=1\n" >> indii.org.repo
-              fi
       - persist_to_workspace:
           root: ..
           paths:
@@ -926,6 +895,46 @@ jobs:
           root: ..
           paths:
             - win
+
+  repo:
+    executor: noble
+    steps:
+      - environment
+      - attach_workspace:
+          at: ..
+      - run:
+          name: Debian repository
+          command: |
+              mv $HOME/deb $HOME/debpackages
+              mkdir -p $HOME/deb
+              cp -r conf $HOME/deb/.
+              gpg --export --armor > $HOME/deb/Release.key
+              cd $HOME/debpackages
+              for codename in *; do
+                cd $codename
+                find . -name *.deb -exec reprepro -b $HOME/deb includedeb $codename '{}'
+                cd ..
+              done
+      - run:
+          name: RPM repository
+          command: |
+              cd $HOME/rpm
+              for codename in *; do
+                cd $codename
+                createrepo .
+                gpg --detach-sign --armor repodata/repomd.xml
+                gpg --export --armor > repodata/repomd.xml.key
+                printf "[indii.org]\nname=indii.org\ntype=rpm-md\nbaseurl=https://download.indii.org/rpm/$codename\ngpgcheck=1\ngpgkey=https://download.indii.org/rpm/$codename/repodata/repomd.xml.key\nenabled=1\n" > indii.org.repo
+                if [[ "$codename" =~ "opensuse" ]]; then
+                  printf "autorefresh=1\n" >> indii.org.repo
+                fi
+                cd ..
+              done
+      - persist_to_workspace:
+          root: ..
+          paths:
+            - deb
+            - rpm
 
   stage:
     executor: noble
@@ -1121,6 +1130,10 @@ workflows:
           matrix:
             parameters:
               os:
+                - bookworm
+                - trixie
+                - noble
+                - oracular
                 - bookworm-arm
                 - trixie-arm
                 - noble-arm
@@ -1128,38 +1141,18 @@ workflows:
           requires:
             - init
 
-      - deb:
-          matrix:
-            alias: deb-amd64
-            parameters:
-              os:
-                - bookworm
-                - trixie
-                - noble
-                - oracular
-          requires:
-            - deb-<< matrix.os >>-arm
-
       - rpm:
           matrix:
-            parameters:
-              os:
-                - opensuse-tumbleweed-arm
-                - fedora-40-arm
-                - fedora-41-arm
-          requires:
-            - init
-
-      - rpm:
-          matrix:
-            alias: rpm-amd64
             parameters:
               os:
                 - opensuse-tumbleweed
                 - fedora-40
                 - fedora-41
+                - opensuse-tumbleweed-arm
+                - fedora-40-arm
+                - fedora-41-arm
           requires:
-            - rpm-<< matrix.os >>-arm
+            - init
 
       - mac:
           requires:
@@ -1169,10 +1162,14 @@ workflows:
           requires:
             - init
 
+      - repo:
+          requires:
+            - deb
+            - rpm
+
       - stage:
           requires:
-            - deb-amd64
-            - rpm-amd64
+            - repo
             - mac
             - win
 
