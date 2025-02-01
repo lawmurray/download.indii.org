@@ -808,8 +808,8 @@ jobs:
       - run:
           name: Initialize repository
           command: |
-              mkdir -p $HOME/deb/$CODENAME/conf
-              printf "Codename: $CODENAME\nSuite: stable\nComponents: main\nArchitectures: source $ARCH\nSignWith: default\n" > $_/distributions
+              mkdir -p $HOME/deb/$CODENAME/$ARCH/conf
+              printf "Codename: $CODENAME\nSuite: stable\nComponents: main\nArchitectures: source amd64 arm64\nSignWith: default\n" > $HOME/deb/$CODENAME/$ARCH/conf/distributions
       - when:
           condition:
             not:
