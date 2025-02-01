@@ -576,7 +576,7 @@ commands:
           name: Add Debian package << parameters.dir >> to repository
           command: |
               cd << parameters.dir >>
-              reprepro -b $HOME/deb/$CODENAME/$ARCH --ignore=wrongdistribution include $CODENAME *.changes
+              reprepro -b $HOME/debtmp/$CODENAME/$ARCH --ignore=wrongdistribution include $CODENAME *.changes
 
   package_rpm:
     parameters:
@@ -712,9 +712,9 @@ commands:
 
                 # copy over packages
                 cd site
-                mkdir rpm && cp -r $HOME/rpm/* rpm/.
-                mkdir deb && cp -r $HOME/deb/* deb/.
-                mkdir win && cp -r $HOME/win/*.exe $HOME/win/*.exe.sha256 win/.
+                cp -r $HOME/rpm .
+                cp -r $HOME/deb .
+                cp -r $HOME/win .
 
                 # publish
                 git init -b gh-pages
@@ -815,8 +815,8 @@ jobs:
       - run:
           name: Initialize repository
           command: |
-              mkdir -p $HOME/deb/$CODENAME/$ARCH/conf
-              printf "Codename: $CODENAME\nSuite: stable\nComponents: main\nArchitectures: source $ARCH\nSignWith: default\n" > $HOME/deb/$CODENAME/$ARCH/conf/distributions
+              mkdir -p $HOME/debtmp/$CODENAME/$ARCH/conf
+              printf "Codename: $CODENAME\nSuite: stable\nComponents: main\nArchitectures: source $ARCH\nSignWith: default\n" > $HOME/debtmp/$CODENAME/$ARCH/conf/distributions
       - when:
           condition:
             not:
@@ -843,11 +843,11 @@ jobs:
       - run:
           name: Remove unnecessary files
           command: |
-              rm -rf $HOME/deb/$CODENAME/$ARCH/{conf,db}
+              rm -rf $HOME/debtmp/$CODENAME/$ARCH/{conf,db}
       - persist_to_workspace:
           root: ..
           paths:
-            - deb
+            - debtmp
 
   deb_repo:
     executor: noble
@@ -858,10 +858,7 @@ jobs:
       - run:
           name: Merge Debian repositories
           command: |
-              mkdir deb
-              cp -r $HOME/deb/*/*/* deb/.
-              rm -rf $HOME/deb
-              mv deb $HOME/.
+              mkdir $HOME/deb && cp -r $HOME/debtmp/*/*/* $HOME/deb/.
       - run:
           name: Export key
           command: |
