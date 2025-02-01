@@ -326,6 +326,7 @@ commands:
               echo %_gpg_name $GPG_NAME > ~/.rpmmacros
               unset GPG_PUBLIC_KEY GPG_SIGNING_KEY GPG_NAME
               gpg --import public.key signing.key
+              gpg --export --armor > public.key
               rpm --import public.key
               rm public.key signing.key
       - run:
