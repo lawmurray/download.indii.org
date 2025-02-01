@@ -486,6 +486,7 @@ commands:
                 export JOBS=8
               fi
               cd << parameters.dir >>
+              cp *.tar.gz $HOME/rpmbuild/SOURCES/.
               rpmbuild --target $ARCH --define="_topdir $HOME/rpmbuild" --define="_smp_mflags -j$JOBS" --define="debug_package %{nil}" -ba *.spec
       - run:
           name: Sign RPM package << parameters.dir >>
@@ -762,10 +763,6 @@ jobs:
           dir: Birch/libraries/Cairo
       - source:
           dir: Birch/libraries/SQLite
-      - run:
-          name: Copy source archives to rpmbuild
-          command: |
-              find . -name *.tar.gz -exec cp "{}" $HOME/rpmbuild/SOURCES/.
       - persist_to_workspace:
           root: ..
           paths:
