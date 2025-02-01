@@ -581,7 +581,7 @@ commands:
           name: Build RPM package << parameters.dir >>
           command: |
               if [[ '<< parameters.dir >>' =~ 'libraries/Standard' ]]; then
-                export JOBS=4
+                export JOBS=3
               elif [[ '<< parameters.dir >>' =~ 'numbirch' ]]; then
                 export JOBS=4
               else
