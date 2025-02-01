@@ -388,7 +388,7 @@ commands:
               done
               for file in debian/changelog debian/control debian/*.install debian/*.links; do
                 if [[ -e $file ]]; then
-                  cat $file | sed -E "s|0\.0\.0-1|$VERSION-1~$CODENAME|g" | sed -E "s/0\.0\.0/$VERSION/g" | sed -E "s/0_0_0/$VERSION_SAFE/g" > $file.sponge
+                  cat $file | sed -E "s|0\.0\.0-1|$VERSION-1~$CODENAME~$ARCH|g" | sed -E "s/0\.0\.0/$VERSION/g" | sed -E "s/0_0_0/$VERSION_SAFE/g" > $file.sponge
                   mv $file.sponge $file
                   NEWNAME=$(echo $file | sed -E "s/0\.0\.0/$VERSION/g")
                   if [[ "$NEWNAME" != "$file" ]]; then
@@ -555,7 +555,7 @@ commands:
               rm -rf debian/changelog
               debchange --create \
                   --package $TARNAME \
-                  --newversion $VERSION-1~$CODENAME \
+                  --newversion $VERSION-1~$CODENAME~$ARCH \
                   --distribution $CODENAME \
                   --controlmaint \
                   "Packaged for download.indii.org."
