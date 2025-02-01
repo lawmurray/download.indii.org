@@ -304,6 +304,8 @@ commands:
                   fakeroot \
                   lintian \
                   reprepro \
+                  rpm \
+                  rpmlint \
                   mkdocs \
                   mkdocs-material \
                   mkdocs-material-extensions
