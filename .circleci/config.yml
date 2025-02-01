@@ -748,7 +748,7 @@ jobs:
           name: Initialize Debian repository
           command: |
               mkdir -p $HOME/deb/conf
-              printf "Suite: stable\nCodename: stable\nArchitectures: source amd64 arm64\nComponents: main\nContents:\nSignWith: default\n" > $HOME/deb/conf/distributions
+              printf "Suite: stable\nCodename: bookworm trixie noble oracular\nArchitectures: source amd64 arm64\nComponents: main\nContents:\nSignWith: default\n" > $HOME/deb/conf/distributions
               gpg --export --armor > $HOME/deb/Release.key
       - run:
           name: Initialize RPM repository
