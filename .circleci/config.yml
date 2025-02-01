@@ -352,7 +352,6 @@ commands:
               git clone https://github.com/lawmurray/mendingwall.git
               cd mendingwall
               git checkout $(git describe --tags --abbrev=0)
-              git submodule update --init --recursive --depth 1
       - run:
           name: Checkout Doxide latest tag
           command: |
@@ -592,7 +591,7 @@ commands:
               VERSION=$(git describe --tags --abbrev=0 | sed -E 's/^v//')
               TARNAME=$(ls *-$VERSION.tar.gz | grep -Eo '^[a-z\-]+[a-z]')
               mkdir -p $HOME/rpmbuild/SOURCES
-              mv $TARNAME-$VERSION.tar.gz $_/.
+              mv $TARNAME-$VERSION.tar.gz $HOME/rpmbuild/SOURCES/.
               rpmbuild --target $ARCH --define="_topdir $HOME/rpmbuild" --define="_smp_mflags -j$JOBS" --define="debug_package %{nil}" -ba $TARNAME.spec
       - run:
           name: Sign RPM package << parameters.dir >>
@@ -606,7 +605,6 @@ commands:
           name: Deploy RPM package << parameters.dir >>
           command: |
               mv $HOME/rpmbuild/RPMS/$ARCH/*.rpm $HOME/rpm/$CODENAME/$ARCH/.
-              mv $HOME/rpmbuild/SRPMS/*.rpm $HOME/rpm/$CODENAME/src/.
 
   package_mac:
     parameters:
@@ -698,8 +696,8 @@ commands:
                 git clone https://github.com/lawmurray/download.indii.org
                 cd download.indii.org
 
-                # finalize front page (update subdomain)
-                for file in $(ls mkdocs.yaml docs/*.md); do
+                # update subdomain
+                for file in $(ls mkdocs.yaml docs/*.md $HOME/rpm/*/*.repo $HOME/rpm/*/*/*.repo); do
                   cat $file | sed s/download\.indii\.org/<< parameters.subdomain >>/g > $file.sponge
                   mv $file.sponge $file
                 done
@@ -708,19 +706,8 @@ commands:
                 # copy over packages
                 cd site
                 mkdir rpm && cp -r $HOME/rpm/* rpm/.
-                mkdir deb && cp -r $HOME/deb/*/* deb/.  # merge Debian repos
+                mkdir deb && cp -r $HOME/deb/* deb/.
                 mkdir win && cp -r $HOME/win/*.exe $HOME/win/*.exe.sha256 win/.
-
-                # finalize apt repo (add key)
-                gpg --export --armor > deb/Release.key
-
-                # finalize rpm repos (add .repo file to each)
-                for codename in $(ls rpm/*/*/repodata/repomd.xml rpm/*/*/*/repodata/repomd.xml | sed -E 's|^rpm/||' | sed -E 's|/repodata/repomd.xml$||'); do
-                  printf "[indii.org]\nname=indii.org\ntype=rpm-md\nbaseurl=https://<< parameters.subdomain >>/rpm/$codename\ngpgcheck=1\ngpgkey=https://<< parameters.subdomain >>/rpm/$codename/repodata/repomd.xml.key\nenabled=1\n" > rpm/$codename/indii.org.repo
-                  if [[ "$codename" =~ "opensuse" ]]; then
-                    printf "autorefresh=1\n" >> rpm/$codename/indii.org.repo
-                  fi
-                done
 
                 # publish
                 git init -b gh-pages
@@ -855,6 +842,28 @@ jobs:
           paths:
             - deb
 
+  deb_repo:
+    executor: noble
+    steps:
+      - environment
+      - attach_workspace:
+          at: ..
+      - run:
+          name: Merge Debian repositories
+          command: |
+              mkdir deb
+              cp -r $HOME/deb/*/* deb/.
+              rm -rf $HOME/deb
+              mv deb $HOME/.
+      - run:
+          name: Export key
+          command: |
+              gpg --export --armor > $HOME/deb/Release.key
+      - persist_to_workspace:
+          root: ..
+          paths:
+            - deb
+
   rpm:
     parameters: 
       os:
@@ -895,18 +904,36 @@ jobs:
           dir: Birch/libraries/Cairo
       - package_rpm:
           dir: Birch/libraries/SQLite
+      - persist_to_workspace:
+          root: ..
+          paths:
+            - rpm
+
+  rpm_repo:
+    parameters:
+      os:
+        type: string
+    executor: << parameters.os >>
+    steps:
+      - environment
+      - attach_workspace:
+          at: ..
       - run:
-          name: Finalize repository
+          name: Create RPM repository
           command: |
               cd $HOME/rpm/$CODENAME
               createrepo .
               gpg --detach-sign --armor repodata/repomd.xml
               gpg --export --armor > repodata/repomd.xml.key
+              printf "[indii.org]\nname=indii.org\ntype=rpm-md\nbaseurl=https://download.indii.org/rpm/$CODENAME\ngpgcheck=1\ngpgkey=https://download.indii.org/rpm/$CODENAME/repodata/repomd.xml.key\nenabled=1\n" > rpm/$CODENAME/indii.org.repo
+              if [[ "$CODENAME" =~ "opensuse" ]]; then
+                printf "autorefresh=1\n" >> rpm/$CODENAME/indii.org.repo
+              fi
       - persist_to_workspace:
           root: ..
           paths:
             - rpm
-          
+
   mac:
     executor: mac
     steps:
@@ -1142,6 +1169,18 @@ workflows:
                 - trixie-arm
                 - noble-arm
                 - oracular-arm
+
+      - deb_repo:
+          requires:
+            - deb-bookworm
+            - deb-trixie
+            - deb-noble
+            - deb-oracular
+            - deb-bookworm-arm
+            - deb-trixie-arm
+            - deb-noble-arm
+            - deb-oracular-arm
+
       - rpm:
           matrix:
             parameters:
@@ -1153,13 +1192,24 @@ workflows:
                 - fedora-40-arm
                 - fedora-41-arm
 
+      - rpm_repo:
+          matrix:
+            parameters:
+              os:
+                - opensuse-tumbleweed
+                - fedora-40
+                - fedora-41
+          requires:
+            - rpm-<< matrix.os >>
+            - rpm-<< matrix.os >>-arm
+
       - mac
       - win
 
       - stage:
           requires:
-            - deb
-            - rpm
+            - deb_repo
+            - rpm_repo
             - mac
             - win
 
