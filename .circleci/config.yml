@@ -393,36 +393,6 @@ commands:
                 fi
               done
 
-  source_cpp:
-    description: Archive source for C++ package
-    parameters:
-      dir:
-        description: Directory containing the package
-        type: string
-    steps:
-      - run:
-          name: Archive source for << parameters.dir >>
-          command: |
-              cd << parameters.dir >>
-              ./bootstrap
-              ./configure --disable-checks --prefix="$HOME" $CONFIGURE_FLAGS || (cat config.log && exit 1)
-              make dist
-
-  source_birch:
-    description: Archive source for Birch package
-    parameters:
-      dir:
-        description: Directory containing the package
-        type: string
-    steps:
-      - run:
-          name: Archive source for << parameters.dir >>
-          command: |
-              cd << parameters.dir >>
-              birch bootstrap
-              ./configure --disable-checks --prefix="$HOME" $CONFIGURE_FLAGS || (cat config.log && exit 1)
-              make dist
-
   source:
     description: Archive source
     parameters:
@@ -776,23 +746,21 @@ jobs:
           dir: Birch/libraries/Cairo
       - version:
           dir: Birch/libraries/SQLite
-      - build_cpp: # needed for source_birch
-          dir: Birch/birch
       - source:
           dir: mendingwall
       - source:
           dir: doxide
-      - source_cpp:
+      - source:
           dir: Birch/birch
-      - source_cpp:
+      - source:
           dir: Birch/membirch
-      - source_cpp:
+      - source:
           dir: Birch/numbirch
-      - source_birch:
+      - source:
           dir: Birch/libraries/Standard
-      - source_birch:
+      - source:
           dir: Birch/libraries/Cairo
-      - source_birch:
+      - source:
           dir: Birch/libraries/SQLite
       - run:
           name: Copy source archives to rpmbuild
