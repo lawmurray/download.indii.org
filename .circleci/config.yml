@@ -925,9 +925,9 @@ jobs:
               createrepo .
               gpg --detach-sign --armor repodata/repomd.xml
               gpg --export --armor > repodata/repomd.xml.key
-              printf "[indii.org]\nname=indii.org\ntype=rpm-md\nbaseurl=https://download.indii.org/rpm/$CODENAME\ngpgcheck=1\ngpgkey=https://download.indii.org/rpm/$CODENAME/repodata/repomd.xml.key\nenabled=1\n" > rpm/$CODENAME/indii.org.repo
+              printf "[indii.org]\nname=indii.org\ntype=rpm-md\nbaseurl=https://download.indii.org/rpm/$CODENAME\ngpgcheck=1\ngpgkey=https://download.indii.org/rpm/$CODENAME/repodata/repomd.xml.key\nenabled=1\n" > indii.org.repo
               if [[ "$CODENAME" =~ "opensuse" ]]; then
-                printf "autorefresh=1\n" >> rpm/$CODENAME/indii.org.repo
+                printf "autorefresh=1\n" >> indii.org.repo
               fi
       - persist_to_workspace:
           root: ..
