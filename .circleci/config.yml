@@ -566,10 +566,10 @@ commands:
               cd << parameters.dir >>
               apt-get install -y ./*.deb  # must specify ./ to find packages
       - run:
-          name: Deploy Debian package << parameters.dir >>
+          name: Add Debian package << parameters.dir >> to repository
           command: |
               cd << parameters.dir >>
-              reprepro -b $HOME/deb/$CODENAME --ignore=wrongdistribution include $CODENAME *.changes
+              reprepro -b $HOME/deb/$CODENAME/$ARCH --ignore=wrongdistribution include $CODENAME *.changes
 
   package_rpm:
     parameters:
@@ -602,7 +602,7 @@ commands:
           command: |
               rpm --install --nodeps $HOME/rpmbuild/RPMS/$ARCH/*.rpm  # establish dependencies as we go
       - run:
-          name: Deploy RPM package << parameters.dir >>
+          name: Add RPM package << parameters.dir >> to repository
           command: |
               mv $HOME/rpmbuild/RPMS/$ARCH/*.rpm $HOME/rpm/$CODENAME/$ARCH/.
 
@@ -852,7 +852,7 @@ jobs:
           name: Merge Debian repositories
           command: |
               mkdir deb
-              cp -r $HOME/deb/*/* deb/.
+              cp -r $HOME/deb/*/*/* deb/.
               rm -rf $HOME/deb
               mv deb $HOME/.
       - run:
