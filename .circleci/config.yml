@@ -315,13 +315,6 @@ commands:
               echo "export CPLUS_INCLUDE_PATH=\$HOME/include:/usr/local/cuda/include:\$CPLUS_INCLUDE_PATH" >> $BASH_ENV
               echo "export LD_LIBRARY_PATH=\$HOME/lib64:\$HOME/lib:/usr/local/cuda/lib64/stubs:/usr/local/cuda/lib/stubs:\$LD_LIBRARY_PATH" >> $BASH_ENV
               echo "export LIBRARY_PATH=\$HOME/lib64:\$HOME/lib:/usr/local/cuda/lib64/stubs:/usr/local/cuda/lib/stubs:\$LIBRARY_PATH" >> $BASH_ENV
-              if [[ "$CODENAME" =~ "opensuse" ]]; then
-                echo "export INSTALL_COMMAND='zypper --non-interactive install --recommends'" >> $BASH_ENV
-              elif [[ "$CODENAME" =~ "fedora" ]]; then
-                echo "export INSTALL_COMMAND='dnf install --assumeyes mendingwall'" >> $BASH_ENV
-              else
-                echo "export INSTALL_COMMAND='apt install --assume-yes --install-recommends'" >> $BASH_ENV
-              fi
       - run:
           name: GPG keys
           command: |
@@ -1007,7 +1000,18 @@ jobs:
         type: string
     executor: << parameters.os >>
     steps:
-      # want clean slate to test installation, so do not run environment here
+      # want clean slate to test installation, so do not run usual environment
+      # here
+      - run:
+          name: Environment
+          command: |
+              if [[ "$CODENAME" =~ "opensuse" ]]; then
+                echo "export INSTALL_COMMAND='zypper --non-interactive install --recommends'" >> $BASH_ENV
+              elif [[ "$CODENAME" =~ "fedora" ]]; then
+                echo "export INSTALL_COMMAND='dnf install --assumeyes mendingwall'" >> $BASH_ENV
+              else
+                echo "export INSTALL_COMMAND='apt install --assume-yes --install-recommends'" >> $BASH_ENV
+              fi
       - run:
           name: Configure repository
           command: |
