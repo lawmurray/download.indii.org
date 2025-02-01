@@ -455,6 +455,7 @@ commands:
               cd << parameters.dir >>
               ./bootstrap
               ./configure --prefix="$HOME" $CONFIGURE_FLAGS || (cat config.log && exit 1)
+              make -j8
               make install
 
   package_deb:
