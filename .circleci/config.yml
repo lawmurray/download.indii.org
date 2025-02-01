@@ -852,7 +852,7 @@ jobs:
           name: Merge Debian repositories
           command: |
               mkdir deb
-              mv $HOME/deb/*/*/* deb/.
+              cp -r $HOME/deb/*/*/* deb/.
               rm -rf $HOME/deb
               mv deb $HOME/.
       - run:
