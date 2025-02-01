@@ -315,6 +315,13 @@ commands:
               echo "export CPLUS_INCLUDE_PATH=\$HOME/include:/usr/local/cuda/include:\$CPLUS_INCLUDE_PATH" >> $BASH_ENV
               echo "export LD_LIBRARY_PATH=\$HOME/lib64:\$HOME/lib:/usr/local/cuda/lib64/stubs:/usr/local/cuda/lib/stubs:\$LD_LIBRARY_PATH" >> $BASH_ENV
               echo "export LIBRARY_PATH=\$HOME/lib64:\$HOME/lib:/usr/local/cuda/lib64/stubs:/usr/local/cuda/lib/stubs:\$LIBRARY_PATH" >> $BASH_ENV
+              if [[ "$CODENAME" =~ "opensuse" ]]; then
+                echo "export INSTALL_COMMAND='zypper --non-interactive install --recommends'" >> $BASH_ENV
+              elif [[ "$CODENAME" =~ "fedora" ]]; then
+                echo "export INSTALL_COMMAND='dnf install --assumeyes mendingwall'" >> $BASH_ENV
+              else
+                echo "export INSTALL_COMMAND='apt install --assume-yes --install-recommends'" >> $BASH_ENV
+              fi
       - run:
           name: GPG keys
           command: |
@@ -1005,23 +1012,20 @@ jobs:
     steps:
       # want clean slate to test installation, so do not run environment here
       - run:
-          name: Test install
+          name: Configure repository
           command: |
               if [[ "$CODENAME" =~ "opensuse" ]]; then
                 zypper --gpg-auto-import-keys addrepo https://stage.indii.org/rpm/$CODENAME/indii.org.repo
                 zypper --gpg-auto-import-keys refresh
                 zypper --non-interactive update
-                zypper --non-interactive install --recommends mendingwall doxide birch
               elif [[ "$CODENAME" =~ "fedora/41" ]]; then
                 dnf install --assumeyes dnf-plugins-core
                 dnf config-manager addrepo --from-repofile=https://stage.indii.org/rpm/$CODENAME/indii.org.repo
                 dnf update --assumeyes
-                dnf install --assumeyes mendingwall doxide birch
               elif [[ "$CODENAME" =~ "fedora" ]]; then
                 dnf install --assumeyes dnf-plugins-core
                 dnf config-manager --add-repo https://stage.indii.org/rpm/$CODENAME/indii.org.repo
                 dnf update --assumeyes
-                dnf install --assumeyes mendingwall doxide birch
               else
                 apt update --assume-yes
                 apt upgrade --assume-yes
@@ -1029,9 +1033,6 @@ jobs:
                 echo "deb https://stage.indii.org/deb $CODENAME main" | tee /etc/apt/sources.list.d/indii.org.list
                 curl -fsSL https://stage.indii.org/deb/Release.key | gpg --dearmor | tee /etc/apt/trusted.gpg.d/indii.org.gpg > /dev/null
                 apt update --assume-yes
-                apt install --assume-yes --install-recommends mendingwall
-                apt install --assume-yes --install-recommends doxide
-                apt install --assume-yes --install-recommends birch
               fi
       - when:
           condition:
@@ -1042,28 +1043,40 @@ jobs:
                 - equal: [ << parameters.os >>, fedora-41-arm ]
           steps:
             - run:
+                name: Install Mending Wall
+                command: |
+                    $INSTALL_COMMAND mendingwall
+            - run:
                 name: Test Mending Wall
                 command: |
-                  mendingwall -h
-                  mendingwalld -h
+                    mendingwall -h
+                    mendingwalld -h
+      - run:
+          name: Install Doxide
+          command: |
+              $INSTALL_COMMAND doxide
       - run:
           name: Test Doxide
           command: |
-            mkdir hello
-            cd hello
-            doxide init
-            cd ..
-            rm -rf hello
+              mkdir hello
+              cd hello
+              doxide init
+              cd ..
+              rm -rf hello
+      - run:
+          name: Install Birch
+          command: |
+              $INSTALL_COMMAND birch
       - run:
           name: Test Birch
           command: |
-            mkdir hello
-            cd hello
-            birch init
-            birch build
-            birch hello
-            cd ..
-            rm -rf hello
+              mkdir hello
+              cd hello
+              birch init
+              birch build
+              birch hello
+              cd ..
+              rm -rf hello
 
   test_mac:
     executor: mac
