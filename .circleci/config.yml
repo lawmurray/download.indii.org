@@ -343,29 +343,6 @@ commands:
             cmake --build . --config Release
             sudo cmake --install . --config Release
 
-  checkout_packages:
-    description: Checkout code from Git
-    steps:
-      - run:
-          name: Checkout Mending Wall latest tag
-          command: |
-              git clone https://github.com/lawmurray/mendingwall.git
-              cd mendingwall
-              git checkout $(git describe --tags --abbrev=0)
-      - run:
-          name: Checkout Doxide latest tag
-          command: |
-              git clone https://github.com/lawmurray/doxide.git
-              cd doxide
-              git checkout $(git describe --tags --abbrev=0)
-              git submodule update --init --recursive --depth 1
-      - run:
-          name: Checkout Birch latest tag
-          command: |
-              git clone https://github.com/lawmurray/Birch.git
-              cd Birch
-              git checkout $(git describe --tags --abbrev=0)
-
   version:
     description: Update version number
     parameters:
@@ -380,13 +357,32 @@ commands:
               VERSION=$(git describe --tags --abbrev=0 | sed -E 's/^v//')
               VERSION_SAFE=$(echo $VERSION | sed -E 's/\./_/g')
 
-              for file in configure.ac Makefile.am Makefile CMakeLists.txt *.yml *.yaml *.json *.spec *.rb PKGBUILD; do
+              for file in \
+                  configure.ac \
+                  Makefile.am \
+                  Makefile \
+                  CMakeLists.txt \
+                  *.yml \
+                  *.yaml \
+                  *.json \
+                  *.spec \
+                  *.rb \
+                  PKGBUILD \
+                  choco/<< parameters.dir >>.portable/<< parameters.dir >>.portable.nuspec \
+                  choco/<< parameters.dir >>.install/<< parameters.dir >>.install.nuspec \
+                  choco/<< parameters.dir >>/<< parameters.dir >>.nuspec
+              do
                 if [[ -e $file ]]; then
                   cat $file | sed -E "s/0\.0\.0/$VERSION/g" | sed -E "s/0_0_0/$VERSION_SAFE/g" > $file.sponge
                   mv $file.sponge $file
                 fi
               done
-              for file in debian/changelog debian/control debian/*.install debian/*.links; do
+              for file in \
+                  debian/changelog \
+                  debian/control \
+                  debian/*.install \
+                  debian/*.links
+              do
                 if [[ -e $file ]]; then
                   cat $file | sed -E "s|0\.0\.0-1|$VERSION-1~$CODENAME|g" | sed -E "s/0\.0\.0/$VERSION/g" | sed -E "s/0_0_0/$VERSION_SAFE/g" > $file.sponge
                   mv $file.sponge $file
@@ -396,74 +392,6 @@ commands:
                   fi
                 fi
               done
-
-  version_win:
-    description: Update version number
-    parameters:
-      dir:
-        description: Directory in which to update version number
-        type: string
-    steps:
-      - run:
-          name: Update version number for << parameters.dir >>
-          command: |
-              function Find-Replace {
-                  param($Path, $Find, $Replace)
-                  $contents = Get-Content -Path $Path
-                  $contents = $contents -replace $Find, $Replace
-                  $contents | Set-Content -Path $Path
-              }
-              cd << parameters.dir >>
-              $version=$(git describe --tags --abbrev=0).Substring(1)
-              Find-Replace CMakeLists.txt '0.0.0' $version
-              Find-Replace choco/<< parameters.dir >>.portable/<< parameters.dir >>.portable.nuspec '0.0.0' $version
-              Find-Replace choco/<< parameters.dir >>.install/<< parameters.dir >>.install.nuspec '0.0.0' $version
-              Find-Replace choco/<< parameters.dir >>/<< parameters.dir >>.nuspec '0.0.0' $version
-
-  prepare:
-    steps:
-      - version:
-          dir: mendingwall
-      - version:
-          dir: doxide
-      - version:
-          dir: Birch/birch
-      - version:
-          dir: Birch/membirch
-      - version:
-          dir: Birch/numbirch
-      - version:
-          dir: Birch/libraries/Standard
-      - version:
-          dir: Birch/libraries/Cairo
-      - version:
-          dir: Birch/libraries/SQLite
-
-      # build birch, needed for source_birch
-      - build_cpp:
-          dir: Birch/birch
-
-      - source:
-          dir: mendingwall
-      - source:
-          dir: doxide
-      - source_cpp:
-          dir: Birch/birch
-      - source_cpp:
-          dir: Birch/membirch
-      - source_cpp:
-          dir: Birch/numbirch
-      - source_birch:
-          dir: Birch/libraries/Standard
-      - source_birch:
-          dir: Birch/libraries/Cairo
-      - source_birch:
-          dir: Birch/libraries/SQLite
-
-  prepare_win:
-    steps:
-      - version_win:
-          dir: doxide
 
   source_cpp:
     description: Archive source for C++ package
@@ -569,7 +497,7 @@ commands:
           name: Add Debian package << parameters.dir >> to repository
           command: |
               cd << parameters.dir >>
-              reprepro -b $HOME/debtmp/$CODENAME/$ARCH --ignore=wrongdistribution include $CODENAME *.changes
+              reprepro -b $HOME/deb --ignore=wrongdistribution include $CODENAME *.changes
 
   package_rpm:
     parameters:
@@ -588,11 +516,7 @@ commands:
                 export JOBS=8
               fi
               cd << parameters.dir >>
-              VERSION=$(git describe --tags --abbrev=0 | sed -E 's/^v//')
-              TARNAME=$(ls *-$VERSION.tar.gz | grep -Eo '^[a-z\-]+[a-z]')
-              mkdir -p $HOME/rpmbuild/SOURCES
-              mv $TARNAME-$VERSION.tar.gz $HOME/rpmbuild/SOURCES/.
-              rpmbuild --target $ARCH --define="_topdir $HOME/rpmbuild" --define="_smp_mflags -j$JOBS" --define="debug_package %{nil}" -ba $TARNAME.spec
+              rpmbuild --target $ARCH --define="_topdir $HOME/rpmbuild" --define="_smp_mflags -j$JOBS" --define="debug_package %{nil}" -ba *.spec
       - run:
           name: Sign RPM package << parameters.dir >>
           command: |
@@ -600,7 +524,7 @@ commands:
       - run:
           name: Install RPM package << parameters.dir >>
           command: |
-              rpm --install --nodeps $HOME/rpmbuild/RPMS/$ARCH/*.rpm  # establish dependencies as we go
+              rpm --install --nodeps $HOME/rpmbuild/RPMS/$ARCH/*.rpm
       - run:
           name: Add RPM package << parameters.dir >> to repository
           command: |
@@ -794,6 +718,91 @@ commands:
 
 jobs:
 
+  init:
+    executor: noble
+    steps:
+      - environment
+      - checkout
+      - run:
+          name: Checkout Mending Wall latest tag
+          command: |
+              git clone https://github.com/lawmurray/mendingwall.git
+              cd mendingwall
+              git checkout $(git describe --tags --abbrev=0)
+      - run:
+          name: Checkout Doxide latest tag
+          command: |
+              git clone https://github.com/lawmurray/doxide.git
+              cd doxide
+              git checkout $(git describe --tags --abbrev=0)
+              git submodule update --init --recursive --depth 1
+      - run:
+          name: Checkout Birch latest tag
+          command: |
+              git clone https://github.com/lawmurray/Birch.git
+              cd Birch
+              git checkout $(git describe --tags --abbrev=0)
+      - run:
+          name: Initialize Debian repository
+          command: |
+              mkdir -p $HOME/deb/conf
+              printf "Suite: stable\nCodename: stable\nArchitectures: source amd64 arm64\nComponents: main\nContents:\nSignWith: default\n" > $HOME/deb/conf/distributions
+              gpg --export --armor > $HOME/deb/Release.key
+      - run:
+          name: Initialize RPM repository
+          command: |
+              mkdir -p $HOME/rpmbuild/SOURCES
+      - run:
+          name: Initialize Homebrew repository
+          command: |
+              mkdir -p $HOME/brew
+      - run:
+          name: Initialize Windows repository
+          command: |
+              mkdir -p $HOME/win
+      - version:
+          dir: mendingwall
+      - version:
+          dir: doxide
+      - version:
+          dir: Birch/birch
+      - version:
+          dir: Birch/membirch
+      - version:
+          dir: Birch/numbirch
+      - version:
+          dir: Birch/libraries/Standard
+      - version:
+          dir: Birch/libraries/Cairo
+      - version:
+          dir: Birch/libraries/SQLite
+      - build_cpp: # needed for source_birch
+          dir: Birch/birch
+      - source:
+          dir: mendingwall
+      - source:
+          dir: doxide
+      - source_cpp:
+          dir: Birch/birch
+      - source_cpp:
+          dir: Birch/membirch
+      - source_cpp:
+          dir: Birch/numbirch
+      - source_birch:
+          dir: Birch/libraries/Standard
+      - source_birch:
+          dir: Birch/libraries/Cairo
+      - source_birch:
+          dir: Birch/libraries/SQLite
+      - run:
+          name: Copy source archives to rpmbuild
+          command: |
+              find . -name *.tar.gz -exec cp "{}" $HOME/rpmbuild/SOURCES/.
+      - persist_to_workspace:
+          root: ..
+          paths:
+            - .
+
   deb:
     parameters: 
       os:
@@ -801,15 +810,8 @@ jobs:
     executor: << parameters.os >>
     steps:
       - environment
-      - checkout
-      - checkout_packages
-      - prepare
-
-      - run:
-          name: Initialize repository
-          command: |
-              mkdir -p $HOME/debtmp/$CODENAME/$ARCH/conf
-              printf "Codename: $CODENAME\nSuite: stable\nComponents: main\nArchitectures: source $ARCH\nSignWith: default\n" > $HOME/debtmp/$CODENAME/$ARCH/conf/distributions
+      - attach_workspace:
+          at: ..
       - when:
           condition:
             not:
@@ -833,29 +835,6 @@ jobs:
           dir: Birch/libraries/Cairo
       - package_deb:
           dir: Birch/libraries/SQLite
-      - run:
-          name: Remove unnecessary files
-          command: |
-              rm -rf $HOME/debtmp/$CODENAME/$ARCH/{conf,db}
-      - persist_to_workspace:
-          root: ..
-          paths:
-            - debtmp
-
-  deb_repo:
-    executor: noble
-    steps:
-      - environment
-      - attach_workspace:
-          at: ..
-      - run:
-          name: Merge Debian repositories
-          command: |
-              mkdir $HOME/deb && cp -r $HOME/debtmp/*/*/* $HOME/deb/.
-      - run:
-          name: Export key
-          command: |
-              gpg --export --armor > $HOME/deb/Release.key
       - persist_to_workspace:
           root: ..
           paths:
@@ -868,12 +847,10 @@ jobs:
     executor: << parameters.os >>
     steps:
       - environment
-      - checkout
-      - checkout_packages
-      - prepare
-
+      - attach_workspace:
+          at: ..
       - run:
-          name: Initialize repository
+          name: Initialize RPM repository
           command: |
               mkdir -p $HOME/rpm/$CODENAME/{$ARCH,src}
               gpg --export --armor > public.key
@@ -901,22 +878,8 @@ jobs:
           dir: Birch/libraries/Cairo
       - package_rpm:
           dir: Birch/libraries/SQLite
-      - persist_to_workspace:
-          root: ..
-          paths:
-            - rpm
-
-  rpm_repo:
-    parameters:
-      os:
-        type: string
-    executor: << parameters.os >>
-    steps:
-      - environment
-      - attach_workspace:
-          at: ..
       - run:
-          name: Create RPM repository
+          name: Finish RPM repository
           command: |
               cd $HOME/rpm/$CODENAME
               createrepo .
@@ -935,14 +898,8 @@ jobs:
     executor: mac
     steps:
       - environment
-      - checkout
-      - checkout_packages
-      - prepare
-
-      - run:
-          name: Initialize repository
-          command: |
-              mkdir -p $HOME/brew
+      - attach_workspace:
+          at: ..
       - package_mac:
           dir: doxide
       - package_mac:
@@ -957,7 +914,6 @@ jobs:
           dir: Birch/libraries/Cairo
       - package_mac:
           dir: Birch/libraries/SQLite
-
       - persist_to_workspace:
           root: ..
           paths:
@@ -966,18 +922,11 @@ jobs:
   win:
     executor: win
     steps:
-      - checkout  # required for environment_win
-      - checkout_packages
+      - attach_workspace:
+          at: ..
       - environment_win
-      - prepare_win
-
-      - run:
-          name: Initialize repository
-          command: |
-              mkdir -p $HOME/win
       - package_win:
           dir: doxide
-
       - persist_to_workspace:
           root: ..
           paths:
@@ -1171,59 +1120,64 @@ jobs:
 workflows:
   all:
     jobs:
+      - init
+      
       - deb:
           matrix:
+            parameters:
+              os:
+                - bookworm-arm
+                - trixie-arm
+                - noble-arm
+                - oracular-arm
+          requires:
+            - init
+
+      - deb:
+          matrix:
+            alias: deb-amd64
             parameters:
               os:
                 - bookworm
                 - trixie
                 - noble
                 - oracular
-                - bookworm-arm
-                - trixie-arm
-                - noble-arm
-                - oracular-arm
-
-      - deb_repo:
           requires:
-            - deb-bookworm
-            - deb-trixie
-            - deb-noble
-            - deb-oracular
-            - deb-bookworm-arm
-            - deb-trixie-arm
-            - deb-noble-arm
-            - deb-oracular-arm
+            - deb-<< matrix.os >>-arm
 
       - rpm:
           matrix:
             parameters:
               os:
-                - opensuse-tumbleweed
-                - fedora-40
-                - fedora-41
                 - opensuse-tumbleweed-arm
                 - fedora-40-arm
                 - fedora-41-arm
+          requires:
+            - init
 
-      - rpm_repo:
+      - rpm:
           matrix:
+            alias: rpm-amd64
             parameters:
               os:
                 - opensuse-tumbleweed
                 - fedora-40
                 - fedora-41
           requires:
-            - rpm-<< matrix.os >>
             - rpm-<< matrix.os >>-arm
 
-      - mac
-      - win
+      - mac:
+          requires:
+            - init
+
+      - win:
+          requires:
+            - init
 
       - stage:
           requires:
-            - deb_repo
-            - rpm_repo
+            - deb-amd64
+            - rpm-amd64
             - mac
             - win
 
