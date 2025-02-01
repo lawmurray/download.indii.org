@@ -809,7 +809,7 @@ jobs:
           name: Initialize repository
           command: |
               mkdir -p $HOME/deb/$CODENAME/$ARCH/conf
-              printf "Codename: $CODENAME\nSuite: stable\nComponents: main\nArchitectures: source amd64 arm64\nSignWith: default\n" > $HOME/deb/$CODENAME/$ARCH/conf/distributions
+              printf "Codename: $CODENAME\nSuite: stable\nComponents: main\nArchitectures: source $ARCH\nSignWith: default\n" > $HOME/deb/$CODENAME/$ARCH/conf/distributions
       - when:
           condition:
             not:
@@ -836,7 +836,7 @@ jobs:
       - run:
           name: Remove unnecessary files
           command: |
-              rm -rf $HOME/deb/$CODENAME/{conf,db}
+              rm -rf $HOME/deb/$CODENAME/$ARCH/{conf,db}
       - persist_to_workspace:
           root: ..
           paths:
@@ -852,7 +852,7 @@ jobs:
           name: Merge Debian repositories
           command: |
               mkdir deb
-              cp -r $HOME/deb/*/*/* deb/.
+              mv $HOME/deb/*/*/* deb/.
               rm -rf $HOME/deb
               mv deb $HOME/.
       - run:
