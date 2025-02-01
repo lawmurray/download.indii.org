@@ -393,6 +393,36 @@ commands:
                 fi
               done
 
+  source_autotools:
+    description: Archive source for C++ package
+    parameters:
+      dir:
+        description: Directory containing the package
+        type: string
+    steps:
+      - run:
+          name: Archive source for << parameters.dir >>
+          command: |
+              cd << parameters.dir >>
+              ./bootstrap
+              ./configure --disable-checks --prefix="$HOME" $CONFIGURE_FLAGS || (cat config.log && exit 1)
+              make dist
+
+  source_birch:
+    description: Archive source for Birch package
+    parameters:
+      dir:
+        description: Directory containing the package
+        type: string
+    steps:
+      - run:
+          name: Archive source for << parameters.dir >>
+          command: |
+              cd << parameters.dir >>
+              birch bootstrap
+              ./configure --disable-checks --prefix="$HOME" $CONFIGURE_FLAGS || (cat config.log && exit 1)
+              make dist
+
   source:
     description: Archive source
     parameters:
@@ -747,21 +777,23 @@ jobs:
           dir: Birch/libraries/Cairo
       - version:
           dir: Birch/libraries/SQLite
+      - build_cpp: # needed for source_birch
+          dir: Birch/birch
       - source:
           dir: mendingwall
       - source:
           dir: doxide
-      - source:
+      - source_autotools:
           dir: Birch/birch
-      - source:
+      - source_autotools:
           dir: Birch/membirch
-      - source:
+      - source_autotools:
           dir: Birch/numbirch
-      - source:
+      - source_birch:
           dir: Birch/libraries/Standard
-      - source:
+      - source_birch:
           dir: Birch/libraries/Cairo
-      - source:
+      - source_birch:
           dir: Birch/libraries/SQLite
       - persist_to_workspace:
           root: ..
