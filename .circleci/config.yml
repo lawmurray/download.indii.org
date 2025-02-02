@@ -905,24 +905,20 @@ jobs:
               gpg --export --armor > $HOME/deb/Release.key
               cd $HOME/debpackages
               for codename in *; do
-                cd $codename
-                find . -name *.deb -exec reprepro -b $HOME/deb includedeb $codename '{}'
-                cd ..
+                find $codename -name *.deb -exec reprepro -b $HOME/deb includedeb $codename '{}'
               done
       - run:
           name: RPM repository
           command: |
               cd $HOME/rpm
               for codename in *; do
-                cd $codename
-                createrepo .
+                createrepo $codename
                 gpg --detach-sign --armor repodata/repomd.xml
                 gpg --export --armor > repodata/repomd.xml.key
-                printf "[indii.org]\nname=indii.org\ntype=rpm-md\nbaseurl=https://download.indii.org/rpm/$codename\ngpgcheck=1\ngpgkey=https://download.indii.org/rpm/$codename/repodata/repomd.xml.key\nenabled=1\n" > indii.org.repo
+                printf "[indii.org]\nname=indii.org\ntype=rpm-md\nbaseurl=https://download.indii.org/rpm/$codename\ngpgcheck=1\ngpgkey=https://download.indii.org/rpm/$codename/repodata/repomd.xml.key\nenabled=1\n" > $codename/indii.org.repo
                 if [[ "$codename" =~ "opensuse" ]]; then
-                  printf "autorefresh=1\n" >> indii.org.repo
+                  printf "autorefresh=1\n" >> $codename/indii.org.repo
                 fi
-                cd ..
               done
       - persist_to_workspace:
           root: ..
