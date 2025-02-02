@@ -529,8 +529,12 @@ commands:
           command: |
               mkdir -p $HOME/rpm/$CODENAME/$ARCH
               mv $HOME/rpmbuild/RPMS/$ARCH/*.rpm $HOME/rpm/$CODENAME/$ARCH/.
-              #mkdir -p $HOME/rpm/$CODENAME/src
-              #mv $HOME/rpmbuild/SRPMS/*.rpm $HOME/rpm/$CODENAME/src/.
+
+              # only one arch should copy the source RPMs in
+              if [[ "$ARCH" =~ 'x86_64' ]]; then
+                mkdir -p $HOME/rpm/$CODENAME/src
+                mv $HOME/rpmbuild/SRPMS/*.rpm $HOME/rpm/$CODENAME/src/.
+              fi
 
   package_mac:
     parameters:
