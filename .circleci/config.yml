@@ -531,10 +531,10 @@ commands:
               mv $HOME/rpmbuild/RPMS/$ARCH/*.rpm $HOME/rpm/$CODENAME/$ARCH/.
 
               # only one arch should copy the source RPMs in
-              if [[ "$ARCH" =~ 'x86_64' ]]; then
-                mkdir -p $HOME/rpm/$CODENAME/src
-                mv $HOME/rpmbuild/SRPMS/*.rpm $HOME/rpm/$CODENAME/src/.
-              fi
+              #if [[ "$ARCH" =~ 'x86_64' ]]; then
+              #  mkdir -p $HOME/rpm/$CODENAME/src
+              #  mv $HOME/rpmbuild/SRPMS/*.rpm $HOME/rpm/$CODENAME/src/.
+              #fi
 
   package_mac:
     parameters:
