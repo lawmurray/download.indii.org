@@ -548,7 +548,7 @@ commands:
               SHA256=($(sha256sum $TARNAME-$VERSION.tar.gz))
               sed -i'' -E "s/sha256 \"[0-9a-f]+\"/sha256 \"$SHA256\"/g" $TARNAME.rb
               mkdir -p $HOME/brew
-              mv $TARNAME-$VERSION.tar.gz $TARNAME.rb $HOME/brew/.
+              cp $TARNAME-$VERSION.tar.gz $TARNAME.rb $HOME/brew/.
 
   package_win:
     parameters:
