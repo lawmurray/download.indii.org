@@ -6,10 +6,9 @@ hide:
   - menu
 ---
 
-# Linux package repository for indii.org
+# Linux packages
 
-This repository is maintained by Lawrence Murray ([:material-github:](https://github.com/lawmurray){target="_blank"} [:material-mastodon:](https://fosstodon.org/@lawmurray){target="_blank"} [:material-web:](https://indii.org){target="_blank"} [:material-email:](mailto:lawrence@indii.org){target="_blank"}). It provides Linux packages of [Mending Wall](https://mendingwall.indii.org), [Doxide](https://doxide.org) and [Birch](https://birch-lang.org). All packages are available for both x86-64 (AMD64) and AArch64 (ARM64) unless otherwise noted.
-
+This repository is maintained by [Lawrence Murray](https://indii.org/about). It provides Linux packages for [Mending Wall](https://mendingwall.indii.org), [Doxide](https://doxide.org) and [Birch](https://birch-lang.org). All packages are available for both x86-64 (AMD64) and AArch64 (ARM64) unless otherwise noted.
 
 ??? ubuntu "Ubuntu 24.10 Oracular Oriole"
     Add the repository:
