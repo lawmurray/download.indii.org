@@ -832,14 +832,8 @@ jobs:
       - environment
       - attach_workspace:
           at: ..
-      - when:
-          condition:
-            not:
-              or:
-                - equal: [ << parameters.os >>, fedora-41-arm ]
-          steps:
-          - package_rpm:
-              dir: mendingwall
+      - package_rpm:
+          dir: mendingwall
       - package_rpm:
           dir: doxide
       - package_rpm:
@@ -990,7 +984,6 @@ jobs:
               or:
                 - equal: [ << parameters.os >>, bookworm ]
                 - equal: [ << parameters.os >>, bookworm-arm ]
-                - equal: [ << parameters.os >>, fedora-41-arm ]
           steps:
             - run:
                 name: Install Mending Wall
