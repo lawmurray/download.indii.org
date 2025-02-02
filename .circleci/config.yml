@@ -307,10 +307,7 @@ commands:
                   reprepro \
                   rpm \
                   rpmlint \
-                  createrepo-c \
-                  mkdocs \
-                  mkdocs-material \
-                  mkdocs-material-extensions
+                  createrepo-c
               fi
       - run:
           name: Environment variables
@@ -629,7 +626,13 @@ commands:
                 for file in $(ls mkdocs.yaml docs/*.md $HOME/rpm/*/*.repo $HOME/rpm/*/*/*.repo); do
                   sed -i s/download\.indii\.org/<< parameters.subdomain >>/g $file
                 done
+
+                # build site
+                python3 -m venv venv
+                source venv/bin/activate
+                pip install mkdocs mkdocs-material mkdocs-material[imaging]
                 mkdocs build
+                deactivate
 
                 # copy over packages
                 cd site
@@ -637,7 +640,7 @@ commands:
                 cp -r $HOME/deb .
                 mkdir win && cp -r $HOME/win/*.exe $HOME/win/*.exe.sha256 win/.
 
-                # publish
+                # publish site
                 git init -b gh-pages
                 git add .
                 git commit -m "Overwrite."
