@@ -494,8 +494,8 @@ commands:
           name: Move Debian package << parameters.dir >> to directory
           command: |
               cd << parameters.dir >>
-              mkdir -p $HOME/deb/$CODENAME/$ARCH
-              mv *.deb $HOME/deb/$CODENAME/$ARCH/.
+              mkdir -p $HOME/pkg/$CODENAME/$ARCH
+              mv *.deb $HOME/pkg/$CODENAME/$ARCH/.
 
   package_rpm:
     parameters:
@@ -741,7 +741,6 @@ jobs:
               git clone https://github.com/lawmurray/doxide.git
               cd doxide
               git checkout $(git describe --tags --abbrev=0)
-              git submodule update --init --recursive --depth 1
       - run:
           name: Checkout Birch latest tag
           command: |
@@ -907,11 +906,10 @@ jobs:
       - run:
           name: Debian repository
           command: |
-              mv $HOME/deb $HOME/debpackages
               mkdir -p $HOME/deb
               cp -r conf $HOME/deb/.
               gpg --export --armor > $HOME/deb/Release.key
-              cd $HOME/debpackages
+              cd $HOME/pkg
               for codename in *; do
                 find $codename -name *.deb -exec reprepro -b $HOME/deb includedeb $codename '{}' \;
               done
