@@ -905,7 +905,7 @@ jobs:
               gpg --export --armor > $HOME/deb/Release.key
               cd $HOME/debpackages
               for codename in *; do
-                find $codename -name *.deb -exec reprepro -b $HOME/deb includedeb $codename '{}'
+                find $codename -name *.deb -exec reprepro -b $HOME/deb includedeb $codename '{}' \;
               done
       - run:
           name: RPM repository
