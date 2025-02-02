@@ -532,6 +532,7 @@ commands:
           command: |
               mkdir -p $HOME/rpm/$CODENAME/$ARCH
               mv $HOME/rpmbuild/RPMS/$ARCH/*.rpm $HOME/rpm/$CODENAME/$ARCH/.
+              mkdir -p $HOME/rpm/$CODENAME/src
               mv $HOME/rpmbuild/SRPMS/*.rpm $HOME/rpm/$CODENAME/src/.
 
   package_mac:
