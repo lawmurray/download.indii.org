@@ -70,7 +70,6 @@ This repository is maintained by Lawrence Murray ([:material-github:](https://gi
     ```
     sudo dnf install mendingwall doxide birch
     ```
-    Mending Wall is currently unavailable for AArch64 due to a [build error](https://github.com/lawmurray/mendingwall/issues/8).
 
 ??? fedora "Fedora 40"
     Add the repository:
