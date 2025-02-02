@@ -307,6 +307,7 @@ commands:
                   reprepro \
                   rpm \
                   rpmlint \
+                  createrepo-c \
                   mkdocs \
                   mkdocs-material \
                   mkdocs-material-extensions
@@ -912,7 +913,7 @@ jobs:
           command: |
               cd $HOME/rpm
               for codename in *; do
-                createrepo $codename
+                createrepo_c $codename
                 gpg --detach-sign --armor repodata/repomd.xml
                 gpg --export --armor > repodata/repomd.xml.key
                 printf "[indii.org]\nname=indii.org\ntype=rpm-md\nbaseurl=https://download.indii.org/rpm/$codename\ngpgcheck=1\ngpgkey=https://download.indii.org/rpm/$codename/repodata/repomd.xml.key\nenabled=1\n" > $codename/indii.org.repo
