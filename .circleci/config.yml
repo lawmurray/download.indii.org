@@ -822,7 +822,7 @@ jobs:
       - persist_to_workspace:
           root: ..
           paths:
-            - deb
+            - pkg
 
   rpm:
     parameters: 
