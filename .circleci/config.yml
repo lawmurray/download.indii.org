@@ -154,6 +154,7 @@ commands:
                     git \
                     gnupg \
                     coreutils \
+                    moreutils \
                     make \
                     autoconf \
                     automake \
@@ -177,6 +178,8 @@ commands:
                   openssh \
                   gpg \
                   distribution-gpg-keys \
+                  coreutils \
+                  moreutils \
                   tar \
                   gzip \
                   bzip2 \
@@ -219,6 +222,8 @@ commands:
                   openssh \
                   gpg \
                   distribution-gpg-keys \
+                  coreutils \
+                  moreutils \
                   tar \
                   gzip \
                   bzip2 \
@@ -256,7 +261,6 @@ commands:
                   redhat-rpm-config \
                   createrepo_c
               else  # Debian variant
-                sed -i 's/^Components: main$/& contrib non-free non-free-firmware/' /etc/apt/sources.list.d/debian.sources || echo
                 apt update --assume-yes
                 apt upgrade --assume-yes
                 apt install --assume-yes \
@@ -264,6 +268,8 @@ commands:
                   ssh \
                   gpg \
                   gpg-agent \
+                  coreutils \
+                  moreutils \
                   tar \
                   gzip \
                   xz-utils \
@@ -377,8 +383,8 @@ commands:
                   PKGBUILD
               do
                 if [[ -f $file ]]; then
-                  sed -i'' -E "s/0\.0\.0/$VERSION/g" $file
-                  sed -i'' -E "s/0_0_0/$VERSION_SAFE/g" $file
+                  sed -E "s/0\.0\.0/$VERSION/g" $file | sponge $file
+                  sed -E "s/0_0_0/$VERSION_SAFE/g" $file | sponge $file
                 fi
               done
               for file in debian/*
@@ -482,7 +488,7 @@ commands:
               for file in debian/*; do
                 if [[ -f $file ]]; then
                   # add ~$CODENAME~$ARCH to end of version so unique across distributions
-                  sed -i'' -E "s|$VERSION-1|$VERSION-1~$CODENAME~$ARCH|g" $file
+                  sed -E "s|$VERSION-1|$VERSION-1~$CODENAME~$ARCH|g" $file | sponge $file
                 fi
               done
               debuild -eDEB_BUILD_OPTIONS=noddebs -j$JOBS
@@ -547,7 +553,7 @@ commands:
               VERSION=$(git describe --tags --abbrev=0 | sed -E 's/^v//')
               TARNAME=$(ls *-$VERSION.tar.gz | grep -Eo '^[a-z\-]+[a-z]')
               SHA256=($(sha256sum $TARNAME-$VERSION.tar.gz))
-              sed -i'' -E "s/sha256 \"[0-9a-f]+\"/sha256 \"$SHA256\"/g" $TARNAME.rb
+              sed -E "s/sha256 \"[0-9a-f]+\"/sha256 \"$SHA256\"/g" $TARNAME.rb | sponge $TARNAME.rb
               mkdir -p $HOME/brew
               cp $TARNAME-$VERSION.tar.gz $TARNAME.rb $HOME/brew/.
 
@@ -625,7 +631,7 @@ commands:
 
                 # update subdomain
                 for file in mkdocs.yaml docs/*.md $HOME/rpm/*/*/*.repo; do
-                  sed -i s/download\.indii\.org/<< parameters.subdomain >>/g $file
+                  sed -E s/download\.indii\.org/<< parameters.subdomain >>/g $file | sponge $file
                 done
 
                 # build site
@@ -672,7 +678,7 @@ commands:
                 cd << parameters.repo >>
                 cp -r $HOME/brew/* .
                 for file in *.rb; do
-                  sed -i'' -E "s/homebrew-[A-Z0-9a-z]+/<< parameters.repo >>/g" $file
+                  sed -E "s/homebrew-[A-Z0-9a-z]+/<< parameters.repo >>/g" $file | sponge $file
                 done
                 git init
                 git add .
