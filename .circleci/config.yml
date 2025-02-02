@@ -435,7 +435,7 @@ commands:
               VERSION=$(git describe --tags --abbrev=0 | sed -E 's/^v//')
               cd ..
               mv $TARNAME $TARNAME-$VERSION
-              tar --exclude=$TARNAME-$VERSION/.git czf $TARNAME-$VERSION.tar.gz $TARNAME-$VERSION
+              tar --exclude $TARNAME-$VERSION/.git -czf $TARNAME-$VERSION.tar.gz $TARNAME-$VERSION
               mv $TARNAME-$VERSION $TARNAME
               mv $TARNAME-$VERSION.tar.gz $TARNAME/.
 
