@@ -307,7 +307,8 @@ commands:
                   reprepro \
                   rpm \
                   rpmlint \
-                  createrepo-c
+                  createrepo-c \
+                  python3-venv
               fi
       - run:
           name: Environment variables
@@ -623,7 +624,7 @@ commands:
                 cd download.indii.org
 
                 # update subdomain
-                for file in $(ls mkdocs.yaml docs/*.md $HOME/rpm/*/*.repo $HOME/rpm/*/*/*.repo); do
+                for file in mkdocs.yaml docs/*.md $HOME/rpm/*/*/*.repo; do
                   sed -i s/download\.indii\.org/<< parameters.subdomain >>/g $file
                 done
 
