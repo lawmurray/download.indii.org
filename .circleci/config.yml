@@ -373,21 +373,18 @@ commands:
                   *.json \
                   *.spec \
                   *.rb \
+                  debian/* \
+                  choco/*/*.nuspec \
                   PKGBUILD \
-                  choco/<< parameters.dir >>.portable/<< parameters.dir >>.portable.nuspec \
-                  choco/<< parameters.dir >>.install/<< parameters.dir >>.install.nuspec \
-                  choco/<< parameters.dir >>/<< parameters.dir >>.nuspec
               do
-                if [[ -e $file ]]; then
-                  cat $file | sed -E "s/0\.0\.0/$VERSION/g" | sed -E "s/0_0_0/$VERSION_SAFE/g" > $file.sponge
-                  mv $file.sponge $file
+                if [[ -f $file ]]; then
+                  sed -Ei "s/0\.0\.0/$VERSION/g" $file
+                  sed -Ei "s/0_0_0/$VERSION_SAFE/g" $file
                 fi
               done
               for file in debian/*
               do
                 if [[ -f $file ]]; then
-                  cat $file | sed -E "s/0\.0\.0/$VERSION/g" | sed -E "s/0_0_0/$VERSION_SAFE/g" > $file.sponge
-                  mv $file.sponge $file
                   NEWNAME=$(echo $file | sed -E "s/0\.0\.0/$VERSION/g")
                   if [[ "$NEWNAME" != "$file" ]]; then
                     mv $file $NEWNAME
@@ -486,8 +483,7 @@ commands:
               for file in debian/*; do
                 if [[ -f $file ]]; then
                   # add ~$CODENAME~$ARCH to end of version so unique across distributions
-                  cat $file | sed -E "s|$VERSION-1|$VERSION-1~$CODENAME~$ARCH|g" > $file.sponge
-                  mv $file.sponge $file
+                  sed -Ei "s|$VERSION-1|$VERSION-1~$CODENAME~$ARCH|g" $file
                 fi
               done
               debuild -eDEB_BUILD_OPTIONS=noddebs -j$JOBS
@@ -548,8 +544,7 @@ commands:
               VERSION=$(git describe --tags --abbrev=0 | sed -E 's/^v//')
               TARNAME=$(ls *-$VERSION.tar.gz | grep -Eo '^[a-z\-]+[a-z]')
               SHA256=($(sha256sum $TARNAME-$VERSION.tar.gz))
-              cat $TARNAME.rb | sed -E "s/sha256 \"[0-9a-f]+\"/sha256 \"$SHA256\"/g" > $TARNAME.rb.sponge
-              mv $TARNAME.rb.sponge $TARNAME.rb
+              sed -Ei "s/sha256 \"[0-9a-f]+\"/sha256 \"$SHA256\"/g" $TARNAME.rb
               mkdir -p $HOME/brew
               mv $TARNAME-$VERSION.tar.gz $TARNAME.rb $HOME/brew/.
 
@@ -627,8 +622,7 @@ commands:
 
                 # update subdomain
                 for file in $(ls mkdocs.yaml docs/*.md $HOME/rpm/*/*.repo $HOME/rpm/*/*/*.repo); do
-                  cat $file | sed s/download\.indii\.org/<< parameters.subdomain >>/g > $file.sponge
-                  mv $file.sponge $file
+                  sed -i s/download\.indii\.org/<< parameters.subdomain >>/g $file
                 done
                 mkdocs build
 
@@ -669,8 +663,7 @@ commands:
                 cd << parameters.repo >>
                 cp -r $HOME/brew/* .
                 for file in *.rb; do
-                  cat $file | sed -E "s/homebrew-[A-Z0-9a-z]+/<< parameters.repo >>/g" > $file.sponge
-                  mv $file.sponge $file
+                  sed -Ei "s/homebrew-[A-Z0-9a-z]+/<< parameters.repo >>/g" $file
                 done
                 git init
                 git add .
