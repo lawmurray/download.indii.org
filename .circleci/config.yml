@@ -172,8 +172,12 @@ commands:
                     rpm
                 echo "export PATH=/opt/homebrew/opt/gnu-time/libexec/gnubin:/opt/homebrew/opt/flex/bin:/opt/homebrew/opt/bison/bin:\$PATH" >> $BASH_ENV
               elif [[ "$CODENAME" =~ "opensuse" ]]; then
-                zypper --non-interactive update
-                zypper --non-interactive install \
+                if [[ "$CODENAME" =~ "tumbleweed" ]]; then
+                  zypper --non-interactive dup
+                else
+                  zypper --non-interactive up
+                fi
+                zypper --non-interactive in \
                   git \
                   openssh \
                   gpg \
