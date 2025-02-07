@@ -1165,8 +1165,8 @@ workflows:
 
       - repo:
           requires:
-            - deb: [success, failure]
-            - rpm: [success, failure]
+            - deb: [success, failed]
+            - rpm: [success, failed]
 
       - stage:
           requires:
