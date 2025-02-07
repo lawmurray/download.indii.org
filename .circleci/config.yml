@@ -1170,9 +1170,9 @@ workflows:
 
       - stage:
           requires:
-            - repo
-            - mac
-            - win
+            - repo: [success, failed]
+            - mac: [success, failed]
+            - win: [success, failed]
 
       - test_linux:
           matrix:
@@ -1206,9 +1206,9 @@ workflows:
       - hold:
           type: approval
           requires:
-            - test_linux
-            - test_mac
-            - test_win
+            - test_linux: [success, failed]
+            - test_mac: [success, failed]
+            - test_win: [success, failed]
 
       - deploy_linux:
           requires:
