@@ -1165,14 +1165,14 @@ workflows:
 
       - repo:
           requires:
-            - deb
-            - rpm
+            - deb: [success, failure]
+            - rpm: [success, failure]
 
       - stage:
           requires:
-            - repo: [success, failed]
-            - mac: [success, failed]
-            - win: [success, failed]
+            - repo
+            - mac
+            - win
 
       - test_linux:
           matrix:
@@ -1207,8 +1207,8 @@ workflows:
           type: approval
           requires:
             - test_linux: [success, failed]
-            - test_mac: [success, failed]
-            - test_win: [success, failed]
+            - test_mac
+            - test_win
 
       - deploy_linux:
           requires:
