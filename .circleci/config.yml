@@ -215,6 +215,9 @@ commands:
                   glib2-devel \
                   gtk4-devel \
                   libadwaita-devel \
+                  libportal-devel \
+                  libportal-gtk4-devel \
+                  libportal-gtk3-devel \
                   rpmlint \
                   rpm-build \
                   rpm-config-SUSE \
@@ -258,6 +261,9 @@ commands:
                   glib2-devel \
                   gtk4-devel \
                   libadwaita-devel \
+                  libportal-devel \
+                  libportal-gtk4-devel \
+                  libportal-gtk3-devel \
                   rpm \
                   rpmlint \
                   rpm-build \
@@ -305,6 +311,9 @@ commands:
                   libgtk-4-dev \
                   libglib2.0-dev \
                   libadwaita-1-dev \
+                  libportal-dev \
+                  libportal-gtk4-dev \
+                  libportal-gtk3-dev \
                   build-essential \
                   apt-utils \
                   dpkg \
