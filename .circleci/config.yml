@@ -48,7 +48,7 @@ executors:
 
   fedora-40:
     docker:
-      - image: fedora:40
+      - image: registry.fedoraproject.org/fedora:40
     resource_class: large
     environment:
       CODENAME: fedora/40
@@ -56,7 +56,7 @@ executors:
 
   fedora-41:
     docker:
-      - image: fedora:41
+      - image: registry.fedoraproject.org/fedora:41
     resource_class: large
     environment:
       CODENAME: fedora/41
