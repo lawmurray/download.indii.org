@@ -224,6 +224,8 @@ commands:
                   createrepo_c
               elif [[ "$CODENAME" =~ "fedora" ]]; then
                 dnf -y update
+
+                # breaking up the install works around an issue in Fedora 41
                 dnf -y install \
                   git \
                   openssh \
@@ -237,7 +239,8 @@ commands:
                   xz \
                   zstd \
                   curl \
-                  ca-certificates \
+                  ca-certificates
+                dnf -y install \
                   make \
                   autoconf \
                   automake \
@@ -250,7 +253,8 @@ commands:
                   gcc-c++ \
                   blueprint-compiler \
                   gettext \
-                  desktop-file-utils \
+                  desktop-file-utils
+                dnf -y install \
                   libyaml-devel \
                   jemalloc-devel \
                   boost-devel \
@@ -263,7 +267,8 @@ commands:
                   libadwaita-devel \
                   libportal-devel \
                   libportal-gtk4-devel \
-                  libportal-gtk3-devel \
+                  libportal-gtk3-devel
+                dnf -y install \
                   rpm \
                   rpmlint \
                   rpm-build \
