@@ -223,6 +223,7 @@ commands:
                   rpm-config-SUSE \
                   createrepo_c
               elif [[ "$CODENAME" =~ "fedora" ]]; then
+                dnf -y update
                 dnf -y install \
                   git \
                   openssh \
@@ -269,7 +270,6 @@ commands:
                   rpm-sign \
                   redhat-rpm-config \
                   createrepo_c
-                dnf -y update
               else  # Debian variant
                 apt update --assume-yes
                 apt upgrade --assume-yes
