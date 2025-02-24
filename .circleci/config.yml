@@ -272,7 +272,7 @@ commands:
                     rpm-build \
                     rpm-sign \
                     redhat-rpm-config \
-                    createrepo_c
+                    createrepo_c || echo 0
                   done
               else  # Debian variant
                 apt update --assume-yes
