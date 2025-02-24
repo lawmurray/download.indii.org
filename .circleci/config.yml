@@ -225,56 +225,55 @@ commands:
               elif [[ "$CODENAME" =~ "fedora" ]]; then
                 dnf -y update
 
-                # breaking up the install works around an issue in Fedora 41
-                dnf -y install \
-                  git \
-                  openssh \
-                  gpg \
-                  distribution-gpg-keys \
-                  coreutils \
-                  moreutils \
-                  tar \
-                  gzip \
-                  bzip2 \
-                  xz \
-                  zstd \
-                  curl \
-                  ca-certificates
-                dnf -y install \
-                  make \
-                  autoconf \
-                  automake \
-                  libtool \
-                  cmake \
-                  meson \
-                  flex \
-                  bison \
-                  gcc \
-                  gcc-c++ \
-                  blueprint-compiler \
-                  gettext \
-                  desktop-file-utils
-                dnf -y install \
-                  libyaml-devel \
-                  jemalloc-devel \
-                  boost-devel \
-                  eigen3-devel \
-                  cairo-devel \
-                  sqlite-devel \
-                  libicu-devel \
-                  glib2-devel \
-                  gtk4-devel \
-                  libadwaita-devel \
-                  libportal-devel \
-                  libportal-gtk4-devel \
-                  libportal-gtk3-devel
-                dnf -y install \
-                  rpm \
-                  rpmlint \
-                  rpm-build \
-                  rpm-sign \
-                  redhat-rpm-config \
-                  createrepo_c
+                # workaround apparent for Fedora 41 dnf install issue: try twice
+                for i in `seq 0 1`; do
+                  dnf -y install \
+                    git \
+                    openssh \
+                    gpg \
+                    distribution-gpg-keys \
+                    coreutils \
+                    moreutils \
+                    tar \
+                    gzip \
+                    bzip2 \
+                    xz \
+                    zstd \
+                    curl \
+                    ca-certificates \
+                    make \
+                    autoconf \
+                    automake \
+                    libtool \
+                    cmake \
+                    meson \
+                    flex \
+                    bison \
+                    gcc \
+                    gcc-c++ \
+                    blueprint-compiler \
+                    gettext \
+                    desktop-file-utils \
+                    libyaml-devel \
+                    jemalloc-devel \
+                    boost-devel \
+                    eigen3-devel \
+                    cairo-devel \
+                    sqlite-devel \
+                    libicu-devel \
+                    glib2-devel \
+                    gtk4-devel \
+                    libadwaita-devel \
+                    libportal-devel \
+                    libportal-gtk4-devel \
+                    libportal-gtk3-devel \
+                    rpm \
+                    rpmlint \
+                    rpm-build \
+                    rpm-sign \
+                    redhat-rpm-config \
+                    createrepo_c
+                  done
               else  # Debian variant
                 apt update --assume-yes
                 apt upgrade --assume-yes
