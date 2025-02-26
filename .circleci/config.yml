@@ -347,9 +347,7 @@ commands:
                   rpm \
                   rpmlint \
                   createrepo-c \
-                  python3-venv \
-                  podman \
-                  dbus-x11
+                  python3-venv
               fi
       - run:
           name: Environment variables
@@ -440,17 +438,13 @@ commands:
         type: string
     steps:
       - run:
-          name: Start D-Bus
-          command: |
-            dbus-launch --auto-syntax >> $BASH_ENV
-      - run:
           name: Build container image
           command: |
-            TAG="lawmurray/circleci:<< parameters.tag >>"
             cd .circleci/<< parameters.tag >>
-            podman login --username $DOCKERHUB_USERNAME --password $DOCKERHUB_PASSWORD docker.io
-            podman build -t $TAG .
-            podman push $TAG
+            docker login --username $DOCKERHUB_USERNAME --password $DOCKERHUB_PASSWORD
+            TAG="$DOCKERHUB_USERNAME/circleci:<< parameters.tag >>"
+            docker build -t $TAG .
+            docker push $TAG
 
   source_autotools:
     description: Archive source for C++ package
