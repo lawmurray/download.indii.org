@@ -45,4 +45,5 @@ RUN dnf -y install \
 	rpm-build \
 	rpm-sign \
 	redhat-rpm-config \
-	createrepo_c
+	createrepo_c \
+	dnf-plugins-core
