@@ -66,7 +66,7 @@ executors:
 
   fedora-41:
     docker:
-      - image: lawmurray/circleci:fedora41
+      - image: lawmurray/circleci:fedora41-amd64
     resource_class: large
     environment:
       CODENAME: fedora/41
@@ -136,7 +136,7 @@ executors:
 
   fedora-41-arm:
     docker:
-      - image: lawmurray/circleci:fedora41
+      - image: lawmurray/circleci:fedora41-arm64
     resource_class: arm.large
     environment:
       CODENAME: fedora/41
@@ -442,7 +442,7 @@ commands:
           command: |
             cd .circleci/<< parameters.tag >>
             echo $DOCKERHUB_PASSWORD | docker login --username $DOCKERHUB_USERNAME --password-stdin
-            TAG="$DOCKERHUB_USERNAME/circleci:<< parameters.tag >>"
+            TAG="$DOCKERHUB_USERNAME/circleci:<< parameters.tag >>-$ARCH"
             docker build -t $TAG .
             docker push $TAG
 
