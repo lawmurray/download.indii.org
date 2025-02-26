@@ -56,7 +56,7 @@ executors:
 
   fedora-41:
     docker:
-      - image: registry.fedoraproject.org/fedora:41
+      - image: lawmurray/circleci:fedora41
     resource_class: large
     environment:
       CODENAME: fedora/41

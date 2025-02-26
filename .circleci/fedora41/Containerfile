@@ -1,0 +1,48 @@
+FROM registry.fedoraproject.org/fedora:41
+RUN dnf -y update
+RUN dnf -y install \
+	git \
+	openssh \
+	gpg \
+	distribution-gpg-keys \
+	coreutils \
+	moreutils \
+	tar \
+	gzip \
+	bzip2 \
+	xz \
+	zstd \
+	curl \
+	ca-certificates \
+	make \
+	autoconf \
+	automake \
+	libtool \
+	cmake \
+	meson \
+	flex \
+	bison \
+	gcc \
+	gcc-c++ \
+	blueprint-compiler \
+	gettext \
+	desktop-file-utils \
+	libyaml-devel \
+	jemalloc-devel \
+	boost-devel \
+	eigen3-devel \
+	cairo-devel \
+	sqlite-devel \
+	libicu-devel \
+	glib2-devel \
+	gtk4-devel \
+	libadwaita-devel \
+	libportal-devel \
+	libportal-gtk4-devel \
+	libportal-gtk3-devel \
+	rpm \
+	rpmlint \
+	rpm-build \
+	rpm-sign \
+	redhat-rpm-config \
+	createrepo_c
