@@ -2,6 +2,15 @@ version: 2.1
 
 executors:
 
+  vm:
+    machine:
+      image: ubuntu-2404
+    resource_class: medium
+    environment:
+      CODENAME: vm
+      ARCH: amd64
+      DEBIAN_FRONTEND: noninteractive
+
   bookworm:
     docker:
       - image: debian:bookworm
@@ -62,6 +71,15 @@ executors:
       CODENAME: fedora/41
       ARCH: x86_64
 
+  vm-arm:
+    machine:
+      image: ubuntu-2404
+    resource_class: arm.medium
+    environment:
+      CODENAME: vm
+      ARCH: arm64
+      DEBIAN_FRONTEND: noninteractive
+
   bookworm-arm:
     docker:
       - image: debian:bookworm
@@ -116,7 +134,7 @@ executors:
 
   fedora-41-arm:
     docker:
-      - image: registry.fedoraproject.org/fedora:41
+      - image: lawmurray/circleci:fedora41
     resource_class: arm.large
     environment:
       CODENAME: fedora/41
@@ -327,7 +345,8 @@ commands:
                   rpm \
                   rpmlint \
                   createrepo-c \
-                  python3-venv
+                  python3-venv \
+                  podman
               fi
       - run:
           name: Environment variables
@@ -409,6 +428,22 @@ commands:
                   fi
                 fi
               done
+
+  build_container:
+    description: Build container image
+    parameters:
+      tag:
+        description: Container image tag
+        type: string
+    steps:
+      - run:
+          name: Build container image
+          command: |
+            TAG="lawmurray/circleci:<< parameters.tag >>"
+            cd .circleci/<< parameters.tag >>
+            podman build -t $TAG .
+            podman login --username $DOCKERHUB_USERNAME --password $DOCKERHUB_PASSWORD docker.io
+            podman push $TAG
 
   source_autotools:
     description: Archive source for C++ package
@@ -807,6 +842,16 @@ jobs:
           paths:
             - .
 
+  container:
+    parameters:
+      os:
+        type: string
+    executor: << parameters.os >>
+    steps:
+      - environment
+      - build_container:
+          tag: fedora41
+
   deb:
     parameters: 
       os:
@@ -1135,7 +1180,13 @@ workflows:
   all:
     jobs:
       - init
-      
+      - container:
+          matrix:
+            parameters:
+              os:
+                - vm
+                - vm-arm
+
       - deb:
           matrix:
             parameters:
@@ -1150,6 +1201,7 @@ workflows:
                 - oracular-arm
           requires:
             - init
+            - container
 
       - rpm:
           matrix:
@@ -1163,6 +1215,7 @@ workflows:
                 - fedora-41-arm
           requires:
             - init
+            - container
 
       - mac:
           requires:
