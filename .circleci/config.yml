@@ -851,6 +851,7 @@ jobs:
     executor: << parameters.os >>
     steps:
       - environment
+      - checkout
       - build_container:
           tag: fedora41
 
