@@ -441,7 +441,7 @@ commands:
           name: Build container image
           command: |
             cd .circleci/<< parameters.tag >>
-            docker login --username $DOCKERHUB_USERNAME --password $DOCKERHUB_PASSWORD
+            echo $DOCKERHUB_PASSWORD | docker login --username $DOCKERHUB_USERNAME --password-stdin
             TAG="$DOCKERHUB_USERNAME/circleci:<< parameters.tag >>"
             docker build -t $TAG .
             docker push $TAG
