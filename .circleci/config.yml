@@ -443,8 +443,8 @@ commands:
           command: |
             TAG="lawmurray/circleci:<< parameters.tag >>"
             cd .circleci/<< parameters.tag >>
-            podman build -t $TAG .
             podman login --username $DOCKERHUB_USERNAME --password $DOCKERHUB_PASSWORD docker.io
+            podman build -t $TAG .
             podman push $TAG
 
   source_autotools:
