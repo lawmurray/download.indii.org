@@ -10,6 +10,7 @@ executors:
       CODENAME: vm
       ARCH: amd64
       DEBIAN_FRONTEND: noninteractive
+      SUDO: sudo
 
   bookworm:
     docker:
@@ -79,6 +80,7 @@ executors:
       CODENAME: vm
       ARCH: arm64
       DEBIAN_FRONTEND: noninteractive
+      SUDO: sudo
 
   bookworm-arm:
     docker:
@@ -289,9 +291,9 @@ commands:
                   redhat-rpm-config \
                   createrepo_c
               else  # Debian variant
-                apt update --assume-yes
-                apt upgrade --assume-yes
-                apt install --assume-yes \
+                $SUDO apt update --assume-yes
+                $SUDO apt upgrade --assume-yes
+                $SUDO apt install --assume-yes \
                   git \
                   ssh \
                   gpg \
