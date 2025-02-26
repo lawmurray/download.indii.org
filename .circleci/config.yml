@@ -348,7 +348,8 @@ commands:
                   rpmlint \
                   createrepo-c \
                   python3-venv \
-                  podman
+                  podman \
+                  dbus-x11
               fi
       - run:
           name: Environment variables
@@ -438,6 +439,10 @@ commands:
         description: Container image tag
         type: string
     steps:
+      - run:
+          name: Start D-Bus
+          command: |
+            dbus-launch --auto-syntax >> $BASH_ENV
       - run:
           name: Build container image
           command: |
