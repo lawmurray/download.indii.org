@@ -295,7 +295,6 @@ commands:
                 $SUDO apt upgrade --assume-yes
                 $SUDO apt install --assume-yes \
                   git \
-                  ssh \
                   gpg \
                   gpg-agent \
                   coreutils \
