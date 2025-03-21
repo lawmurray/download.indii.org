@@ -293,7 +293,9 @@ commands:
               else  # Debian variant
                 $SUDO apt update --assume-yes
                 $SUDO apt upgrade --assume-yes
-                $SUDO apt install --assume-yes \
+                
+                # unsetting BASH_ENV is a workaround for Perl taint mode fail when installing ssh on trixie
+                $SUDO env -u BASH_ENV apt install --assume-yes \
                   git \
                   ssh \
                   gpg \
