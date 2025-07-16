@@ -47,7 +47,16 @@ executors:
       CODENAME: oracular
       ARCH: amd64
       DEBIAN_FRONTEND: noninteractive
-    
+
+  plucky:
+    docker:
+      - image: ubuntu:plucky
+    resource_class: large
+    environment:
+      CODENAME: plucky
+      ARCH: amd64
+      DEBIAN_FRONTEND: noninteractive
+
   opensuse-tumbleweed:
     docker:
       - image: registry.opensuse.org/opensuse/tumbleweed
@@ -70,6 +79,14 @@ executors:
     resource_class: large
     environment:
       CODENAME: fedora/41
+      ARCH: x86_64
+
+  fedora-42:
+    docker:
+      - image: registry.fedoraproject.org/fedora:42
+    resource_class: large
+    environment:
+      CODENAME: fedora/42
       ARCH: x86_64
 
   vm-arm:
@@ -117,7 +134,16 @@ executors:
       CODENAME: oracular
       ARCH: arm64
       DEBIAN_FRONTEND: noninteractive
-    
+
+  plucky-arm:
+    docker:
+      - image: ubuntu:plucky
+    resource_class: arm.large
+    environment:
+      CODENAME: plucky
+      ARCH: arm64
+      DEBIAN_FRONTEND: noninteractive
+
   opensuse-tumbleweed-arm:
     docker:
       - image: registry.opensuse.org/opensuse/tumbleweed
@@ -141,7 +167,15 @@ executors:
     environment:
       CODENAME: fedora/41
       ARCH: aarch64
-    
+
+  fedora-42-arm:
+    docker:
+      - image: registry.fedoraproject.org/fedora:42
+    resource_class: arm.large
+    environment:
+      CODENAME: fedora/42
+      ARCH: aarch64
+
   mac:
     macos:
       xcode: 16.0.0
@@ -1199,10 +1233,12 @@ workflows:
                 - trixie
                 - noble
                 - oracular
+                - plucky
                 - bookworm-arm
                 - trixie-arm
                 - noble-arm
                 - oracular-arm
+                - plucky-arm
           requires:
             - init
             - container
@@ -1214,9 +1250,11 @@ workflows:
                 - opensuse-tumbleweed
                 - fedora-40
                 - fedora-41
+                - fedora-42
                 - opensuse-tumbleweed-arm
                 - fedora-40-arm
                 - fedora-41-arm
+                - fedora-42-arm
           requires:
             - init
             - container
@@ -1248,16 +1286,20 @@ workflows:
                 - trixie
                 - noble
                 - oracular
+                - plucky
                 - opensuse-tumbleweed
                 - fedora-40
                 - fedora-41
+                - fedora-42
                 - bookworm-arm
                 - trixie-arm
                 - noble-arm
                 - oracular-arm
+                - plucky-arm
                 - opensuse-tumbleweed-arm
                 - fedora-40-arm
                 - fedora-41-arm
+                - fedora-42-arm
           requires:
             - stage
 
