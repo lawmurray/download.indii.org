@@ -21,3 +21,9 @@ Codename: oracular
 Architectures: source amd64 arm64
 Components: main
 SignWith: default
+
+Suite: stable
+Codename: plucky
+Architectures: source amd64 arm64
+Components: main
+SignWith: default
