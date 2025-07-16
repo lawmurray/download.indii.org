@@ -1,0 +1,54 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Suite: stable
+Codename: bookworm
+Date: Wed, 16 Jul 2025 13:15:36 UTC
+Architectures: amd64 arm64
+Components: main
+MD5Sum:
+ 5154a2b741ade4b669c27666c94d3257 8608 main/binary-amd64/Packages
+ bd858bdfa41278c30ad6bed843f031ef 2648 main/binary-amd64/Packages.gz
+ 82a1ae90445e5284617f8a8cc3a53fa4 52 main/binary-amd64/Release
+ 458d19f2c9e6e03dc3d8758590b2103d 8608 main/binary-arm64/Packages
+ e37efd4f5c0507698757cb8008bfb8ff 2655 main/binary-arm64/Packages.gz
+ 5498dbe77aa0dcb78c11973ce245ab7b 52 main/binary-arm64/Release
+ d41d8cd98f00b204e9800998ecf8427e 0 main/source/Sources
+ 7029066c27ac6f5ef18d660d5741979a 20 main/source/Sources.gz
+ 2a323edc4e7693b3b1ac9f71443ad683 53 main/source/Release
+SHA1:
+ 4a04a7e35ff63fc33437bb4d8359ad0ba3bec5d5 8608 main/binary-amd64/Packages
+ 0ae00db6c21665898ee9e715184639a14bee937c 2648 main/binary-amd64/Packages.gz
+ 9b61d92e2c42866227d305db51276f4714da5cd9 52 main/binary-amd64/Release
+ a251c5c0d84f906c1edd4f4bdc5ffcb5ac424f4e 8608 main/binary-arm64/Packages
+ 1523714653b692d30ddeb315ff054d2d92b58e50 2655 main/binary-arm64/Packages.gz
+ 412007f10501e71d820922a3c7024b053e5d6c65 52 main/binary-arm64/Release
+ da39a3ee5e6b4b0d3255bfef95601890afd80709 0 main/source/Sources
+ 46c6643f07aa7f6bfe7118de926b86defc5087c4 20 main/source/Sources.gz
+ 22270126d2c06a44709ced469ca246a21f5b6c2e 53 main/source/Release
+SHA256:
+ 4decfa03bcb1fb2c1bf8035fa156487975b19f1b3b0d6eb1d98b0d7bcab87696 8608 main/binary-amd64/Packages
+ 0f83c3a00f39c142519c3da54e4dd90e53dc30125b733e1cbb1f4ee545c92fb8 2648 main/binary-amd64/Packages.gz
+ 5d14a4f1b270a16b7797dfa013f0d0d3325c616762714c6e9a34295a4d9be351 52 main/binary-amd64/Release
+ 53927edc574ab195d44445b848f5cdabcd9bfaaff30048f88a480085cf1729d4 8608 main/binary-arm64/Packages
+ cd8264c709304f7b012fd58e47736f6782766215c1dcc0504e204cbdb91f2cd4 2655 main/binary-arm64/Packages.gz
+ e14031805a3100c88e2201a2b54df09cead928dbb722b9562f7a0b122256f016 52 main/binary-arm64/Release
+ e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 0 main/source/Sources
+ 59869db34853933b239f1e2219cf7d431da006aa919635478511fabbfc8849d2 20 main/source/Sources.gz
+ 33740b7ffc6ab6c9ce665b4b96de6606f3a3ace3f2cb36aec441602f84d664b3 53 main/source/Release
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEYGLmdDJxSkYmaXc18H9ottahXq4FAmh3pfgACgkQ8H9ottah
+Xq4QFxAAtP9AlGIvkRnwgZPvdE8XucP8kE/zgMGS2OCydH0CWhwDg5nUr8FvE97W
+zA9vdseB2Bj6T2oEQNYHSCo+mXLPSxA0ksqAKIWxzBgEbtxRKFX5qyhWt2eF8Epc
+LZlURIchLpY+SbRFhz4hz1LF72Pl2kVKU3rClQu4QBEN6/eQLq3g6OIiBNVwlqfB
+xui30QQmEdMzzmhe/Zf4omLi2urRmEuKWts00IrDz869dcaQyXiDThoC5zd1tExv
+8PJl/qwsbyiabRC7BtJaolDFMK4Rv7p1EcwRoClvj+NTwDfA43zuRXTdLNN0vpdr
+w0aUcWULDJTMoqdC6FqkADthcZd4KD0ZONcc1qEK4Spe3w/mgoQ4GcB52Aqimt+n
+BEm0UU3Ic3L4c0GSZdRTe7PZUSH70cX6tHVorU+9gMlTWndALD6zWoUrsnCr9+fb
+A4MiCefaV3mDAfdP2E/+mLWjMhWUieIVrn+8EBu2UWOgxHbFK7SAfrkolstVMIPA
+cZ3s08BkmbQgvzIPk2+biz43vNniETcE94G+aVNL9TjhWo/dEyx50O7Pj/jBQHzD
+2KkYT5JQRaNhZyP4u0o50O3kuRqzVnAYzaLcVwo0hXXm81HDaTcRakapzC8LANX1
+ZZzY+xF7pxZONkAnXXENT0TRcnrhlVTtJbS0NIzGYNHGZMOhshE=
+=xv9z
+-----END PGP SIGNATURE-----
