@@ -817,7 +817,7 @@ commands:
 jobs:
 
   init:
-    executor: noble
+    executor: plucky
     steps:
       - environment
       - checkout
@@ -996,7 +996,7 @@ jobs:
             - win
 
   repo:
-    executor: noble
+    executor: plucky
     steps:
       - environment
       - attach_workspace:
@@ -1031,7 +1031,7 @@ jobs:
             - rpm
 
   stage:
-    executor: noble
+    executor: plucky
     steps:
       - environment
       - attach_workspace:
@@ -1182,7 +1182,7 @@ jobs:
               Test-Package -Package doxide
 
   deploy_linux:
-    executor: noble
+    executor: plucky
     steps:
       - environment
       - attach_workspace:
