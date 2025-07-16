@@ -1066,13 +1066,13 @@ jobs:
                 zypper --gpg-auto-import-keys addrepo https://stage.indii.org/rpm/$CODENAME/indii.org.repo
                 zypper --gpg-auto-import-keys refresh
                 zypper --non-interactive update
-              elif [[ "$CODENAME" =~ "fedora/41" ]]; then
+              elif [[ "$CODENAME" =~ "fedora/40" ]]; then
                 dnf install --assumeyes dnf-plugins-core
-                dnf config-manager addrepo --from-repofile=https://stage.indii.org/rpm/$CODENAME/indii.org.repo
+                dnf config-manager --add-repo https://stage.indii.org/rpm/$CODENAME/indii.org.repo
                 dnf update --assumeyes
               elif [[ "$CODENAME" =~ "fedora" ]]; then
                 dnf install --assumeyes dnf-plugins-core
-                dnf config-manager --add-repo https://stage.indii.org/rpm/$CODENAME/indii.org.repo
+                dnf config-manager addrepo --from-repofile=https://stage.indii.org/rpm/$CODENAME/indii.org.repo
                 dnf update --assumeyes
               else
                 apt update --assume-yes
