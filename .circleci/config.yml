@@ -56,14 +56,6 @@ executors:
       CODENAME: opensuse/tumbleweed
       ARCH: x86_64
 
-  fedora-40:
-    docker:
-      - image: registry.fedoraproject.org/fedora:40
-    resource_class: large
-    environment:
-      CODENAME: fedora/40
-      ARCH: x86_64
-
   fedora-41:
     docker:
       - image: lawmurray/circleci:fedora41-amd64
@@ -132,14 +124,6 @@ executors:
     resource_class: arm.large
     environment:
       CODENAME: opensuse/tumbleweed
-      ARCH: aarch64
-
-  fedora-40-arm:
-    docker:
-      - image: registry.fedoraproject.org/fedora:40
-    resource_class: arm.large
-    environment:
-      CODENAME: fedora/40
       ARCH: aarch64
 
   fedora-41-arm:
@@ -1228,11 +1212,9 @@ workflows:
             parameters:
               os:
                 - opensuse-tumbleweed
-                - fedora-40
                 - fedora-41
                 - fedora-42
                 - opensuse-tumbleweed-arm
-                - fedora-40-arm
                 - fedora-41-arm
                 - fedora-42-arm
           requires:
@@ -1267,7 +1249,6 @@ workflows:
                 - noble
                 - plucky
                 - opensuse-tumbleweed
-                - fedora-40
                 - fedora-41
                 - fedora-42
                 - bookworm-arm
@@ -1275,7 +1256,6 @@ workflows:
                 - noble-arm
                 - plucky-arm
                 - opensuse-tumbleweed-arm
-                - fedora-40-arm
                 - fedora-41-arm
                 - fedora-42-arm
           requires:

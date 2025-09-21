@@ -22,18 +22,6 @@ This repository is maintained by [Lawrence Murray](https://indii.org/about). It 
     sudo apt install mendingwall doxide birch
     ```
 
-??? ubuntu "Ubuntu 24.10 Oracular Oriole"
-    Add the repository:
-    ```
-    echo 'deb http://download.indii.org/deb oracular main' | sudo tee /etc/apt/sources.list.d/indii.org.list
-    curl -fsSL https://download.indii.org/deb/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/indii.org.gpg > /dev/null
-    sudo apt update
-    ```
-    Install desired packages, e.g.:
-    ```
-    sudo apt install mendingwall doxide birch
-    ```
-
 ??? ubuntu "Ubuntu 24.04 Noble Numbat"
     Add the repository:
     ```
@@ -86,17 +74,6 @@ This repository is maintained by [Lawrence Murray](https://indii.org/about). It 
     Add the repository:
     ```
     sudo dnf config-manager addrepo --from-repofile=https://download.indii.org/rpm/fedora/41/indii.org.repo
-    sudo dnf update
-    ```
-    Install desired packages, e.g.:
-    ```
-    sudo dnf install mendingwall doxide birch
-    ```
-
-??? fedora "Fedora 40"
-    Add the repository:
-    ```
-    sudo dnf config-manager --add-repo https://download.indii.org/rpm/fedora/40/indii.org.repo
     sudo dnf update
     ```
     Install desired packages, e.g.:
