@@ -48,6 +48,15 @@ executors:
       ARCH: amd64
       DEBIAN_FRONTEND: noninteractive
 
+  questing:
+    docker:
+      - image: ubuntu:questing
+    resource_class: large
+    environment:
+      CODENAME: questing
+      ARCH: amd64
+      DEBIAN_FRONTEND: noninteractive
+
   opensuse-tumbleweed:
     docker:
       - image: registry.opensuse.org/opensuse/tumbleweed
@@ -131,6 +140,15 @@ executors:
     resource_class: arm.large
     environment:
       CODENAME: plucky
+      ARCH: arm64
+      DEBIAN_FRONTEND: noninteractive
+
+  questing-arm:
+    docker:
+      - image: ubuntu:questing
+    resource_class: arm.large
+    environment:
+      CODENAME: questing
       ARCH: arm64
       DEBIAN_FRONTEND: noninteractive
 
@@ -1227,10 +1245,12 @@ workflows:
                 - trixie
                 - noble
                 - plucky
+                - questing
                 - bookworm-arm
                 - trixie-arm
                 - noble-arm
                 - plucky-arm
+                - questing-arm
           requires:
             - init
             - container
@@ -1280,6 +1300,7 @@ workflows:
                 - trixie
                 - noble
                 - plucky
+                - questing
                 - opensuse-tumbleweed
                 - opensuse-leap-16
                 - fedora-41
@@ -1289,6 +1310,7 @@ workflows:
                 - trixie-arm
                 - noble-arm
                 - plucky-arm
+                - questing-arm
                 - opensuse-tumbleweed-arm
                 - opensuse-leap-16-arm
                 - fedora-41-arm

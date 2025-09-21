@@ -10,6 +10,18 @@ hide:
 
 This repository is maintained by [Lawrence Murray](https://indii.org/about). It provides Linux packages for [Mending Wall](https://mendingwall.indii.org), [Doxide](https://doxide.org) and [Birch](https://birch-lang.org). All packages are available for both x86-64 (AMD64) and AArch64 (ARM64) unless otherwise noted.
 
+??? ubuntu "Ubuntu 25.10 Questing Quokka"
+    Add the repository:
+    ```
+    echo 'deb http://download.indii.org/deb questing main' | sudo tee /etc/apt/sources.list.d/indii.org.list
+    curl -fsSL https://download.indii.org/deb/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/indii.org.gpg > /dev/null
+    sudo apt update
+    ```
+    Install desired packages, e.g.:
+    ```
+    sudo apt install mendingwall doxide birch
+    ```
+
 ??? ubuntu "Ubuntu 25.04 Plucky Puffin"
     Add the repository:
     ```
