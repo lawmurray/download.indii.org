@@ -833,7 +833,7 @@ commands:
 jobs:
 
   init:
-    executor: plucky
+    executor: questing
     steps:
       - environment
       - checkout
@@ -1012,7 +1012,7 @@ jobs:
             - win
 
   repo:
-    executor: plucky
+    executor: questing
     steps:
       - environment
       - attach_workspace:
@@ -1047,7 +1047,7 @@ jobs:
             - rpm
 
   stage:
-    executor: plucky
+    executor: questing
     steps:
       - environment
       - attach_workspace:
@@ -1194,7 +1194,7 @@ jobs:
               Test-Package -Package doxide
 
   deploy_linux:
-    executor: plucky
+    executor: questing
     steps:
       - environment
       - attach_workspace:
