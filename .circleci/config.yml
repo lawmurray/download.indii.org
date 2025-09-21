@@ -1031,7 +1031,7 @@ jobs:
           name: RPM repository
           command: |
               cd $HOME/rpm
-              for codename in */*; do
+              for codename in fedora/* opensuse/tumbleweed opensuse/leap/*; do
                 createrepo_c $codename
                 gpg --detach-sign --armor $codename/repodata/repomd.xml
                 gpg --export --armor > $codename/repodata/repomd.xml.key
