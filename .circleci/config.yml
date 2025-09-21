@@ -80,6 +80,14 @@ executors:
       CODENAME: fedora/42
       ARCH: x86_64
 
+  fedora-43:
+    docker:
+      - image: registry.fedoraproject.org/fedora:43
+    resource_class: large
+    environment:
+      CODENAME: fedora/43
+      ARCH: x86_64
+
   vm-arm:
     machine:
       image: ubuntu-2404:current
@@ -156,6 +164,14 @@ executors:
     resource_class: arm.large
     environment:
       CODENAME: fedora/42
+      ARCH: aarch64
+
+  fedora-43-arm:
+    docker:
+      - image: registry.fedoraproject.org/fedora:43
+    resource_class: arm.large
+    environment:
+      CODENAME: fedora/43
       ARCH: aarch64
 
   mac:
@@ -1048,10 +1064,6 @@ jobs:
                 zypper --gpg-auto-import-keys addrepo https://stage.indii.org/rpm/$CODENAME/indii.org.repo
                 zypper --gpg-auto-import-keys refresh
                 zypper --non-interactive update
-              elif [[ "$CODENAME" =~ "fedora/40" ]]; then
-                dnf install --assumeyes dnf-plugins-core
-                dnf config-manager --add-repo https://stage.indii.org/rpm/$CODENAME/indii.org.repo
-                dnf update --assumeyes
               elif [[ "$CODENAME" =~ "fedora" ]]; then
                 dnf install --assumeyes dnf-plugins-core
                 dnf config-manager addrepo --from-repofile=https://stage.indii.org/rpm/$CODENAME/indii.org.repo
@@ -1231,10 +1243,12 @@ workflows:
                 - opensuse-leap-16
                 - fedora-41
                 - fedora-42
+                - fedora-43
                 - opensuse-tumbleweed-arm
                 - opensuse-leap-16-arm
                 - fedora-41-arm
                 - fedora-42-arm
+                - fedora-43-arm
           requires:
             - init
             - container
@@ -1270,6 +1284,7 @@ workflows:
                 - opensuse-leap-16
                 - fedora-41
                 - fedora-42
+                - fedora-43
                 - bookworm-arm
                 - trixie-arm
                 - noble-arm
@@ -1278,6 +1293,7 @@ workflows:
                 - opensuse-leap-16-arm
                 - fedora-41-arm
                 - fedora-42-arm
+                - fedora-43-arm
           requires:
             - stage
 
