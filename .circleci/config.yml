@@ -56,6 +56,14 @@ executors:
       CODENAME: opensuse/tumbleweed
       ARCH: x86_64
 
+  opensuse-leap-16:
+    docker:
+      - image: registry.opensuse.org/opensuse/leap/16
+    resource_class: large
+    environment:
+      CODENAME: opensuse/leap/16
+      ARCH: x86_64
+
   fedora-41:
     docker:
       - image: lawmurray/circleci:fedora41-amd64
@@ -124,6 +132,14 @@ executors:
     resource_class: arm.large
     environment:
       CODENAME: opensuse/tumbleweed
+      ARCH: aarch64
+
+  opensuse-leap-16-arm:
+    docker:
+      - image: registry.opensuse.org/opensuse/leap/16
+    resource_class: arm.large
+    environment:
+      CODENAME: opensuse/leap/16
       ARCH: aarch64
 
   fedora-41-arm:
@@ -1212,9 +1228,11 @@ workflows:
             parameters:
               os:
                 - opensuse-tumbleweed
+                - opensuse-leap-16
                 - fedora-41
                 - fedora-42
                 - opensuse-tumbleweed-arm
+                - opensuse-leap-16-arm
                 - fedora-41-arm
                 - fedora-42-arm
           requires:
@@ -1249,6 +1267,7 @@ workflows:
                 - noble
                 - plucky
                 - opensuse-tumbleweed
+                - opensuse-leap-16
                 - fedora-41
                 - fedora-42
                 - bookworm-arm
@@ -1256,6 +1275,7 @@ workflows:
                 - noble-arm
                 - plucky-arm
                 - opensuse-tumbleweed-arm
+                - opensuse-leap-16-arm
                 - fedora-41-arm
                 - fedora-42-arm
           requires:
