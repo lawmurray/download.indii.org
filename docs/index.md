@@ -115,10 +115,10 @@ This repository is maintained by [Lawrence Murray](https://indii.org/about). It 
     sudo zypper install mendingwall doxide birch
     ```
 
-??? opensuse "openSUSE Leap 16"
+??? opensuse "openSUSE Leap 16.0"
     Add the repository:
     ```
-    sudo zypper addrepo https://download.indii.org/rpm/opensuse/leap/16/indii.org.repo
+    sudo zypper addrepo https://download.indii.org/rpm/opensuse/leap/16.0/indii.org.repo
     sudo zypper refresh
     ```
     Install desired packages, e.g.:
