@@ -731,7 +731,7 @@ commands:
                 cd download.indii.org
 
                 # update subdomain
-                for file in mkdocs.yaml docs/*.md $HOME/rpm/*/*/*.repo; do
+                for file in mkdocs.yaml docs/*.md $HOME/rpm/*/*/*.repo $HOME/rpm/*/*/*/*.repo; do
                   sed -E s/download\.indii\.org/<< parameters.subdomain >>/g $file | sponge $file
                 done
 
