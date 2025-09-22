@@ -748,6 +748,9 @@ commands:
                 cp -r $HOME/deb .
                 mkdir win && cp -r $HOME/win/*.exe $HOME/win/*.exe.sha256 win/.
 
+                # set CNAME file for GitHub Pages
+                echo << parameters.subdomain >> >> CNAME
+
                 # publish site
                 git init -b gh-pages
                 git add .
@@ -1345,3 +1348,4 @@ workflows:
       - deploy_win:
           requires:
             - hold
+
