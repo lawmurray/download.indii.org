@@ -1,0 +1,29 @@
+Suite: stable
+Codename: bookworm
+Architectures: source amd64 arm64
+Components: main
+SignWith: default
+
+Suite: stable
+Codename: trixie
+Architectures: source amd64 arm64
+Components: main
+SignWith: default
+
+Suite: stable
+Codename: noble
+Architectures: source amd64 arm64
+Components: main
+SignWith: default
+
+Suite: stable
+Codename: plucky
+Architectures: source amd64 arm64
+Components: main
+SignWith: default
+
+Suite: stable
+Codename: questing
+Architectures: source amd64 arm64
+Components: main
+SignWith: default
