@@ -71,6 +71,17 @@ This repository is maintained by [Lawrence Murray](https://indii.org/about). It 
     ```
     Mending Wall is unavailable as a newer version of libadwaita is required. It is available on Debian 13.
 
+??? fedora "Fedora 44"
+    Add the repository:
+    ```
+    sudo dnf config-manager addrepo --from-repofile=https://download.indii.org/rpm/fedora/44/indii.org.repo
+    sudo dnf update
+    ```
+    Install desired packages, e.g.:
+    ```
+    sudo dnf install mendingwall doxide birch
+    ```
+
 ??? fedora "Fedora 43"
     Add the repository:
     ```
