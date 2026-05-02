@@ -116,17 +116,6 @@ This repository is maintained by [Lawrence Murray](https://indii.org/about). It 
     sudo dnf install mendingwall doxide birch
     ```
 
-??? fedora "Fedora 41"
-    Add the repository:
-    ```
-    sudo dnf config-manager addrepo --from-repofile=https://download.indii.org/rpm/fedora/41/indii.org.repo
-    sudo dnf update
-    ```
-    Install desired packages, e.g.:
-    ```
-    sudo dnf install mendingwall doxide birch
-    ```
-
 ??? opensuse "openSUSE Tumbleweed"
     Add the repository:
     ```

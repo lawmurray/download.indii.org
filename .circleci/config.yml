@@ -82,13 +82,14 @@ executors:
       CODENAME: opensuse/leap/16.0
       ARCH: x86_64
 
-  fedora-41:
-    docker:
-      - image: lawmurray/circleci:fedora41-amd64
-    resource_class: large
-    environment:
-      CODENAME: fedora/41
-      ARCH: x86_64
+  # keep as an example of using a own container, to workaround problems
+  #fedora-41:
+  #  docker:
+  #    - image: lawmurray/circleci:fedora41-amd64
+  #  resource_class: large
+  #  environment:
+  #    CODENAME: fedora/41
+  #    ARCH: x86_64
 
   fedora-42:
     docker:
@@ -194,13 +195,14 @@ executors:
       CODENAME: opensuse/leap/16.0
       ARCH: aarch64
 
-  fedora-41-arm:
-    docker:
-      - image: lawmurray/circleci:fedora41-arm64
-    resource_class: arm.large
-    environment:
-      CODENAME: fedora/41
-      ARCH: aarch64
+  # keep as an example of using a own container, to workaround problems
+  #fedora-41-arm:
+  #  docker:
+  #    - image: lawmurray/circleci:fedora41-arm64
+  #  resource_class: arm.large
+  #  environment:
+  #    CODENAME: fedora/41
+  #    ARCH: aarch64
 
   fedora-42-arm:
     docker:
@@ -1267,12 +1269,13 @@ workflows:
   all:
     jobs:
       - init
-      - container:
-          matrix:
-            parameters:
-              os:
-                - vm
-                - vm-arm
+
+      #- container:
+      #    matrix:
+      #      parameters:
+      #        os:
+      #          - vm
+      #          - vm-arm
 
       - deb:
           matrix:
@@ -1292,7 +1295,7 @@ workflows:
                 - resolute-arm
           requires:
             - init
-            - container
+            #- container
 
       - rpm:
           matrix:
@@ -1300,19 +1303,17 @@ workflows:
               os:
                 - opensuse-tumbleweed
                 - opensuse-leap-16-0
-                - fedora-41
                 - fedora-42
                 - fedora-43
                 - fedora-44
                 - opensuse-tumbleweed-arm
                 - opensuse-leap-16-0-arm
-                - fedora-41-arm
                 - fedora-42-arm
                 - fedora-43-arm
                 - fedora-44-arm
           requires:
             - init
-            - container
+            #- container
 
       - mac:
           requires:
@@ -1345,7 +1346,6 @@ workflows:
                 - resolute
                 - opensuse-tumbleweed
                 - opensuse-leap-16-0
-                - fedora-41
                 - fedora-42
                 - fedora-43
                 - fedora-44
@@ -1357,7 +1357,6 @@ workflows:
                 - resolute-arm
                 - opensuse-tumbleweed-arm
                 - opensuse-leap-16-0-arm
-                - fedora-41-arm
                 - fedora-42-arm
                 - fedora-43-arm
                 - fedora-44-arm
