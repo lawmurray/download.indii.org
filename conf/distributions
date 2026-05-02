@@ -27,3 +27,9 @@ Codename: questing
 Architectures: source amd64 arm64
 Components: main
 SignWith: default
+
+Suite: stable
+Codename: resolute
+Architectures: source amd64 arm64
+Components: main
+SignWith: default
