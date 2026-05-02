@@ -452,7 +452,10 @@ commands:
               echo $GPG_PUBLIC_KEY | base32 -d > public.key
               echo %_gpg_name $GPG_NAME > ~/.rpmmacros
               unset GPG_PUBLIC_KEY GPG_SIGNING_KEY GPG_NAME
-              gpg --import signing.key public.key
+
+              # workaround for Ubuntu 26.04, where a first attempt fails,
+              # but a second attempt then works
+              gpg --import signing.key public.key || gpg --import signing.key public.key
               gpg --export --armor > public.key
               rpm --import public.key
               rm signing.key public.key
