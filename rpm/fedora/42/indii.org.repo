@@ -1,0 +1,7 @@
+[indii.org]
+name=indii.org
+type=rpm-md
+baseurl=https://download.indii.org/rpm/fedora/42
+gpgcheck=1
+gpgkey=https://download.indii.org/rpm/fedora/42/repodata/repomd.xml.key
+enabled=1
