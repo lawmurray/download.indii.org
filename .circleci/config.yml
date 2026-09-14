@@ -1187,6 +1187,7 @@ jobs:
           name: Test install
           command: |
               brew tap lawmurray/stage
+              brew trust lawmurray/stage
               brew update
               brew upgrade
               brew install doxide birch
