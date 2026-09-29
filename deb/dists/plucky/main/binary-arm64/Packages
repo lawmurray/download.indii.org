@@ -1,0 +1,233 @@
+Package: birch
+Version: 2.1.8-1~plucky
+Architecture: arm64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 841
+Depends: libc6 (>= 2.38), libgcc-s1 (>= 3.3.1), libjemalloc2 (>= 5.0.0), libstdc++6 (>= 13.1), libyaml-0-2
+Recommends: g++, make, autoconf, automake, libtool, membirch-dev, numbirch-dev, birch-standard-dev
+Homepage: https://birch-lang.org
+Priority: optional
+Section: devel
+Filename: pool/main/b/birch/birch_2.1.8-1~plucky_arm64.deb
+Size: 228116
+SHA256: 1e6168317e1c9769a79f26edd09602b40880a69ec785222a4956a3f4bc537b62
+SHA1: c195096e15278812729bd4b062447dbdd067ad86
+MD5sum: b9e9a753f26bde21116e759f85f2f2b1
+Description: universal probabilistic programming
+ Birch is a programming language for expressing probabilistic models and
+ performing Bayesian inference. It is used by statisticians, data scientists,
+ and machine learning engineers. Its features include automatic differentiation,
+ automatic marginalization, and automatic conditioning. These compose into
+ advanced Monte Carlo inference algorithms. The Birch language transpiles to
+ C++, with multithreading CPU support, GPU support, and fast copy-on-write
+ memory management.
+
+Package: birch-cairo-dev
+Source: birch-cairo
+Version: 2.1.8-1~plucky
+Architecture: arm64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 399
+Depends: libbirch-cairo-2.1.8 (= 2.1.8-1~plucky), birch-standard-dev (>= 2.1.8), libcairo2-dev, libfreetype6-dev
+Homepage: https://birch-lang.org
+Priority: optional
+Section: devel
+Filename: pool/main/b/birch-cairo/birch-cairo-dev_2.1.8-1~plucky_arm64.deb
+Size: 49548
+SHA256: 393c01bf10cd2094c7cb8582af6590f6c24c59a0130d2146c8bf1475a9785c37
+SHA1: 7c2eb722fcae4a17625031a0b44a63db78ff44b7
+MD5sum: 6c682f0cad45980446e4538737b407ac
+Description: Development files for the Cairo wrapper library of Birch
+
+Package: birch-sqlite-dev
+Source: birch-sqlite
+Version: 2.1.8-1~plucky
+Architecture: arm64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 292
+Depends: libbirch-sqlite-2.1.8 (= 2.1.8-1~plucky), birch-standard-dev (>= 2.1.8), libsqlite3-dev
+Homepage: https://birch-lang.org
+Priority: optional
+Section: devel
+Filename: pool/main/b/birch-sqlite/birch-sqlite-dev_2.1.8-1~plucky_arm64.deb
+Size: 43640
+SHA256: 2a6138f7bf54e69e349c0bdf9b40ba722002e3f5e294bf8f5d47a79a7e3dc039
+SHA1: d2b0a6ed9c1b46ca237e345affd59b3ed61bc278
+MD5sum: 5b58774a5758cd1f17c32c9ae5d2e960
+Description: Development files for the SQLite wrapper library of Birch
+
+Package: birch-standard-dev
+Source: birch-standard
+Version: 2.1.8-1~plucky
+Architecture: arm64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 24471
+Depends: libbirch-standard-2.1.8 (= 2.1.8-1~plucky), membirch-dev (>= 2.1.8), numbirch-dev (>= 2.1.8), libyaml-dev, libboost-math-dev
+Homepage: https://birch-lang.org
+Priority: optional
+Section: devel
+Filename: pool/main/b/birch-standard/birch-standard-dev_2.1.8-1~plucky_arm64.deb
+Size: 2106688
+SHA256: 5b296bbb4c6f10cd9441210ed6486ef5166349d7331d86104cc4201fddef22e3
+SHA1: a8f6229f0aedb9a19d025a4c1597f56fe3241997
+MD5sum: 096dc151b48ba6854429bff365ae04dd
+Description: Development files for the standard library of Birch
+
+Package: doxide
+Version: 0.9.0-1~plucky
+Architecture: arm64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 7844
+Depends: libc6 (>= 2.38), libgcc-s1 (>= 3.3.1), libstdc++6 (>= 14), libyaml-0-2
+Homepage: https://doxide.org
+Priority: optional
+Section: devel
+Filename: pool/main/d/doxide/doxide_0.9.0-1~plucky_arm64.deb
+Size: 663100
+SHA256: 86089ac820da20e1caf93a131e4d4da676d83e3502f8d92a477f4333546d53bc
+SHA1: 1f24a6104a5faf8bea6a28538d74290adf1f1d59
+MD5sum: adc355d21b578b9856917c1971efc7ca
+Description: modern documentation for modern C++
+ Doxide generates documentation for C++ source code. It is configured with
+ YAML, generates Markdown, and publishes HTML. Entities in the source code are
+ documented with special comments containing commands, as with the classic
+ tool Doxygen. The source code is parsed and documentation processed into
+ Markdown then HTML. Doxide aims at online documentation with a modern look
+ and responsive design for desktop and mobile devices.
+
+Package: libbirch-cairo-2.1.8
+Source: birch-cairo
+Version: 2.1.8-1~plucky
+Architecture: arm64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 211
+Depends: libbirch-standard-2.1.8 (>= 2.1.8), libc6 (>= 2.29), libcairo2 (>= 1.2.4), libgcc-s1 (>= 3.3.1), libmembirch-2.1.8, libstdc++6 (>= 9)
+Homepage: https://birch-lang.org
+Priority: optional
+Section: devel
+Filename: pool/main/b/birch-cairo/libbirch-cairo-2.1.8_2.1.8-1~plucky_arm64.deb
+Size: 49180
+SHA256: 9439c681313271a089ddd0c4dd631f68382ae5981003cf27c38bd86ca613e443
+SHA1: 8c52177f0219ada88b3156ae114f64907d0fbc4a
+MD5sum: 32786ebec225616fa2a960a2e56b7db8
+Description: Cairo wrapper library of the Birch probabilistic programming language
+
+Package: libbirch-sqlite-2.1.8
+Source: birch-sqlite
+Version: 2.1.8-1~plucky
+Architecture: arm64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 210
+Depends: libbirch-standard-2.1.8 (>= 2.1.8), libc6 (>= 2.29), libgcc-s1 (>= 3.3.1), libmembirch-2.1.8, libsqlite3-0 (>= 3.5.9), libstdc++6 (>= 9)
+Homepage: https://birch-lang.org
+Priority: optional
+Section: devel
+Filename: pool/main/b/birch-sqlite/libbirch-sqlite-2.1.8_2.1.8-1~plucky_arm64.deb
+Size: 44842
+SHA256: 56131a2f44d89eff83fc8c8316f6659a8d9408027db39e88118c461d8906b29b
+SHA1: b92b9faa2006c5fb013b40bdf6ef540b5226e53b
+MD5sum: 8e775b7b1272df349566d339fc50753f
+Description: SQLite wrapper library of the Birch probabilistic programming language
+
+Package: libbirch-standard-2.1.8
+Source: birch-standard
+Version: 2.1.8-1~plucky
+Architecture: arm64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 5787
+Depends: libc6 (>= 2.38), libgcc-s1 (>= 3.3.1), libgomp1 (>= 6), libmembirch-2.1.8, libnumbirch-2.1.8, libstdc++6 (>= 14), libyaml-0-2
+Homepage: https://birch-lang.org
+Priority: optional
+Section: devel
+Filename: pool/main/b/birch-standard/libbirch-standard-2.1.8_2.1.8-1~plucky_arm64.deb
+Size: 1242646
+SHA256: dcf5c39c99eda0352102955d864be5b9037c3d29c8cc7032cb736413001f6003
+SHA1: 2ace96f19f29493e43eedc26a80940146d2fd27e
+MD5sum: 245bc72d25f7b7abd5f43cb93b2eeebe
+Description: Standard library of the Birch probabilistic programming language
+
+Package: libmembirch-2.1.8
+Source: membirch
+Version: 2.1.8-1~plucky
+Architecture: arm64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 79
+Depends: libc6 (>= 2.17), libgcc-s1 (>= 3.3.1), libgomp1 (>= 6), libstdc++6 (>= 5)
+Homepage: https://birch-lang.org
+Priority: optional
+Section: devel
+Filename: pool/main/m/membirch/libmembirch-2.1.8_2.1.8-1~plucky_arm64.deb
+Size: 10476
+SHA256: e94be2ab14470e3b3908859024ffb8e5366e821374f3067d32f2fddc2031a497
+SHA1: efa15a2ec2c1f91f9765bc557cfbab0a0269f860
+MD5sum: 4c62787329ea5eb390481eaafbfda5b5
+Description: C++ library of smart pointer types for object-level copy-on-write
+
+Package: libnumbirch-2.1.8
+Source: numbirch
+Version: 2.1.8-1~plucky
+Architecture: arm64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 15058
+Homepage: https://birch-lang.org
+Priority: optional
+Section: devel
+Filename: pool/main/n/numbirch/libnumbirch-2.1.8_2.1.8-1~plucky_arm64.deb
+Size: 2215760
+SHA256: 1061146aff70469f9705abad886a7043fd47726beecc93d2666ca0cfcc66f327
+SHA1: 4f19383344c4fd2d1f1a73e1e47a04a055ae22c4
+MD5sum: d1e14971625ccdb96c3f088b2a4d2c97
+Description: Numerical kernels and copy-on-write arrays
+
+Package: membirch-dev
+Source: membirch
+Version: 2.1.8-1~plucky
+Architecture: arm64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 146
+Depends: libmembirch-2.1.8 (= 2.1.8-1~plucky)
+Homepage: https://birch-lang.org
+Priority: optional
+Section: devel
+Filename: pool/main/m/membirch/membirch-dev_2.1.8-1~plucky_arm64.deb
+Size: 23402
+SHA256: a5a2e94059d55ebb260cea498830ef89ab64164756a7db47888485c7d110aa12
+SHA1: f312bbb8d9400242db17c9a9151e606ab4e8cc62
+MD5sum: d5172fe323f8bb318887d5b6b2670ed5
+Description: Development files for MemBirch
+
+Package: mendingwall
+Version: 0.3.9-1~plucky
+Architecture: arm64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 262
+Depends: libadwaita-1-0 (>= 1.5~beta), libc6 (>= 2.34), libglib2.0-0t64 (>= 2.80.0), libgtk-4-1 (>= 4.0.0), dconf-gsettings-backend | gsettings-backend
+Homepage: https://mendingwall.indii.org
+Priority: optional
+Section: devel
+Filename: pool/main/m/mendingwall/mendingwall_0.3.9-1~plucky_arm64.deb
+Size: 26154
+SHA256: 22289a18afb7d68a13dc453b413bbf179062391259b72a891fb3a937820f41e5
+SHA1: 4d86e7b467bea2ac44c52003f33a8dd752531740
+MD5sum: 1db9359c788a0ec92aabb9cead699726
+Description: hop between multiple desktop environments
+ Linux distributions offer a choice of desktop environment, but installing
+ more than one can break themes and clutter menus. Mending Wall fixes this.
+
+Package: numbirch-dev
+Source: numbirch
+Version: 2.1.8-1~plucky
+Architecture: arm64
+Maintainer: Lawrence Murray <lawrence@indii.org>
+Installed-Size: 42726
+Depends: libnumbirch-2.1.8 (= 2.1.8-1~plucky)
+Homepage: https://birch-lang.org
+Priority: optional
+Section: devel
+Filename: pool/main/n/numbirch/numbirch-dev_2.1.8-1~plucky_arm64.deb
+Size: 2223570
+SHA256: c09b41ee9c5228862c1ad89de1e65f2c642e9053f29d4548e57b6f50b0cb487a
+SHA1: a4dd909668c7cbb47aba1d56d96eaeee009b9d7f
+MD5sum: 95038ca46b53b5b8b798e01460fbaab9
+Description: Development files for NumBirch
+

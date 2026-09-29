@@ -1,0 +1,35 @@
+Suite: stable
+Codename: trixie
+Date: Tue, 29 Sep 2026 10:49:26 UTC
+Architectures: amd64 arm64
+Components: main
+MD5Sum:
+ 72c97e080937950b2954db0a449c6366 9363 main/binary-amd64/Packages
+ 258603aa56b12456868b014c2d5e1947 2972 main/binary-amd64/Packages.gz
+ 82a1ae90445e5284617f8a8cc3a53fa4 52 main/binary-amd64/Release
+ accaca407ab9aa52e31a89c696295e27 9363 main/binary-arm64/Packages
+ becc2e5f7145cf46bcfe99bed9089949 2976 main/binary-arm64/Packages.gz
+ 5498dbe77aa0dcb78c11973ce245ab7b 52 main/binary-arm64/Release
+ d41d8cd98f00b204e9800998ecf8427e 0 main/source/Sources
+ 7029066c27ac6f5ef18d660d5741979a 20 main/source/Sources.gz
+ 2a323edc4e7693b3b1ac9f71443ad683 53 main/source/Release
+SHA1:
+ 007b36495fe4c4d2e0cb6f743137fb7ab700e32a 9363 main/binary-amd64/Packages
+ e55e65a4990ef01e7397ed29970ca743819b663a 2972 main/binary-amd64/Packages.gz
+ 9b61d92e2c42866227d305db51276f4714da5cd9 52 main/binary-amd64/Release
+ 1c057355d6437ca06cbf22c547368012df36289c 9363 main/binary-arm64/Packages
+ 1780e2ba5202dca0c43cf31c21ee64d3ef7b87f8 2976 main/binary-arm64/Packages.gz
+ 412007f10501e71d820922a3c7024b053e5d6c65 52 main/binary-arm64/Release
+ da39a3ee5e6b4b0d3255bfef95601890afd80709 0 main/source/Sources
+ 46c6643f07aa7f6bfe7118de926b86defc5087c4 20 main/source/Sources.gz
+ 22270126d2c06a44709ced469ca246a21f5b6c2e 53 main/source/Release
+SHA256:
+ 59ffd14212e779a210c89576800dd94373e488761e1328068e88ee161d8b14d1 9363 main/binary-amd64/Packages
+ 7dcd62ebd865740133e413c5d304cfd36b900dc9736d0c6f190b55c8b64c8206 2972 main/binary-amd64/Packages.gz
+ 5d14a4f1b270a16b7797dfa013f0d0d3325c616762714c6e9a34295a4d9be351 52 main/binary-amd64/Release
+ 89ec03ed6fbb35db22ed62983345f0cb5359646ed6662b8dfd2a2f6e11306157 9363 main/binary-arm64/Packages
+ 88576b728255dea59c0849e564e61eb4bea91b14e313a7d98f8d9b667e69ef65 2976 main/binary-arm64/Packages.gz
+ e14031805a3100c88e2201a2b54df09cead928dbb722b9562f7a0b122256f016 52 main/binary-arm64/Release
+ e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 0 main/source/Sources
+ 59869db34853933b239f1e2219cf7d431da006aa919635478511fabbfc8849d2 20 main/source/Sources.gz
+ 33740b7ffc6ab6c9ce665b4b96de6606f3a3ace3f2cb36aec441602f84d664b3 53 main/source/Release
