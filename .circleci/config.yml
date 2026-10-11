@@ -770,16 +770,9 @@ commands:
                 cd download.indii.org
 
                 # update subdomain
-                for file in mkdocs.yaml docs/*.md $HOME/rpm/*/*/*.repo $HOME/rpm/*/*/*/*.repo; do
+                for file in $HOME/rpm/*/*/*.repo $HOME/rpm/*/*/*/*.repo; do
                   sed -E s/download\.indii\.org/<< parameters.subdomain >>/g $file | sponge $file
                 done
-
-                # build site
-                python3 -m venv venv
-                source venv/bin/activate
-                pip install mkdocs mkdocs-material mkdocs-material[imaging]
-                mkdocs build
-                deactivate
 
                 # copy over packages
                 cd site
