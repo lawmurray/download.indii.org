@@ -775,6 +775,7 @@ commands:
                 done
 
                 # copy over packages
+                mkdir site
                 cd site
                 cp -r $HOME/rpm .
                 cp -r $HOME/deb .
