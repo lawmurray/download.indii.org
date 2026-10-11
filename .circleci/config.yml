@@ -837,7 +837,7 @@ commands:
                 # publish site
                 git init -b gh-pages
                 git add .
-                git commit -m "Overwrite."
+                git commit -m "Overwrite [skip ci]."
                 git remote add origin https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/lawmurray/<< parameters.subdomain >>.git
                 git push origin gh-pages -f
               fi
