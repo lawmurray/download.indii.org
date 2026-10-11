@@ -1067,7 +1067,7 @@ jobs:
                   echo "Components: main"
                   echo "SignWith: default"
                   echo
-                } >> $HOME/deb/distributions
+                } >> $HOME/deb/conf/distributions
               done
               for codename in *; do
                 find $codename -name *.deb -exec reprepro -b $HOME/deb includedeb $codename '{}' \;
