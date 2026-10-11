@@ -1062,10 +1062,19 @@ jobs:
       - run:
           name: Debian repository
           command: |
-              mkdir -p $HOME/deb
-              cp -r conf $HOME/deb/.
+              mkdir -p $HOME/deb/conf
               gpg --export --armor > $HOME/deb/Release.key
               cd $HOME/pkg
+              for codename in *; do
+                {
+                  echo "Suite: stable"
+                  echo "Codename: $codename"
+                  echo "Architectures: source amd64 arm64"
+                  echo "Components: main"
+                  echo "SignWith: default"
+                  echo
+                } >> $HOME/deb/distributions
+              done
               for codename in *; do
                 find $codename -name *.deb -exec reprepro -b $HOME/deb includedeb $codename '{}' \;
               done
