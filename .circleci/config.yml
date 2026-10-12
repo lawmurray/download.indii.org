@@ -503,7 +503,7 @@ commands:
                   rpm \
                   rpmlint \
                   createrepo-c \
-                  python3-venv
+                  software-properties-common
               fi
       - run:
           name: Environment variables
