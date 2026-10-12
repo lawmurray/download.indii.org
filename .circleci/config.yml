@@ -1203,8 +1203,7 @@ jobs:
                 apt update --assume-yes
                 apt upgrade --assume-yes
                 apt install --assume-yes curl gpg
-                echo "deb https://stage.indii.org/deb $CODENAME main" | tee /etc/apt/sources.list.d/indii.org.list
-                curl -fsSL https://stage.indii.org/deb/Release.key | gpg --dearmor | tee /etc/apt/trusted.gpg.d/indii.org.gpg > /dev/null
+                add-apt-repository --yes 'deb https://stage.indii.org/deb $CODENAME main'
                 apt update --assume-yes
               fi
       - when:
