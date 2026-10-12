@@ -1,0 +1,8 @@
+[indii.org]
+name=indii.org
+type=rpm-md
+baseurl=https://download.indii.org/rpm/opensuse/leap/16.0
+gpgcheck=1
+gpgkey=https://download.indii.org/rpm/opensuse/leap/16.0/repodata/repomd.xml.key
+enabled=1
+autorefresh=1
