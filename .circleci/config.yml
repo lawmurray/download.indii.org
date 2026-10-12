@@ -502,8 +502,7 @@ commands:
                   reprepro \
                   rpm \
                   rpmlint \
-                  createrepo-c \
-                  software-properties-common
+                  createrepo-c
               fi
       - run:
           name: Environment variables
@@ -1203,7 +1202,8 @@ jobs:
                 apt update --assume-yes
                 apt upgrade --assume-yes
                 apt install --assume-yes curl gpg
-                add-apt-repository --yes 'deb https://stage.indii.org/deb $CODENAME main'
+                echo "deb https://stage.indii.org/deb $CODENAME main" | tee /etc/apt/sources.list.d/indii.org.list
+                curl -fsSL https://stage.indii.org/deb/Release.key | gpg --dearmor | tee /etc/apt/trusted.gpg.d/indii.org.gpg > /dev/null
                 apt update --assume-yes
               fi
       - when:
