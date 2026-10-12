@@ -952,7 +952,7 @@ jobs:
               git clone https://github.com/lawmurray/doxide.git
               cd doxide
               git checkout $(git describe --tags --abbrev=0)
-              git submodule update --init --recursive --depth 1
+              git submodule update --init --depth 1
       - run:
           name: Checkout Birch latest tag
           command: |
