@@ -30,6 +30,15 @@ executors:
       ARCH: amd64
       DEBIAN_FRONTEND: noninteractive
 
+  testing:
+    docker:
+      - image: debian:testing
+    resource_class: large
+    environment:
+      CODENAME: testing
+      ARCH: amd64
+      DEBIAN_FRONTEND: noninteractive
+
   noble:
     docker:
       - image: ubuntu:noble
@@ -165,6 +174,15 @@ executors:
     resource_class: arm.large
     environment:
       CODENAME: trixie
+      ARCH: arm64
+      DEBIAN_FRONTEND: noninteractive
+
+  testing-arm:
+    docker:
+      - image: debian:testing
+    resource_class: arm.large
+    environment:
+      CODENAME: testing
       ARCH: arm64
       DEBIAN_FRONTEND: noninteractive
 
@@ -1340,6 +1358,7 @@ workflows:
               os:
                 - bookworm
                 - trixie
+                - testing
                 - noble
                 - plucky
                 - questing
@@ -1347,6 +1366,7 @@ workflows:
                 - stonking
                 - bookworm-arm
                 - trixie-arm
+                - testing-arm
                 - noble-arm
                 - plucky-arm
                 - questing-arm
@@ -1403,6 +1423,7 @@ workflows:
               os:
                 - bookworm
                 - trixie
+                - testing
                 - noble
                 - plucky
                 - questing
@@ -1417,6 +1438,7 @@ workflows:
                 - fedora-45
                 - bookworm-arm
                 - trixie-arm
+                - testing-arm
                 - noble-arm
                 - plucky-arm
                 - questing-arm
