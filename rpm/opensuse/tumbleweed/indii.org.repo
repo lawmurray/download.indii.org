@@ -1,0 +1,8 @@
+[indii.org]
+name=indii.org
+type=rpm-md
+baseurl=https://stage.indii.org/rpm/opensuse/tumbleweed
+gpgcheck=1
+gpgkey=https://stage.indii.org/rpm/opensuse/tumbleweed/repodata/repomd.xml.key
+enabled=1
+autorefresh=1
